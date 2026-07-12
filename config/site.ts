@@ -11,6 +11,8 @@ export type SocialConfig = {
   x: string;
   github: string;
   youtube: string;
+  instagram: string;
+  facebook: string;
 };
 
 export type SiteConfig = {
@@ -47,7 +49,9 @@ export const site: SiteConfig = {
   social: {
     linkedin: "https://www.linkedin.com/in/sanjay-negi-ai/",
     x: "",
-    github: "",
-    youtube: ""
+    github: "https://github.com/sanjaynegi-ai",
+    youtube: "https://www.youtube.com/@skillupwithsanjay",
+    instagram: "https://www.instagram.com/skillup_with_sanjay/",
+    facebook: "https://www.facebook.com/skillupwithsanjay"
   }
 } as const;
