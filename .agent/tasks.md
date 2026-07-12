@@ -56,7 +56,7 @@ Derived from `.agent/ux-review.md`. Ordered: content/broken-link fixes first (fa
 
 ## Phase 3 — Navigation
 
-- [ ] **T9. Fix mobile menu interaction**
+- [x] **T9. Fix mobile menu interaction**
   In `src/components/Header.astro`: close the mobile `<details>` panel on link click, Escape, and outside click; add a hamburger/close icon that swaps on open state instead of the text-only "Menu" label.
   *Accept:* on a mobile viewport, tapping a nav link inside the open panel closes it; pressing Escape while open closes it.
 
