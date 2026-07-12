@@ -116,11 +116,9 @@ Derived from `.agent/ux-review.md`. Ordered: content/broken-link fixes first (fa
   In `src/pages/contact.astro`/`config/contact.ts`: replace the three same-email cards with one primary "Email us" CTA plus a compact secondary list; label buttons by intent ("Program enquiry") instead of rendering the raw email address as the button text.
   *Accept:* `/contact/` shows one visually primary contact action; no button label is a raw email address.
 
-- [ ] **T22. Footer trust & completeness** — *PARTIALLY DONE, blocked on real social URLs*
-  ~~Add a privacy-policy link~~ — done: wrote `src/content/pages/privacy.md` (honest boilerplate describing this site's actual, verifiable behavior — GA usage, no server-side data storage, email-only contact; not fabricated legal claims) + `src/pages/privacy.astro`, linked from the footer's Company group, added to `sitemap.xml.ts`.
-  ~~Replace capitalize'd raw object keys with a proper display-name map~~ — done: `SOCIAL_LABELS` map in `Footer.astro` (LinkedIn/X/GitHub/YouTube).
-  Remaining: real social URLs — `config/site.ts`'s `social` object is still all empty strings (so the whole "Social" footer column stays dormant, per the existing `socialLinks.length > 0` guard — not broken, just inactive). Needs real URLs from the site owner.
-  *Accept:* footer includes a privacy-policy link (done); any populated social link renders its brand name correctly capitalized (mechanism done, but nothing is populated yet to verify against).
+- [x] **T22. Footer trust & completeness**
+  Privacy-policy page + footer link done earlier. Real LinkedIn URL now set in `config/site.ts` (`https://www.linkedin.com/in/sanjay-negi-ai/`); X/GitHub/YouTube remain unset and correctly stay hidden via the existing `socialLinks.length > 0` guard.
+  *Accept:* verified in built HTML — footer renders `LinkedIn` (via `SOCIAL_LABELS`, not a raw capitalized key) linking to the real profile URL, with `target="_blank"` + the T26 sr-only "opens in new tab" affordance.
 
 ---
 

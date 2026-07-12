@@ -45,7 +45,7 @@ export const site: SiteConfig = {
     address: ""
   },
   social: {
-    linkedin: "",
+    linkedin: "https://www.linkedin.com/in/sanjay-negi-ai/",
     x: "",
     github: "",
     youtube: ""
