@@ -40,7 +40,7 @@ export const site: SiteConfig = {
     url: import.meta.env.PUBLIC_LMS_URL || "https://learn.sanjaynegi.in/"
   },
   contact: {
-    email: "learn@example.com",
+    email: "support@sanjaynegi.in",
     phone: "",
     address: ""
   },

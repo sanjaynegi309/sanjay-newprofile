@@ -24,9 +24,9 @@ Derived from `.agent/ux-review.md`. Ordered: content/broken-link fixes first (fa
   Rewrite: programs/workshops listing intros (`src/pages/programs/index.astro`, `src/pages/workshops/index.astro`) that mention "Markdown"/"collection"; home FAQ items in `config/home.ts` ("Is the site ready for GitHub Pages?", the config-driven FAQ description); contact note in `config/contact.ts` ("static website… server-side form"); the "Content-driven learning paths" feature in `config/home.ts` (currently a maintainer benefit, not a learner benefit).
   *Accept:* none of "Markdown", "GitHub Pages", "static website", "collection", "rebuilding the website" appear in rendered `dist/**/*.html` body text.
 
-- [ ] **T3. Fix placeholder conversion links**
-  Replace `learn@example.com` in `config/site.ts` with the real contact email; replace/remove the `https://example.com/register/…` workshop `registrationUrl`/`cta.href` values in `src/content/workshops/rag-foundations.md` and `prompt-systems-for-teams.md`.
-  *Accept:* `grep -r "example.com" dist` after build returns no matches (favicon OG reference excluded once T6 lands).
+- [x] **T3. Fix placeholder conversion links**
+  Workshop `registrationUrl`/`cta.href` values now route "Register interest" to `/contact/` instead of a fake registration domain (no real registration backend exists on a static site). Real contact email `support@sanjaynegi.in` (provided by site owner) now set in `config/site.ts`, replacing `learn@example.com` everywhere it's used (footer, contact page mailto links).
+  *Accept:* `grep -r "example.com" dist` after build returns no matches except canonical/OG URLs, which only resolve once `SITE_URL` is set (production CI already sets it; T6 covers the OG image itself).
 
 - [ ] **T4. Feature a second testimonial**
   Set `featured: true` on `src/content/testimonials/michael-chen.md` (or another entry) so the home "Learner outcomes" grid isn't a single stranded card.
