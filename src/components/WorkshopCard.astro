@@ -1,0 +1,114 @@
+---
+import type { CollectionEntry } from "astro:content";
+import Badge from "./Badge.astro";
+import Button from "./Button.astro";
+import Card from "./Card.astro";
+import { analytics } from "@config/analytics";
+import { formatDate, formatList } from "@utils/format";
+import { site } from "@config/site";
+
+interface Props {
+  workshop: CollectionEntry<"workshops">;
+  href?: string;
+}
+
+const { workshop, href } = Astro.props;
+const { data } = workshop;
+const dateLabel = data.date ? formatDate(data.date, site.language) : "Available by request";
+---
+
+<Card class="flex h-full flex-col gap-5">
+  <div class="flex flex-wrap gap-2">
+    <Badge tone="accent">{dateLabel}</Badge>
+    <Badge tone="neutral">{data.duration}</Badge>
+  </div>
+
+  <div class="space-y-3">
+    <h3 class="font-display text-xl font-semibold tracking-tight text-white">
+      {
+        href ? (
+          <a
+            href={href}
+            class="hover:text-accent-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-500"
+          >
+            {data.title}
+          </a>
+        ) : (
+          data.title
+        )
+      }
+    </h3>
+    <p class="text-sm leading-6 text-white/70">{data.description}</p>
+  </div>
+
+  <dl class="grid gap-3 text-sm text-white/70 sm:grid-cols-2">
+    <div>
+      <dt class="font-medium text-white">Audience</dt>
+      <dd>{formatList(data.audience)}</dd>
+    </div>
+    <div>
+      <dt class="font-medium text-white">Format</dt>
+      <dd class="capitalize">{data.format.replaceAll("-", " ")}</dd>
+    </div>
+    {
+      data.capacity && (
+        <div>
+          <dt class="font-medium text-white">Capacity</dt>
+          <dd>{data.capacity} learners</dd>
+        </div>
+      )
+    }
+  </dl>
+
+  {
+    data.topics.length > 0 && (
+      <div class="flex flex-wrap gap-2">
+        {data.topics.slice(0, 4).map((topic) => (
+          <Badge tone="neutral">{topic}</Badge>
+        ))}
+      </div>
+    )
+  }
+
+  {
+    (href || data.cta || data.registrationUrl) && (
+      <div class="mt-auto flex flex-wrap gap-3 pt-2">
+        {
+          href && (
+            <Button
+              href={href}
+              variant="primary"
+              size="sm"
+              analyticsEvent={analytics.events.ctaClick}
+            >
+              View workshop
+            </Button>
+          )
+        }
+        {
+          data.cta ? (
+            <Button
+              href={data.cta.href}
+              variant="secondary"
+              size="sm"
+              analyticsEvent={data.cta.analyticsEvent}
+            >
+              {data.cta.label}
+            </Button>
+          ) : (
+            data.registrationUrl && (
+              <Button
+                href={data.registrationUrl}
+                variant="secondary"
+                size="sm"
+                analyticsEvent={analytics.events.workshopRegistration}
+              >
+                Register interest
+              </Button>
+            )
+          )
+        }
+      </div>
+    )
+  }
+</Card>

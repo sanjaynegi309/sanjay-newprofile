@@ -1,0 +1,216 @@
+---
+import { getCollection } from "astro:content";
+import InteractiveAIAmbientBackground from "@components/InteractiveAIAmbientBackground.astro";
+import Badge from "@components/Badge.astro";
+import Button from "@components/Button.astro";
+import CTASection from "@components/CTASection.astro";
+import Card from "@components/Card.astro";
+import Container from "@components/Container.astro";
+import FAQ from "@components/FAQ.astro";
+import Heading from "@components/Heading.astro";
+import Hero from "@components/Hero.astro";
+import ProgramCard from "@components/ProgramCard.astro";
+import SectionHeader from "@components/SectionHeader.astro";
+import TestimonialCard from "@components/TestimonialCard.astro";
+import WorkshopCard from "@components/WorkshopCard.astro";
+import { home } from "@config/home";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { getContentSlug } from "@utils/slugs";
+
+const programs = (await getCollection("programs"))
+  .filter((program) => !program.data.draft && program.data.featured)
+  .slice(0, 3);
+
+const workshops = (await getCollection("workshops"))
+  .filter((workshop) => !workshop.data.draft && workshop.data.featured)
+  .slice(0, 3);
+
+const testimonials = (await getCollection("testimonials"))
+  .filter((testimonial) => testimonial.data.featured)
+  .slice(0, 3);
+
+---
+
+<BaseLayout
+  seo={{
+    title: "Practical AI Education",
+    description: home.hero.description,
+    canonicalPath: "/"
+  }}
+>
+  <Hero
+    eyebrow={home.hero.eyebrow}
+    title={home.hero.title}
+    description={home.hero.description}
+    actions={home.hero.actions}
+    metrics={home.hero.metrics}
+  />
+
+  <section class="section-navy-tint py-16 sm:py-20">
+    <Container>
+      <div class="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+        <SectionHeader
+          eyebrow={home.whyLearnHere.eyebrow}
+          title={home.whyLearnHere.title}
+          description={home.whyLearnHere.description}
+        />
+        <div class="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
+          {
+            home.whyLearnHere.features.map((feature) => (
+              <Card>
+                <div class="space-y-3">
+                  <h3 class="font-display text-lg font-semibold text-white">
+                    {feature.title}
+                  </h3>
+                  <p class="text-sm leading-6 text-white/70">
+                    {feature.description}
+                  </p>
+                </div>
+              </Card>
+            ))
+          }
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <section class="border-y border-white/10 bg-black py-16 sm:py-20">
+    <Container>
+      <div class="space-y-10">
+        <SectionHeader
+          eyebrow={home.programs.eyebrow}
+          title={home.programs.title}
+          description={home.programs.description}
+        />
+        <div class="grid gap-5 lg:grid-cols-2">
+          {
+            programs.map((program) => (
+              <ProgramCard
+                program={program}
+                href={`/programs/${getContentSlug(program)}/`}
+              />
+            ))
+          }
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <section class="section-navy-tint py-16 sm:py-20">
+    <Container>
+      <div class="space-y-10">
+        <SectionHeader
+          eyebrow={home.workshops.eyebrow}
+          title={home.workshops.title}
+          description={home.workshops.description}
+        />
+        <div class="grid gap-5 lg:grid-cols-2">
+          {
+            workshops.map((workshop) => (
+              <WorkshopCard
+                workshop={workshop}
+                href={`/workshops/${getContentSlug(workshop)}/`}
+              />
+            ))
+          }
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <section class="section-atmospheric border-y border-white/10 py-16 text-white sm:py-20">
+    <InteractiveAIAmbientBackground variant="process" />
+    <Container>
+      <div class="grid gap-10 lg:grid-cols-[1fr_0.9fr] lg:items-center">
+        <div class="space-y-6">
+          <Badge tone="accent">{home.corporateTraining.eyebrow}</Badge>
+          <div class="space-y-4">
+            <h2 class="gradient-heading font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+              {home.corporateTraining.title}
+            </h2>
+            <p class="max-w-2xl text-base leading-7 text-white/70 sm:text-lg">
+              {home.corporateTraining.description}
+            </p>
+          </div>
+          <Button
+            href={home.corporateTraining.action.href}
+            variant="secondary"
+            analyticsEvent={home.corporateTraining.action.analyticsEvent}
+          >
+            {home.corporateTraining.action.label}
+          </Button>
+        </div>
+        <div class="grid gap-3 sm:grid-cols-2">
+          {
+            home.corporateTraining.features.map((feature) => (
+              <div class="glass-card p-4 text-sm font-medium text-white/90">
+                {feature}
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <section class="section-navy-tint py-16 sm:py-20">
+    <Container>
+      <div class="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
+        <div class="glass-card p-6">
+          <p class="badge badge-purple">
+            {home.founder.eyebrow}
+          </p>
+          <div class="mt-16 border-t border-white/10 pt-5">
+            <p class="font-display text-xl font-semibold text-white">{home.founder.name}</p>
+            <p class="mt-1 text-sm text-white/60">{home.founder.role}</p>
+          </div>
+        </div>
+        <div class="space-y-4">
+          <Heading as="h2" size="lg">{home.founder.title}</Heading>
+          <p class="max-w-2xl text-base leading-7 text-white/70 sm:text-lg">
+            {home.founder.description}
+          </p>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <section class="section-atmospheric border-y border-white/10 py-16 sm:py-20">
+    <Container>
+      <div class="space-y-10">
+        <SectionHeader
+          eyebrow={home.testimonials.eyebrow}
+          title={home.testimonials.title}
+          description={home.testimonials.description}
+          tone="dark"
+        />
+        <div class="grid gap-5 lg:grid-cols-2">
+          {
+            testimonials.map((testimonial) => (
+              <TestimonialCard testimonial={testimonial} variant="glass" />
+            ))
+          }
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <section class="bg-black py-16 sm:py-20">
+    <Container>
+      <div class="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
+        <SectionHeader
+          eyebrow={home.faq.eyebrow}
+          title={home.faq.title}
+          description={home.faq.description}
+        />
+        <FAQ items={home.faq.items} />
+      </div>
+    </Container>
+  </section>
+
+  <CTASection
+    title={home.finalCta.title}
+    description={home.finalCta.description}
+    actions={home.finalCta.actions}
+  />
+</BaseLayout>

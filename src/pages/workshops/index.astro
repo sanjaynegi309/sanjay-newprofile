@@ -1,0 +1,60 @@
+---
+import { getCollection } from "astro:content";
+import Container from "@components/Container.astro";
+import SectionHeader from "@components/SectionHeader.astro";
+import WorkshopCard from "@components/WorkshopCard.astro";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { getContentSlug } from "@utils/slugs";
+
+const workshops = (await getCollection("workshops"))
+  .filter((workshop) => !workshop.data.draft)
+  .sort((a, b) => {
+    if (a.data.featured !== b.data.featured) {
+      return a.data.featured ? -1 : 1;
+    }
+
+    const aTime = a.data.date?.getTime() ?? Number.MAX_SAFE_INTEGER;
+    const bTime = b.data.date?.getTime() ?? Number.MAX_SAFE_INTEGER;
+
+    if (aTime !== bTime) {
+      return aTime - bTime;
+    }
+
+    return a.data.title.localeCompare(b.data.title);
+  });
+---
+
+<BaseLayout
+  seo={{
+    title: "Workshops",
+    description:
+      "Explore SkillUp AI workshops generated automatically from Markdown.",
+    canonicalPath: "/workshops/"
+  }}
+>
+  <section class="section-atmospheric border-b border-white/10 py-16 sm:py-20">
+    <Container>
+      <SectionHeader
+        eyebrow="Workshops"
+        title="Focused AI workshops generated from Markdown."
+        description="Every workshop card comes from frontmatter. Add a workshop Markdown file and it appears here automatically."
+        tone="dark"
+      />
+    </Container>
+  </section>
+
+  <section class="bg-black py-16 sm:py-20">
+    <Container>
+      <div class="grid gap-5 lg:grid-cols-2">
+        {
+          workshops.map((workshop) => (
+            <WorkshopCard
+              workshop={workshop}
+              href={`/workshops/${getContentSlug(workshop)}/`}
+            />
+          ))
+        }
+      </div>
+    </Container>
+  </section>
+</BaseLayout>

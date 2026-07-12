@@ -1,0 +1,49 @@
+---
+import InteractiveAIAmbientBackground from "./InteractiveAIAmbientBackground.astro";
+import Button from "./Button.astro";
+import type { ActionLink } from "./Button.astro";
+import Container from "./Container.astro";
+import Heading from "./Heading.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  actions?: readonly ActionLink[];
+  class?: string;
+}
+
+const { title, description, actions = [], class: className } = Astro.props;
+---
+
+<section class:list={["section-atmospheric border-y border-white/10 py-16", className]}>
+  <InteractiveAIAmbientBackground variant="cta" />
+  <Container size="md">
+    <div class="grid gap-8 md:grid-cols-[1fr_auto] md:items-center">
+      <div class="space-y-3">
+        <Heading as="h2" size="md" gradient>{title}</Heading>
+        {
+          description && (
+            <p class="max-w-2xl text-base leading-7 text-white/70">
+              {description}
+            </p>
+          )
+        }
+      </div>
+      {
+        actions.length > 0 && (
+          <div class="flex flex-wrap gap-3 md:justify-end">
+            {actions.map((action) => (
+              <Button
+                href={action.href}
+                variant={action.variant ?? "primary"}
+                analyticsEvent={action.analyticsEvent}
+              >
+                {action.label}
+              </Button>
+            ))}
+          </div>
+        )
+      }
+    </div>
+  </Container>
+</section>

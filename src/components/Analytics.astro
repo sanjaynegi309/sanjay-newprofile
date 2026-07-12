@@ -1,0 +1,68 @@
+---
+import { analytics } from "@config/analytics";
+
+const { enabled, measurementId, sendPageView } = analytics.googleAnalytics;
+const { events, attributes } = analytics;
+const analyticsScript = `
+window.dataLayer = window.dataLayer || [];
+function gtag() {
+  window.dataLayer.push(arguments);
+}
+gtag("js", new Date());
+gtag("config", ${JSON.stringify(measurementId)}, { send_page_view: false });
+
+function trackEvent(eventName, params) {
+  if (!eventName) return;
+  gtag("event", eventName, params);
+}
+
+const analyticsEvents = ${JSON.stringify(events)};
+const analyticsAttributes = ${JSON.stringify(attributes)};
+
+if (${JSON.stringify(sendPageView)}) {
+  trackEvent(analyticsEvents.pageView, {
+    page_title: document.title,
+    page_location: window.location.href,
+    page_path: window.location.pathname
+  });
+}
+
+document.addEventListener("click", function (event) {
+  const target = event.target.closest("a, button");
+  if (!target) return;
+
+  const configuredEvent = target.getAttribute(analyticsAttributes.event);
+  const href = target instanceof HTMLAnchorElement ? target.href : "";
+  const isOutbound =
+    href && new URL(href, window.location.href).origin !== window.location.origin;
+  const eventName =
+    configuredEvent || (isOutbound ? analyticsEvents.outboundLink : undefined);
+
+  if (!eventName) return;
+
+  trackEvent(eventName, {
+    event_category: "engagement",
+    event_label:
+      target.getAttribute(analyticsAttributes.label) ||
+      target.textContent?.trim() ||
+      href ||
+      eventName,
+    link_url: href || undefined,
+    page_location: window.location.href
+  });
+});
+`;
+---
+
+{
+  enabled && measurementId && (
+    <>
+      <script
+        is:inline
+        async
+        src={`https://www.googletagmanager.com/gtag/js?id=${measurementId}`}
+      />
+      <script is:inline set:html={analyticsScript} />
+    </>
+  )
+}

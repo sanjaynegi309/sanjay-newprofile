@@ -1,0 +1,134 @@
+---
+import type { CollectionEntry } from "astro:content";
+import Badge from "@components/Badge.astro";
+import Button from "@components/Button.astro";
+import Container from "@components/Container.astro";
+import BaseLayout from "./BaseLayout.astro";
+import { formatList } from "@utils/format";
+import { getContentSlug } from "@utils/slugs";
+
+interface Props {
+  program: CollectionEntry<"programs">;
+}
+
+const { program } = Astro.props;
+const { data } = program;
+const canonicalPath = `/programs/${getContentSlug(program)}/`;
+---
+
+<BaseLayout
+  seo={{
+    title: data.seo.title ?? data.title,
+    description: data.seo.description ?? data.description,
+    canonicalPath,
+    noindex: data.seo.noindex,
+    ogImage: data.seo.ogImage
+  }}
+>
+  <article>
+    <section class="section-atmospheric border-b border-white/10 py-16 sm:py-20">
+      <Container>
+        <div class="grid gap-10 lg:grid-cols-[1fr_0.8fr] lg:items-start">
+          <div class="space-y-6">
+            <div class="flex flex-wrap gap-2">
+              <Badge tone={data.featured ? "accent" : "neutral"}>
+                {data.level}
+              </Badge>
+              <Badge tone="neutral">{data.duration}</Badge>
+              <Badge tone="neutral">{data.format.replaceAll("-", " ")}</Badge>
+            </div>
+            <div class="space-y-4">
+              <h1 class="gradient-heading font-display text-4xl font-semibold tracking-tight sm:text-5xl">
+                {data.title}
+              </h1>
+              <p class="max-w-3xl text-lg leading-8 text-white/70">
+                {data.description}
+              </p>
+            </div>
+            {
+              data.cta && (
+                <Button
+                  href={data.cta.href}
+                  analyticsEvent={data.cta.analyticsEvent}
+                >
+                  {data.cta.label}
+                </Button>
+              )
+            }
+          </div>
+
+          <aside class="glass-card p-6">
+            <dl class="space-y-5 text-sm">
+              <div>
+                <dt class="font-medium text-white">Audience</dt>
+                <dd class="mt-1 text-neutral-300">{formatList(data.audience)}</dd>
+              </div>
+              <div>
+                <dt class="font-medium text-white">Format</dt>
+                <dd class="mt-1 capitalize text-neutral-300">
+                  {data.format.replaceAll("-", " ")}
+                </dd>
+              </div>
+              <div>
+                <dt class="font-medium text-white">Level</dt>
+                <dd class="mt-1 capitalize text-neutral-300">{data.level}</dd>
+              </div>
+              <div>
+                <dt class="font-medium text-white">Duration</dt>
+                <dd class="mt-1 text-neutral-300">{data.duration}</dd>
+              </div>
+            </dl>
+          </aside>
+        </div>
+      </Container>
+    </section>
+
+    <section class="section-navy-tint">
+      <Container>
+      <div class="grid gap-12 py-16 lg:grid-cols-[1fr_18rem] lg:items-start">
+        <div class="prose max-w-none">
+          <slot />
+        </div>
+
+        <aside class="space-y-6 lg:sticky lg:top-24">
+          {
+            data.outcomes.length > 0 && (
+              <section class="glass-card p-5">
+                <h2 class="text-sm font-semibold uppercase tracking-[0.08em] text-white">
+                  Outcomes
+                </h2>
+                <ul class="mt-4 space-y-3 text-sm leading-6 text-white/70">
+                  {data.outcomes.map((outcome) => (
+                    <li class="flex gap-2">
+                      <span
+                        aria-hidden="true"
+                        class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent-400"
+                      />
+                      <span>{outcome}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )
+          }
+
+          {
+            data.topics.length > 0 && (
+              <section class="glass-card p-5">
+                <h2 class="text-sm font-semibold uppercase tracking-[0.08em] text-white">
+                  Topics
+                </h2>
+                <div class="mt-4 flex flex-wrap gap-2">
+                  {data.topics.map((topic) => (
+                    <Badge tone="neutral">{topic}</Badge>
+                  ))}
+                </div>
+              </section>
+            )
+          }
+        </aside>
+      </div>
+      </Container>
+    </section>
+  </article>
+</BaseLayout>

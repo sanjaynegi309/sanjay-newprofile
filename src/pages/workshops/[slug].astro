@@ -1,0 +1,23 @@
+---
+import { getCollection, render } from "astro:content";
+import WorkshopLayout from "@layouts/WorkshopLayout.astro";
+import { getContentSlug } from "@utils/slugs";
+
+export async function getStaticPaths() {
+  const workshops = (await getCollection("workshops")).filter(
+    (workshop) => !workshop.data.draft
+  );
+
+  return workshops.map((workshop) => ({
+    params: { slug: getContentSlug(workshop) },
+    props: { workshop }
+  }));
+}
+
+const { workshop } = Astro.props;
+const { Content } = await render(workshop);
+---
+
+<WorkshopLayout workshop={workshop}>
+  <Content />
+</WorkshopLayout>

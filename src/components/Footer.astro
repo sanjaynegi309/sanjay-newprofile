@@ -1,0 +1,97 @@
+---
+import { brand } from "@config/brand";
+import { analytics } from "@config/analytics";
+import { navigation } from "@config/navigation";
+import { site } from "@config/site";
+import Container from "./Container.astro";
+
+const socialLinks = Object.entries(site.social).filter(([, href]) => Boolean(href));
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="relative border-t border-white/10 bg-black text-white/70">
+  <div
+    class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent-500/60 to-transparent"
+    aria-hidden="true"
+  />
+  <Container>
+    <div class="grid gap-10 py-12 md:grid-cols-[1.25fr_2fr]">
+      <div class="space-y-4">
+        <a
+          href="/"
+          class="inline-flex items-center gap-3 font-semibold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-400"
+          aria-label={`${brand.name} home`}
+        >
+          <img src={brand.logo.mark} alt="" class="h-8 w-8" width="32" height="32" />
+          <span>{brand.logo.text}</span>
+        </a>
+        <p class="max-w-sm text-sm leading-6 text-neutral-300">{brand.description}</p>
+        {
+          site.contact.email && (
+            <a
+              href={`mailto:${site.contact.email}`}
+              class="inline-flex text-sm font-medium text-accent-200 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-400"
+              data-analytics-event={analytics.events.contact}
+            >
+              {site.contact.email}
+            </a>
+          )
+        }
+      </div>
+
+      <nav
+        class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3"
+        aria-label="Footer navigation"
+      >
+        {
+          navigation.footer.map((group) => (
+            <div>
+              <h2 class="text-sm font-semibold text-white">{group.label}</h2>
+              <ul class="mt-4 space-y-3">
+                {group.items.map((item) => (
+                  <li>
+                    <a
+                      href={item.href}
+                      class="inline-flex text-sm text-neutral-300 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-400"
+                      data-analytics-event={item.analyticsEvent}
+                      target={item.external ? "_blank" : undefined}
+                      rel={item.external ? "noreferrer" : undefined}
+                    >
+                      {item.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+        {
+          socialLinks.length > 0 && (
+            <div>
+              <h2 class="text-sm font-semibold text-white">Social</h2>
+              <ul class="mt-4 space-y-3">
+                {socialLinks.map(([label, href]) => (
+                  <li>
+                    <a
+                      href={href}
+                      class="inline-flex text-sm capitalize text-neutral-300 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-400"
+                      data-analytics-event={analytics.events.outboundLink}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )
+        }
+      </nav>
+    </div>
+
+    <div class="border-t border-white/10 py-6 text-sm text-neutral-400">
+      <p>&copy; {currentYear} {brand.legalName}. All rights reserved.</p>
+    </div>
+  </Container>
+</footer>

@@ -1,0 +1,79 @@
+---
+import { getEntry, render } from "astro:content";
+import Button from "@components/Button.astro";
+import Card from "@components/Card.astro";
+import Container from "@components/Container.astro";
+import Hero from "@components/Hero.astro";
+import SectionHeader from "@components/SectionHeader.astro";
+import { contact } from "@config/contact";
+import BaseLayout from "@layouts/BaseLayout.astro";
+
+const page = await getEntry("pages", "contact");
+
+if (!page) {
+  throw new Error("Missing contact page content.");
+}
+
+const { Content } = await render(page);
+---
+
+<BaseLayout
+  seo={{
+    title: page.data.seo.title ?? page.data.title,
+    description: page.data.seo.description ?? page.data.description,
+    canonicalPath: "/contact/",
+    noindex: page.data.seo.noindex,
+    ogImage: page.data.seo.ogImage
+  }}
+>
+  <Hero
+    eyebrow={contact.hero.eyebrow}
+    title={contact.hero.title}
+    description={contact.hero.description}
+    actions={contact.hero.actions}
+    metrics={contact.hero.metrics}
+  />
+
+  <section class="bg-black py-16 sm:py-20">
+    <Container>
+      <div class="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
+        <div class="space-y-6">
+          <SectionHeader
+            eyebrow="Enquiries"
+            title="Choose the conversation that fits."
+            description={contact.note}
+          />
+          <article class="prose max-w-none">
+            <Content />
+          </article>
+        </div>
+
+        <div class="grid gap-4">
+          {
+            contact.channels.map((channel) => (
+              <Card>
+                <div class="space-y-4">
+                  <div class="space-y-2">
+                    <h2 class="font-display text-lg font-semibold text-white">
+                      {channel.title}
+                    </h2>
+                    <p class="text-sm leading-6 text-white/70">
+                      {channel.description}
+                    </p>
+                  </div>
+                  <Button
+                    href={channel.href}
+                    variant="secondary"
+                    analyticsEvent={channel.analyticsEvent}
+                  >
+                    {channel.label}
+                  </Button>
+                </div>
+              </Card>
+            ))
+          }
+        </div>
+      </div>
+    </Container>
+  </section>
+</BaseLayout>

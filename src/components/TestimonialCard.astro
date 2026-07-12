@@ -1,0 +1,46 @@
+---
+import type { CollectionEntry } from "astro:content";
+import Card from "./Card.astro";
+
+interface Props {
+  testimonial: CollectionEntry<"testimonials">;
+  variant?: "light" | "glass";
+}
+
+const { testimonial, variant = "light" } = Astro.props;
+const { data } = testimonial;
+---
+
+{
+  variant === "glass" ? (
+    <article class="glass-card h-full p-5 sm:p-6">
+      <figure class="space-y-5">
+        <blockquote class="text-base leading-7 text-white/90">
+          <p>&ldquo;{data.quote}&rdquo;</p>
+        </blockquote>
+        <figcaption class="border-t border-white/10 pt-4">
+          <p class="font-semibold text-white">{data.name}</p>
+          <p class="text-sm text-white/60">
+            {data.role}, {data.organization}
+          </p>
+          {data.program && <p class="mt-1 text-sm text-accent-300">{data.program}</p>}
+        </figcaption>
+      </figure>
+    </article>
+  ) : (
+    <Card class="h-full">
+      <figure class="space-y-5">
+        <blockquote class="text-base leading-7 text-white/90">
+          <p>&ldquo;{data.quote}&rdquo;</p>
+        </blockquote>
+        <figcaption class="border-t border-white/10 pt-4">
+          <p class="font-semibold text-white">{data.name}</p>
+          <p class="text-sm text-white/60">
+            {data.role}, {data.organization}
+          </p>
+          {data.program && <p class="mt-1 text-sm text-accent-300">{data.program}</p>}
+        </figcaption>
+      </figure>
+    </Card>
+  )
+}

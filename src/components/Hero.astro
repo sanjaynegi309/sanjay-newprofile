@@ -1,0 +1,78 @@
+---
+import Button from "./Button.astro";
+import type { ActionLink } from "./Button.astro";
+import Container from "./Container.astro";
+import InteractiveAIAmbientBackground from "./InteractiveAIAmbientBackground.astro";
+
+interface HeroMetric {
+  label: string;
+  value: string;
+}
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  description: string;
+  actions?: readonly ActionLink[];
+  metrics?: readonly HeroMetric[];
+}
+
+const { eyebrow, title, description, actions = [], metrics = [] } = Astro.props;
+---
+
+<section class="section-atmospheric border-b border-white/10 bg-hero-atmosphere">
+  <InteractiveAIAmbientBackground variant="hero" />
+
+  <Container>
+    <div class="relative grid gap-12 py-20 sm:py-24 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:py-28">
+      <div class="max-w-3xl space-y-8">
+        {
+          eyebrow && (
+            <p class="badge badge-cyan">
+              {eyebrow}
+            </p>
+          )
+        }
+        <div class="space-y-5">
+          <h1 class="gradient-heading max-w-4xl font-display text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
+            {title}
+          </h1>
+          <p class="max-w-2xl text-lg leading-8 text-white/70">
+            {description}
+          </p>
+        </div>
+        {
+          actions.length > 0 && (
+            <div class="flex flex-wrap gap-3">
+              {actions.map((action) => (
+                <Button
+                  href={action.href}
+                  variant={action.variant ?? "primary"}
+                  size="lg"
+                  analyticsEvent={action.analyticsEvent}
+                >
+                  {action.label}
+                </Button>
+              ))}
+            </div>
+          )
+        }
+      </div>
+
+      {
+        metrics.length > 0 && (
+          <dl class="glass-card grid gap-4 p-5 sm:grid-cols-3 lg:grid-cols-1">
+            {metrics.map((metric) => (
+              <div class="border-b border-white/10 pb-4 last:border-0 last:pb-0 sm:border-b-0 sm:border-r sm:pb-0 sm:pr-4 sm:last:border-0 lg:border-b lg:border-r-0 lg:pr-0">
+                <dt class="text-sm text-neutral-300">{metric.label}</dt>
+                <dd class="mt-1 text-lg font-semibold text-white">
+                  {metric.value}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        )
+      }
+    </div>
+  </Container>
+</section>

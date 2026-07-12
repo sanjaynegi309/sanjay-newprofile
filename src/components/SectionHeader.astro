@@ -1,0 +1,47 @@
+---
+import Badge from "./Badge.astro";
+import Heading from "./Heading.astro";
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  align?: "left" | "center";
+  tone?: "light" | "dark";
+  class?: string;
+}
+
+const {
+  eyebrow,
+  title,
+  description,
+  align = "left",
+  tone = "light",
+  class: className
+} = Astro.props;
+---
+
+<header
+  class:list={[
+    "space-y-4",
+    align === "center" && "mx-auto max-w-3xl text-center",
+    className
+  ]}
+>
+  {eyebrow && <Badge tone={tone === "dark" ? "neutral" : "accent"}>{eyebrow}</Badge>}
+  <div class="space-y-3">
+    <Heading as="h2" size="lg">{title}</Heading>
+    {
+      description && (
+        <p
+          class:list={[
+            "text-base leading-7 sm:text-lg",
+            tone === "dark" ? "text-white/60" : "text-white/70"
+          ]}
+        >
+          {description}
+        </p>
+      )
+    }
+  </div>
+</header>

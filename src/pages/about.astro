@@ -1,0 +1,70 @@
+---
+import { getEntry, render } from "astro:content";
+import Card from "@components/Card.astro";
+import Container from "@components/Container.astro";
+import Hero from "@components/Hero.astro";
+import SectionHeader from "@components/SectionHeader.astro";
+import { about } from "@config/about";
+import BaseLayout from "@layouts/BaseLayout.astro";
+
+const page = await getEntry("pages", "about");
+
+if (!page) {
+  throw new Error("Missing about page content.");
+}
+
+const { Content } = await render(page);
+---
+
+<BaseLayout
+  seo={{
+    title: page.data.seo.title ?? page.data.title,
+    description: page.data.seo.description ?? page.data.description,
+    canonicalPath: "/about/",
+    noindex: page.data.seo.noindex,
+    ogImage: page.data.seo.ogImage
+  }}
+>
+  <Hero
+    eyebrow={about.hero.eyebrow}
+    title={about.hero.title}
+    description={about.hero.description}
+    metrics={about.hero.metrics}
+  />
+
+  <section class="bg-black py-16 sm:py-20">
+    <Container>
+      <div class="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+        <SectionHeader
+          eyebrow={about.principles.eyebrow}
+          title={about.principles.title}
+          description={about.principles.description}
+        />
+        <div class="grid gap-4">
+          {
+            about.principles.items.map((item) => (
+              <Card>
+                <div class="space-y-3">
+                  <h2 class="font-display text-lg font-semibold text-white">
+                    {item.title}
+                  </h2>
+                  <p class="text-sm leading-6 text-white/70">
+                    {item.description}
+                  </p>
+                </div>
+              </Card>
+            ))
+          }
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <section class="section-navy-tint border-t border-white/10 py-16 sm:py-20">
+    <Container size="sm">
+      <article class="prose max-w-none">
+        <Content />
+      </article>
+    </Container>
+  </section>
+</BaseLayout>

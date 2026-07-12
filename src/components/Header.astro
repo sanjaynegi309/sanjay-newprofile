@@ -1,0 +1,201 @@
+---
+import { brand } from "@config/brand";
+import { analytics } from "@config/analytics";
+import { navigation } from "@config/navigation";
+import { site } from "@config/site";
+import Button from "./Button.astro";
+import Container from "./Container.astro";
+
+const currentPath = Astro.url.pathname;
+
+function isCurrent(href: string): boolean {
+  if (href === "/") {
+    return currentPath === "/";
+  }
+
+  return currentPath === href || currentPath.startsWith(href);
+}
+---
+
+<header class="sticky top-0 z-40 border-b border-white/10 bg-black/80 backdrop-blur-xl">
+  <Container>
+    <div class="flex min-h-16 items-center justify-between gap-6">
+      <a
+        href="/"
+        class="inline-flex items-center gap-3 font-display font-semibold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-500"
+        aria-label={`${brand.name} home`}
+      >
+        <img src={brand.logo.mark} alt="" class="h-8 w-8" width="32" height="32" />
+        <span>{brand.logo.text}</span>
+      </a>
+
+      <nav class="hidden items-center gap-6 md:flex" aria-label="Primary navigation">
+        {
+          navigation.primary.map((item) => (
+            <a
+              href={item.href}
+              class="nav-link text-sm font-medium text-white/70 transition duration-base hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-500"
+              data-analytics-event={item.analyticsEvent}
+              aria-current={isCurrent(item.href) ? "page" : undefined}
+              target={item.external ? "_blank" : undefined}
+              rel={item.external ? "noreferrer" : undefined}
+            >
+              {item.label}
+            </a>
+          ))
+        }
+      </nav>
+
+      <div class="hidden items-center gap-3 md:flex">
+        <button
+          type="button"
+          class="ambient-toggle"
+          data-ambient-toggle
+          data-active="true"
+          aria-pressed="true"
+          aria-label="Toggle background motion"
+          title="Toggle background motion"
+        >
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true">
+            <circle cx="12" cy="12" r="3" fill="currentColor" />
+            <circle cx="4" cy="6" r="1.6" fill="currentColor" />
+            <circle cx="20" cy="8" r="1.6" fill="currentColor" />
+            <circle cx="19" cy="19" r="1.6" fill="currentColor" />
+            <path
+              d="M12 12 4 6M12 12l8-4M12 12l7 7"
+              stroke="currentColor"
+              stroke-width="1.2"
+              stroke-linecap="round"
+            />
+          </svg>
+        </button>
+        {
+          navigation.utility.map((item) => (
+            <Button
+              href={item.href}
+              variant="secondary"
+              size="sm"
+              analyticsEvent={item.analyticsEvent}
+            >
+              {item.label}
+            </Button>
+          ))
+        }
+        <Button
+          href={site.lms.url}
+          variant="primary"
+          size="sm"
+          analyticsEvent={analytics.events.login}
+          analyticsLabel={site.lms.label}
+          target="_blank"
+          rel="noreferrer"
+        >
+          {site.lms.label}
+        </Button>
+      </div>
+
+      <details class="relative md:hidden">
+        <summary class="btn-ghost-glass inline-flex min-h-10 cursor-pointer list-none items-center px-3 text-sm font-medium marker:hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-500 [&::-webkit-details-marker]:hidden">
+          Menu
+        </summary>
+        <div class="glass-card absolute right-0 z-20 mt-3 w-64 p-3">
+          <nav class="grid gap-1" aria-label="Mobile navigation">
+            {
+              [
+                ...navigation.primary,
+                ...navigation.utility,
+                {
+                  label: site.lms.label,
+                  href: site.lms.url,
+                  external: true,
+                  analyticsEvent: analytics.events.login
+                }
+              ].map((item) => (
+                <a
+                  href={item.href}
+                  class="rounded-lg px-3 py-2 text-sm font-medium text-white/80 hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-500"
+                  data-analytics-event={item.analyticsEvent}
+                  aria-current={!item.external && isCurrent(item.href) ? "page" : undefined}
+                  target={item.external ? "_blank" : undefined}
+                  rel={item.external ? "noreferrer" : undefined}
+                >
+                  {item.label}
+                </a>
+              ))
+            }
+          </nav>
+          <button
+            type="button"
+            class="ambient-toggle mt-2 w-full"
+            data-ambient-toggle
+            data-active="true"
+            aria-pressed="true"
+          >
+            <span class="flex w-full items-center justify-center gap-2 text-xs font-medium">
+              Background motion
+            </span>
+          </button>
+        </div>
+      </details>
+    </div>
+  </Container>
+</header>
+
+<style>
+  .nav-link {
+    position: relative;
+  }
+
+  .nav-link[aria-current="page"] {
+    color: var(--accent);
+  }
+
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 100%;
+    bottom: -6px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-3));
+    border-radius: 999px;
+    transition: right 0.3s ease;
+  }
+
+  .nav-link:hover::after,
+  .nav-link[aria-current="page"]::after {
+    right: 0;
+  }
+</style>
+
+<script>
+  const MOTION_KEY = "skillup:ambient-motion";
+
+  function isActive(): boolean {
+    return localStorage.getItem(MOTION_KEY) !== "off";
+  }
+
+  function applyState(active: boolean) {
+    document
+      .querySelectorAll<HTMLButtonElement>("[data-ambient-toggle]")
+      .forEach((button) => {
+        button.dataset.active = String(active);
+        button.setAttribute("aria-pressed", String(active));
+      });
+
+    window.dispatchEvent(
+      new CustomEvent("skillup:ambient-motion-change", { detail: { active } })
+    );
+  }
+
+  let active = isActive();
+  applyState(active);
+
+  document.querySelectorAll<HTMLButtonElement>("[data-ambient-toggle]").forEach((button) => {
+    button.addEventListener("click", () => {
+      active = !active;
+      localStorage.setItem(MOTION_KEY, active ? "on" : "off");
+      applyState(active);
+    });
+  });
+</script>

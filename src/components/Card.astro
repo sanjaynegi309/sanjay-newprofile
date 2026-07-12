@@ -1,0 +1,24 @@
+---
+interface Props {
+  href?: string;
+  hot?: boolean;
+  class?: string;
+}
+
+const { href, hot = false, class: className } = Astro.props;
+const baseClasses = ["glass-card", hot && "glass-card-hot", "p-5 sm:p-6"];
+const interactiveClasses =
+  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-500";
+---
+
+{
+  href ? (
+    <a href={href} class:list={[...baseClasses, interactiveClasses, "block", className]}>
+      <slot />
+    </a>
+  ) : (
+    <article class:list={[...baseClasses, className]}>
+      <slot />
+    </article>
+  )
+}

@@ -1,0 +1,79 @@
+---
+export type ButtonVariant = "primary" | "secondary" | "hot";
+
+export interface ActionLink {
+  label: string;
+  href: string;
+  variant?: ButtonVariant;
+  analyticsEvent?: string;
+}
+
+interface Props {
+  href?: string;
+  variant?: ButtonVariant;
+  size?: "sm" | "md" | "lg";
+  type?: "button" | "submit" | "reset";
+  analyticsEvent?: string;
+  analyticsLabel?: string;
+  target?: string;
+  rel?: string;
+  class?: string;
+}
+
+const {
+  href,
+  variant = "primary",
+  size = "md",
+  type = "button",
+  analyticsEvent,
+  analyticsLabel,
+  class: className,
+  ...attrs
+} = Astro.props;
+
+const baseClasses =
+  "inline-flex items-center justify-center text-center font-display font-semibold tracking-tight transition duration-base ease-standard focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-500 disabled:pointer-events-none disabled:opacity-50";
+
+const variantClasses = {
+  primary: "btn-glow",
+  secondary: "btn-ghost-glass",
+  hot: "btn-glow-hot"
+};
+
+const sizeClasses = {
+  sm: "min-h-9 px-4 text-sm",
+  md: "min-h-10 px-5 text-sm",
+  lg: "min-h-11 px-6 text-base"
+};
+
+const classes = [
+  baseClasses,
+  variantClasses[variant],
+  sizeClasses[size],
+  className
+];
+---
+
+{
+  href ? (
+    <a
+      href={href}
+      class:list={classes}
+      data-analytics-event={analyticsEvent}
+      data-analytics-label={analyticsLabel}
+      {...attrs}
+    >
+      <slot />
+    </a>
+  ) : (
+    <button
+      type={type}
+      class:list={classes}
+      data-analytics-event={analyticsEvent}
+      data-analytics-label={analyticsLabel}
+      {...attrs}
+    >
+      <slot />
+    </button>
+  )
+}

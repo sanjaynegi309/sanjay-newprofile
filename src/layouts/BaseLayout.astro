@@ -1,0 +1,67 @@
+---
+import "@styles/global.css";
+import { brand } from "@config/brand";
+import { seo as seoConfig } from "@config/seo";
+import { site } from "@config/site";
+import Analytics from "@components/Analytics.astro";
+import Footer from "@components/Footer.astro";
+import Header from "@components/Header.astro";
+import type { PageSeo } from "@utils/seo";
+import { getSeoMeta } from "@utils/seo";
+
+interface Props {
+  seo?: PageSeo;
+}
+
+const { seo: pageSeo = {} } = Astro.props;
+const meta = getSeoMeta(pageSeo);
+const robots = `${meta.robots.index ? "index" : "noindex"},${meta.robots.follow ? "follow" : "nofollow"}`;
+---
+
+<!doctype html>
+<html lang={site.language}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{meta.title}</title>
+    <meta name="description" content={meta.description} />
+    <meta name="robots" content={robots} />
+    <link rel="canonical" href={meta.canonicalUrl} />
+
+    <meta property="og:type" content={seoConfig.openGraph.type} />
+    <meta property="og:site_name" content={seoConfig.openGraph.siteName} />
+    <meta property="og:locale" content={seoConfig.openGraph.locale} />
+    <meta property="og:title" content={meta.title} />
+    <meta property="og:description" content={meta.description} />
+    <meta property="og:url" content={meta.canonicalUrl} />
+    <meta property="og:image" content={meta.image} />
+    <meta property="og:image:alt" content={seoConfig.openGraph.imageAlt} />
+
+    <meta name="twitter:card" content={seoConfig.twitter.card} />
+    <meta name="twitter:title" content={meta.title} />
+    <meta name="twitter:description" content={meta.description} />
+    <meta name="twitter:image" content={meta.image} />
+    <meta name="twitter:image:alt" content={seoConfig.twitter.imageAlt} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="icon" href={brand.logo.mark} />
+    <slot name="head" />
+    <Analytics />
+  </head>
+  <body class="min-h-screen bg-black text-white antialiased">
+    <a href="#main-content" class="skip-link">
+      Skip to content
+    </a>
+    <Header />
+    <main id="main-content">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

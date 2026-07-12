@@ -1,0 +1,547 @@
+---
+interface Props {
+  variant?: "hero" | "process" | "cta";
+  class?: string;
+}
+
+const { variant = "hero", class: className } = Astro.props;
+---
+
+<div
+  class:list={[
+    "interactive-ai-ambient pointer-events-none absolute inset-0 overflow-hidden",
+    className
+  ]}
+  data-interactive-ai-ambient
+  data-variant={variant}
+  aria-hidden="true"
+>
+  <canvas class="h-full w-full"></canvas>
+  <div class="ambient-smoke ambient-smoke-a"></div>
+  <div class="ambient-smoke ambient-smoke-b"></div>
+  <div class="ambient-vignette"></div>
+</div>
+
+<script>
+  type AmbientVariant = "hero" | "process" | "cta";
+
+  type Particle = {
+    x: number;
+    y: number;
+    vx: number;
+    vy: number;
+    radius: number;
+    opacity: number;
+    phase: number;
+    drift: number;
+  };
+
+  type Pulse = {
+    from: number;
+    to: number;
+    progress: number;
+    speed: number;
+    hot: boolean;
+  };
+
+  type AmbientConfig = {
+    density: number;
+    minParticles: number;
+    maxParticles: number;
+    mobileParticles: number;
+    lineDistance: number;
+    speed: number;
+    alpha: number;
+    pulseEvery: number;
+    cursorRadius: number;
+    cursorForce: number;
+    cursorGlow: number;
+  };
+
+  const configs: Record<AmbientVariant, AmbientConfig> = {
+    hero: {
+      density: 12500,
+      minParticles: 70,
+      maxParticles: 112,
+      mobileParticles: 42,
+      lineDistance: 156,
+      speed: 0.34,
+      alpha: 1,
+      pulseEvery: 132,
+      cursorRadius: 210,
+      cursorForce: 0.034,
+      cursorGlow: 1
+    },
+    process: {
+      density: 15500,
+      minParticles: 54,
+      maxParticles: 84,
+      mobileParticles: 34,
+      lineDistance: 138,
+      speed: 0.26,
+      alpha: 0.74,
+      pulseEvery: 176,
+      cursorRadius: 175,
+      cursorForce: 0.024,
+      cursorGlow: 0.72
+    },
+    cta: {
+      density: 24000,
+      minParticles: 30,
+      maxParticles: 48,
+      mobileParticles: 26,
+      lineDistance: 118,
+      speed: 0.18,
+      alpha: 0.46,
+      pulseEvery: 260,
+      cursorRadius: 150,
+      cursorForce: 0.016,
+      cursorGlow: 0.42
+    }
+  };
+
+  const MOTION_KEY = "skillup:ambient-motion";
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
+
+  function motionDisabledByUser() {
+    return localStorage.getItem(MOTION_KEY) === "off";
+  }
+
+  function setupInteractiveAmbient(root: HTMLElement) {
+    if (root.dataset.initialized === "true") {
+      return;
+    }
+
+    root.dataset.initialized = "true";
+
+    const canvasElement = root.querySelector<HTMLCanvasElement>("canvas");
+
+    if (!canvasElement) {
+      return;
+    }
+
+    const context = canvasElement.getContext("2d", { alpha: true });
+
+    if (!context) {
+      return;
+    }
+
+    const canvas: HTMLCanvasElement = canvasElement;
+    const ctx: CanvasRenderingContext2D = context;
+    const variant = (root.dataset.variant ?? "hero") as AmbientVariant;
+    const config = configs[variant] ?? configs.hero;
+    const particles: Particle[] = [];
+    const pulses: Pulse[] = [];
+    const pointer = {
+      x: 0,
+      y: 0,
+      targetX: 0,
+      targetY: 0,
+      active: false,
+      intensity: 0
+    };
+
+    let width = 0;
+    let height = 0;
+    let dpr = 1;
+    let frameId = 0;
+    let frame = 0;
+    let visible = false;
+    let reduced = prefersReducedMotion.matches || motionDisabledByUser();
+    let disposed = false;
+
+    function isMobileViewport() {
+      return window.innerWidth < 768;
+    }
+
+    function particleCount() {
+      if (isMobileViewport()) {
+        return config.mobileParticles;
+      }
+
+      const area = Math.max(width * height, 1);
+      const adaptive = Math.ceil(area / config.density);
+      return Math.max(config.minParticles, Math.min(adaptive, config.maxParticles));
+    }
+
+    function createParticle(): Particle {
+      const angle = Math.random() * Math.PI * 2;
+      const speed = config.speed * (0.42 + Math.random() * 1.15);
+
+      return {
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        radius: 0.9 + Math.random() * 2.2,
+        opacity: 0.35 + Math.random() * 0.4,
+        phase: Math.random() * Math.PI * 2,
+        drift: 0.0025 + Math.random() * 0.006
+      };
+    }
+
+    function resize() {
+      const rect = root.getBoundingClientRect();
+      width = Math.max(Math.floor(rect.width), 1);
+      height = Math.max(Math.floor(rect.height), 1);
+      dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      const target = particleCount();
+      while (particles.length < target) particles.push(createParticle());
+      while (particles.length > target) particles.pop();
+
+      draw();
+    }
+
+    function updatePointer() {
+      pointer.x += (pointer.targetX - pointer.x) * 0.16;
+      pointer.y += (pointer.targetY - pointer.y) * 0.16;
+      pointer.intensity += ((pointer.active ? 1 : 0) - pointer.intensity) * 0.08;
+    }
+
+    function updateParticles() {
+      updatePointer();
+
+      for (const particle of particles) {
+        const wave = Math.sin(frame * particle.drift + particle.phase);
+        particle.vx += wave * 0.0028;
+        particle.vy += Math.cos(frame * particle.drift + particle.phase) * 0.002;
+
+        if (pointer.intensity > 0.02 && !coarsePointer) {
+          const dx = particle.x - pointer.x;
+          const dy = particle.y - pointer.y;
+          const distance = Math.hypot(dx, dy);
+
+          if (distance > 0 && distance < config.cursorRadius) {
+            const falloff = 1 - distance / config.cursorRadius;
+            const bend = falloff * config.cursorForce * pointer.intensity;
+            const tangent = Math.atan2(dy, dx) + Math.PI / 2;
+
+            particle.vx += (dx / distance) * bend * 0.58 + Math.cos(tangent) * bend * 0.42;
+            particle.vy += (dy / distance) * bend * 0.58 + Math.sin(tangent) * bend * 0.42;
+          }
+        }
+
+        const maxVelocity = config.speed * 2.15;
+        const velocity = Math.hypot(particle.vx, particle.vy);
+
+        if (velocity > maxVelocity) {
+          particle.vx = (particle.vx / velocity) * maxVelocity;
+          particle.vy = (particle.vy / velocity) * maxVelocity;
+        }
+
+        particle.x += particle.vx;
+        particle.y += particle.vy;
+        particle.phase += particle.drift * 2.4;
+        particle.vx *= 0.992;
+        particle.vy *= 0.992;
+
+        if (particle.x < -24) particle.x = width + 24;
+        if (particle.x > width + 24) particle.x = -24;
+        if (particle.y < -24) particle.y = height + 24;
+        if (particle.y > height + 24) particle.y = -24;
+      }
+    }
+
+    function drawBackgroundGlow() {
+      const leftGlow = ctx.createRadialGradient(width * 0.2, height * 0.18, 0, width * 0.2, height * 0.18, width * 0.66);
+      leftGlow.addColorStop(0, `rgba(0, 212, 255, ${0.13 * config.alpha})`);
+      leftGlow.addColorStop(0.48, `rgba(131, 56, 236, ${0.08 * config.alpha})`);
+      leftGlow.addColorStop(1, "rgba(0, 0, 0, 0)");
+      ctx.fillStyle = leftGlow;
+      ctx.fillRect(0, 0, width, height);
+
+      if (pointer.intensity > 0.02 && !coarsePointer) {
+        const cursorGlow = ctx.createRadialGradient(pointer.x, pointer.y, 0, pointer.x, pointer.y, config.cursorRadius);
+        cursorGlow.addColorStop(0, `rgba(0, 212, 255, ${0.18 * config.cursorGlow * pointer.intensity})`);
+        cursorGlow.addColorStop(0.34, `rgba(131, 56, 236, ${0.1 * config.cursorGlow * pointer.intensity})`);
+        cursorGlow.addColorStop(1, "rgba(0, 0, 0, 0)");
+        ctx.fillStyle = cursorGlow;
+        ctx.fillRect(0, 0, width, height);
+      }
+    }
+
+    function drawLines() {
+      for (let i = 0; i < particles.length; i += 1) {
+        for (let j = i + 1; j < particles.length; j += 1) {
+          const a = particles[i];
+          const b = particles[j];
+          const distance = Math.hypot(a.x - b.x, a.y - b.y);
+
+          if (distance < config.lineDistance) {
+            const opacity = (1 - distance / config.lineDistance) * 0.22 * config.alpha;
+            const isAccentLine = (i + j) % 37 === 0;
+            ctx.strokeStyle = isAccentLine
+              ? `rgba(255, 0, 110, ${opacity * 0.9})`
+              : `rgba(0, 212, 255, ${opacity})`;
+            ctx.lineWidth = 0.7;
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function drawParticles() {
+      for (const particle of particles) {
+        const pulse = 0.78 + Math.sin(particle.phase) * 0.22;
+        ctx.fillStyle = `rgba(0, 212, 255, ${particle.opacity * pulse * config.alpha})`;
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function maybeCreatePulse() {
+      if (frame % config.pulseEvery !== 0 || particles.length < 2) {
+        return;
+      }
+
+      const from = Math.floor(Math.random() * particles.length);
+      let to = Math.floor(Math.random() * particles.length);
+
+      if (from === to) {
+        to = (to + 1) % particles.length;
+      }
+
+      pulses.push({
+        from,
+        to,
+        progress: 0,
+        speed: 0.011 + Math.random() * 0.006,
+        hot: Math.random() < 0.25
+      });
+    }
+
+    function drawPulses() {
+      for (let i = pulses.length - 1; i >= 0; i -= 1) {
+        const pulse = pulses[i];
+        const from = particles[pulse.from];
+        const to = particles[pulse.to];
+
+        if (!from || !to) {
+          pulses.splice(i, 1);
+          continue;
+        }
+
+        pulse.progress += pulse.speed;
+
+        const x = from.x + (to.x - from.x) * pulse.progress;
+        const y = from.y + (to.y - from.y) * pulse.progress;
+
+        ctx.fillStyle = pulse.hot
+          ? `rgba(255, 0, 110, ${0.65 * config.alpha})`
+          : `rgba(0, 212, 255, ${0.65 * config.alpha})`;
+        ctx.shadowColor = pulse.hot ? "rgba(255, 0, 110, 0.5)" : "rgba(0, 212, 255, 0.5)";
+        ctx.shadowBlur = 12;
+        ctx.beginPath();
+        ctx.arc(x, y, 2.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        if (pulse.progress >= 1) {
+          pulses.splice(i, 1);
+        }
+      }
+    }
+
+    function drawCursorRing() {
+      if (pointer.intensity <= 0.02 || coarsePointer) {
+        return;
+      }
+
+      const radius = config.cursorRadius * (0.32 + pointer.intensity * 0.2);
+      ctx.strokeStyle = `rgba(0, 212, 255, ${0.2 * config.cursorGlow * pointer.intensity})`;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(pointer.x, pointer.y, radius, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, width, height);
+      drawBackgroundGlow();
+      drawLines();
+      drawParticles();
+      drawPulses();
+      drawCursorRing();
+    }
+
+    function tick() {
+      if (!visible || reduced || disposed) {
+        frameId = 0;
+        return;
+      }
+
+      frame += 1;
+      updateParticles();
+      maybeCreatePulse();
+      draw();
+      frameId = window.requestAnimationFrame(tick);
+    }
+
+    function start() {
+      if (!frameId && visible && !reduced && !disposed) {
+        frameId = window.requestAnimationFrame(tick);
+      }
+    }
+
+    function stop() {
+      if (frameId) {
+        window.cancelAnimationFrame(frameId);
+        frameId = 0;
+      }
+    }
+
+    function onPointerMove(event: PointerEvent) {
+      if (coarsePointer || event.pointerType === "touch") {
+        return;
+      }
+
+      const rect = canvas.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      const inside = x >= 0 && x <= rect.width && y >= 0 && y <= rect.height;
+
+      pointer.active = inside;
+
+      if (inside) {
+        pointer.targetX = x;
+        pointer.targetY = y;
+      }
+    }
+
+    function onPointerLeave() {
+      pointer.active = false;
+    }
+
+    function applyReducedState(nextReduced: boolean) {
+      reduced = nextReduced;
+      if (reduced) {
+        stop();
+        pulses.length = 0;
+        draw();
+      } else {
+        start();
+      }
+    }
+
+    function onMotionChange() {
+      applyReducedState(prefersReducedMotion.matches || motionDisabledByUser());
+    }
+
+    function onUserMotionToggle(event: Event) {
+      const detail = (event as CustomEvent<{ active: boolean }>).detail;
+      applyReducedState(prefersReducedMotion.matches || !detail.active);
+    }
+
+    function dispose() {
+      disposed = true;
+      stop();
+      observer.disconnect();
+      resizeObserver.disconnect();
+      window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("pointerleave", onPointerLeave);
+      window.removeEventListener("pagehide", dispose);
+      document.removeEventListener("astro:before-swap", dispose);
+      prefersReducedMotion.removeEventListener("change", onMotionChange);
+      window.removeEventListener("skillup:ambient-motion-change", onUserMotionToggle);
+    }
+
+    const observer = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      if (visible) {
+        start();
+      } else {
+        stop();
+      }
+    });
+
+    const resizeObserver = new ResizeObserver(resize);
+
+    resize();
+    observer.observe(root);
+    resizeObserver.observe(root);
+    window.addEventListener("pointermove", onPointerMove, { passive: true });
+    window.addEventListener("pointerleave", onPointerLeave);
+    window.addEventListener("pagehide", dispose);
+    document.addEventListener("astro:before-swap", dispose);
+    prefersReducedMotion.addEventListener("change", onMotionChange);
+    window.addEventListener("skillup:ambient-motion-change", onUserMotionToggle);
+  }
+
+  document
+    .querySelectorAll<HTMLElement>("[data-interactive-ai-ambient]")
+    .forEach(setupInteractiveAmbient);
+</script>
+
+<style>
+  .interactive-ai-ambient {
+    z-index: 0;
+    opacity: 0.95;
+  }
+
+  .ambient-smoke,
+  .ambient-vignette {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .ambient-smoke-a {
+    background:
+      radial-gradient(circle at 18% 20%, rgb(0 212 255 / 0.14), transparent 30%),
+      radial-gradient(circle at 78% 10%, rgb(131 56 236 / 0.16), transparent 34%);
+    filter: blur(20px);
+  }
+
+  .ambient-smoke-b {
+    background:
+      radial-gradient(circle at 72% 72%, rgb(131 56 236 / 0.22), transparent 36%),
+      radial-gradient(circle at 12% 86%, rgb(0 212 255 / 0.1), transparent 30%);
+    animation: ambient-smoke-drift 16s ease-in-out infinite alternate;
+  }
+
+  .ambient-vignette {
+    background:
+      linear-gradient(90deg, rgb(0 0 0 / 0.84), transparent 30%, transparent 70%, rgb(0 0 0 / 0.72)),
+      linear-gradient(180deg, rgb(0 0 0 / 0.24), transparent 34%, rgb(0 0 0 / 0.86));
+  }
+
+  [data-variant="process"] {
+    opacity: 0.76;
+  }
+
+  [data-variant="cta"] {
+    opacity: 0.5;
+  }
+
+  @keyframes ambient-smoke-drift {
+    from {
+      transform: translate3d(-1.2%, -0.8%, 0) scale(1);
+    }
+
+    to {
+      transform: translate3d(1.2%, 0.8%, 0) scale(1.03);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ambient-smoke-b {
+      animation: none;
+    }
+
+    .interactive-ai-ambient canvas {
+      opacity: 0.42;
+    }
+  }
+</style>

@@ -1,0 +1,53 @@
+---
+import { getCollection } from "astro:content";
+import Container from "@components/Container.astro";
+import ProgramCard from "@components/ProgramCard.astro";
+import SectionHeader from "@components/SectionHeader.astro";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { getContentSlug } from "@utils/slugs";
+
+const programs = (await getCollection("programs"))
+  .filter((program) => !program.data.draft)
+  .sort((a, b) => {
+    if (a.data.featured !== b.data.featured) {
+      return a.data.featured ? -1 : 1;
+    }
+
+    return a.data.title.localeCompare(b.data.title);
+  });
+---
+
+<BaseLayout
+  seo={{
+    title: "Live Programs",
+    description:
+      "Explore live AI education programs generated from SkillUp program Markdown.",
+    canonicalPath: "/programs/"
+  }}
+>
+  <section class="section-atmospheric border-b border-white/10 py-16 sm:py-20">
+    <Container>
+      <SectionHeader
+        eyebrow="Live programs"
+        title="Practical AI programs generated from Markdown."
+        description="Each card below is created from program frontmatter. Add a Markdown file to the programs collection and it appears here automatically."
+        tone="dark"
+      />
+    </Container>
+  </section>
+
+  <section class="bg-black py-16 sm:py-20">
+    <Container>
+      <div class="grid gap-5 lg:grid-cols-2">
+        {
+          programs.map((program) => (
+            <ProgramCard
+              program={program}
+              href={`/programs/${getContentSlug(program)}/`}
+            />
+          ))
+        }
+      </div>
+    </Container>
+  </section>
+</BaseLayout>

@@ -1,0 +1,131 @@
+---
+import { getEntry, render } from "astro:content";
+import InteractiveAIAmbientBackground from "@components/InteractiveAIAmbientBackground.astro";
+import Card from "@components/Card.astro";
+import Container from "@components/Container.astro";
+import CTASection from "@components/CTASection.astro";
+import Hero from "@components/Hero.astro";
+import SectionHeader from "@components/SectionHeader.astro";
+import { corporate } from "@config/corporate";
+import BaseLayout from "@layouts/BaseLayout.astro";
+
+const page = await getEntry("pages", "teams");
+
+if (!page) {
+  throw new Error("Missing teams page content.");
+}
+
+const { Content } = await render(page);
+---
+
+<BaseLayout
+  seo={{
+    title: page.data.seo.title ?? page.data.title,
+    description: page.data.seo.description ?? page.data.description,
+    canonicalPath: "/teams/",
+    noindex: page.data.seo.noindex,
+    ogImage: page.data.seo.ogImage
+  }}
+>
+  <Hero
+    eyebrow={corporate.hero.eyebrow}
+    title={corporate.hero.title}
+    description={corporate.hero.description}
+    actions={corporate.hero.actions}
+    metrics={corporate.hero.metrics}
+  />
+
+  <section class="section-navy-tint py-16 sm:py-20">
+    <Container>
+      <div class="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+        <SectionHeader
+          eyebrow={corporate.outcomes.eyebrow}
+          title={corporate.outcomes.title}
+          description={corporate.outcomes.description}
+        />
+        <div class="grid gap-4 sm:grid-cols-2">
+          {
+            corporate.outcomes.items.map((item) => (
+              <Card>
+                <div class="space-y-3">
+                  <h3 class="font-display text-lg font-semibold text-white">
+                    {item.title}
+                  </h3>
+                  <p class="text-sm leading-6 text-white/70">
+                    {item.description}
+                  </p>
+                </div>
+              </Card>
+            ))
+          }
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <section class="section-atmospheric border-y border-white/10 py-16 sm:py-20">
+    <InteractiveAIAmbientBackground variant="process" />
+    <Container>
+      <div class="space-y-10">
+        <SectionHeader
+          eyebrow={corporate.engagement.eyebrow}
+          title={corporate.engagement.title}
+          tone="dark"
+        />
+        <div class="grid gap-4 lg:grid-cols-4">
+          {
+            corporate.engagement.steps.map((step, index) => (
+              <article class="glass-card p-5 sm:p-6">
+                <p class="text-sm font-semibold text-accent-400">
+                  Step {index + 1}
+                </p>
+                <div class="mt-4 space-y-3">
+                  <h3 class="font-display text-lg font-semibold text-white">
+                    {step.title}
+                  </h3>
+                  <p class="text-sm leading-6 text-white/70">
+                    {step.description}
+                  </p>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <section class="bg-black py-16 sm:py-20">
+    <Container>
+      <div class="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+        <SectionHeader
+          eyebrow={corporate.audiences.eyebrow}
+          title={corporate.audiences.title}
+        />
+        <div class="grid gap-3 sm:grid-cols-2">
+          {
+            corporate.audiences.items.map((audience) => (
+              <div class="glass-card p-4 text-sm font-medium text-white">
+                {audience}
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <section class="section-navy-tint border-t border-white/10 py-16 sm:py-20">
+    <Container size="sm">
+      <article class="prose max-w-none">
+        <Content />
+      </article>
+    </Container>
+  </section>
+
+  <CTASection
+    title={corporate.finalCta.title}
+    description={corporate.finalCta.description}
+    actions={corporate.finalCta.actions}
+  />
+</BaseLayout>
