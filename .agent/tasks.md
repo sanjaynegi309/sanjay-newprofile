@@ -28,7 +28,7 @@ Derived from `.agent/ux-review.md`. Ordered: content/broken-link fixes first (fa
   Workshop `registrationUrl`/`cta.href` values now route "Register interest" to `/contact/` instead of a fake registration domain (no real registration backend exists on a static site). Real contact email `support@sanjaynegi.in` (provided by site owner) now set in `config/site.ts`, replacing `learn@example.com` everywhere it's used (footer, contact page mailto links).
   *Accept:* `grep -r "example.com" dist` after build returns no matches except canonical/OG URLs, which only resolve once `SITE_URL` is set (production CI already sets it; T6 covers the OG image itself).
 
-- [ ] **T4. Feature a second testimonial**
+- [x] **T4. Feature a second testimonial**
   Set `featured: true` on `src/content/testimonials/michael-chen.md` (or another entry) so the home "Learner outcomes" grid isn't a single stranded card.
   *Accept:* view `/` — the testimonials section shows 2 cards side by side at `lg` width, not one card alone.
 
