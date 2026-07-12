@@ -40,7 +40,7 @@ Derived from `.agent/ux-review.md`. Ordered: content/broken-link fixes first (fa
 
 ## Phase 2 — Global head & technical hygiene
 
-- [ ] **T6. Add a real OG/Twitter share image**
+- [x] **T6. Add a real OG/Twitter share image**
   Create a 1200×630 PNG/JPG and reference it via `config/seo.ts` `openGraph.image` (currently `/favicon.svg`, which most platforms won't render as a share card).
   *Accept:* view-source on `/` shows `og:image` pointing at a `.png`/`.jpg`, not `.svg`.
 

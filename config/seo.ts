@@ -44,7 +44,7 @@ export const seo: SeoConfig = {
   openGraph: {
     type: "website",
     siteName: brand.name,
-    image: "/favicon.svg",
+    image: "/og-image.png",
     imageAlt: `${brand.name} preview image`,
     locale: site.locale
   },
