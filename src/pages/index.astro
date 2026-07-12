@@ -29,6 +29,13 @@ const testimonials = (await getCollection("testimonials"))
   .filter((testimonial) => testimonial.data.featured)
   .slice(0, 3);
 
+const founderInitials = home.founder.name
+  .split(" ")
+  .map((part) => part[0])
+  .join("")
+  .slice(0, 2)
+  .toUpperCase();
+
 ---
 
 <BaseLayout
@@ -159,9 +166,17 @@ const testimonials = (await getCollection("testimonials"))
           <p class="badge badge-purple">
             {home.founder.eyebrow}
           </p>
-          <div class="mt-16 border-t border-white/10 pt-5">
-            <p class="font-display text-xl font-semibold text-white">{home.founder.name}</p>
-            <p class="mt-1 text-sm text-white/60">{home.founder.role}</p>
+          <div class="mt-6 flex items-center gap-4 border-t border-white/10 pt-5">
+            <div
+              class="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-accent-400 to-purple-500 font-display text-lg font-semibold text-black"
+              aria-hidden="true"
+            >
+              {founderInitials}
+            </div>
+            <div>
+              <p class="font-display text-xl font-semibold text-white">{home.founder.name}</p>
+              <p class="mt-1 text-sm text-white/60">{home.founder.role}</p>
+            </div>
           </div>
         </div>
         <div class="space-y-4">

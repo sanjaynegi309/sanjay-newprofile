@@ -80,9 +80,10 @@ Derived from `.agent/ux-review.md`. Ordered: content/broken-link fixes first (fa
   Replace the filler hero metrics ("Focus: Applied AI", "Audience: Professionals" in `config/home.ts`) with real numbers (learners trained, cohorts run, next cohort date) or remove the metrics card if no real data exists yet.
   *Accept:* hero metrics card on `/` shows no label/value pair that merely restates the tagline.
 
-- [ ] **T14. Founder presence — portrait + credential**
-  Add a real founder portrait to the hero or the founder section on `/` (`config/home.ts` founder block, `src/pages/index.astro:159-167`); fix the founder card layout so it doesn't read as a broken image slot (the `mt-16` gap before the name/role).
-  *Accept:* view `/` — founder section shows an actual photo, not an empty gap between badge and name.
+- [ ] **T14. Founder presence — portrait + credential** — *PARTIALLY DONE, blocked on a real photo*
+  ~~Fix the founder card layout so it doesn't read as a broken image slot~~ — done: replaced the empty `mt-16` gap with an initials avatar ("SN" in a gradient circle) sized/positioned next to the name, so the card reads as intentional even without a photo.
+  Remaining: a real founder portrait. **Not fabricated on purpose** — generating a fake photo of a real, named person (Sanjay Negi) would misrepresent who they are, which is a materially different problem than a missing stock asset. Needs an actual photo file from the site owner.
+  *Accept:* view `/` — founder section shows an actual photo, not an empty gap between badge and name. (Currently: no empty gap, but still no photo — will re-check once a real image is supplied.)
 
 ---
 
