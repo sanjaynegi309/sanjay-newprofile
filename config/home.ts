@@ -48,9 +48,9 @@ export const home = {
           "Concepts are tied to implementation patterns, evaluation habits, and maintainable delivery practices."
       },
       {
-        title: "Content-driven learning paths",
+        title: "Learning paths that stay current",
         description:
-          "Programs and workshops can evolve independently without rebuilding the website or duplicating information."
+          "Programs and workshops are updated continuously as AI tools and best practices change, so learners always work from current material, not a static syllabus."
       },
       {
         title: "Business outcomes included",
@@ -106,7 +106,7 @@ export const home = {
     eyebrow: "FAQ",
     title: "Common questions",
     description:
-      "Answers stay configuration-driven until a fuller resources section is introduced.",
+      "Quick answers to the most common questions about programs, workshops, and team training.",
     items: [
       {
         question: "Who are these programs for?",
@@ -119,9 +119,9 @@ export const home = {
           "Yes. Private workshops can be tailored to team roles, current projects, and internal adoption goals."
       },
       {
-        question: "Is the site ready for GitHub Pages?",
+        question: "How do I know which program is right for me?",
         answer:
-          "Yes. The website is statically generated with Astro and avoids server-side runtime dependencies."
+          "Start with a focused workshop for a fast, hands-on introduction, or a cohort program if you need structured, in-depth capability building. If you're unsure, contact SkillUp — recommending the right starting point is part of the conversation."
       }
     ]
   },

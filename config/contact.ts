@@ -47,5 +47,5 @@ export const contact = {
     }
   ],
   note:
-    "SkillUp is a static website, so contact actions use email links rather than a server-side form."
+    "Every enquiry goes straight to a real person — no ticketing queue, no automated response."
 } as const;

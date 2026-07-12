@@ -20,7 +20,7 @@ Derived from `.agent/ux-review.md`. Ordered: content/broken-link fixes first (fa
   Rewrite the dummy body text in `src/content/pages/teams.md`, `src/content/programs/genai-developer.md`, `src/content/programs/ai-product-manager.md`, `src/content/workshops/ai-for-leaders.md`, `src/content/workshops/rag-foundations.md` with real copy, or set `draft: true` on any not ready.
   *Accept:* `grep -ri "dummy" dist -r` after `npm run build` returns no matches.
 
-- [ ] **T2. Remove dev-speak from user-facing copy**
+- [x] **T2. Remove dev-speak from user-facing copy**
   Rewrite: programs/workshops listing intros (`src/pages/programs/index.astro`, `src/pages/workshops/index.astro`) that mention "Markdown"/"collection"; home FAQ items in `config/home.ts` ("Is the site ready for GitHub Pages?", the config-driven FAQ description); contact note in `config/contact.ts` ("static website… server-side form"); the "Content-driven learning paths" feature in `config/home.ts` (currently a maintainer benefit, not a learner benefit).
   *Accept:* none of "Markdown", "GitHub Pages", "static website", "collection", "rebuilding the website" appear in rendered `dist/**/*.html` body text.
 
