@@ -16,7 +16,7 @@ Derived from `.agent/ux-review.md`. Ordered: content/broken-link fixes first (fa
 
 ## Phase 1 — Content & broken links (HIGH priority, copy-only)
 
-- [ ] **T1. Replace placeholder body copy in content collections**
+- [x] **T1. Replace placeholder body copy in content collections**
   Rewrite the dummy body text in `src/content/pages/teams.md`, `src/content/programs/genai-developer.md`, `src/content/programs/ai-product-manager.md`, `src/content/workshops/ai-for-leaders.md`, `src/content/workshops/rag-foundations.md` with real copy, or set `draft: true` on any not ready.
   *Accept:* `grep -ri "dummy" dist -r` after `npm run build` returns no matches.
 
