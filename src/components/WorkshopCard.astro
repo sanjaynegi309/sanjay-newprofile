@@ -4,7 +4,7 @@ import Badge from "./Badge.astro";
 import Button from "./Button.astro";
 import Card from "./Card.astro";
 import { analytics } from "@config/analytics";
-import { formatDate, formatList } from "@utils/format";
+import { formatList, getWorkshopDateInfo } from "@utils/format";
 import { site } from "@config/site";
 import { withBase } from "@utils/url";
 
@@ -15,12 +15,12 @@ interface Props {
 
 const { workshop, href } = Astro.props;
 const { data } = workshop;
-const dateLabel = data.date ? formatDate(data.date, site.language) : "Available by request";
+const dateInfo = getWorkshopDateInfo(data.date, site.language);
 ---
 
 <Card class="flex h-full flex-col gap-5">
   <div class="flex flex-wrap gap-2">
-    <Badge tone="accent">{dateLabel}</Badge>
+    <Badge tone={dateInfo.tone}>{dateInfo.label}</Badge>
     <Badge tone="neutral">{data.duration}</Badge>
   </div>
 

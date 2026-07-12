@@ -101,7 +101,7 @@ Derived from `.agent/ux-review.md`. Ordered: content/broken-link fixes first (fa
   Add a `nextCohort`/`fee` (or similar) field to the program schema in `src/content/config.ts`, populate it in program frontmatter, and display it in `ProgramLayout.astro`'s aside (value can be "Contact for dates" where unknown).
   *Accept:* every program detail page's aside shows a schedule/fee row, even if the value is a contact prompt.
 
-- [ ] **T18. Past-event handling for dated workshops**
+- [x] **T18. Past-event handling for dated workshops**
   In `src/pages/workshops/index.astro` (and `WorkshopCard.astro`): compute whether `data.date` is in the past at build time and either exclude past workshops from the listing or badge them "Past / Join waitlist" instead of showing them as upcoming.
   *Accept:* set a workshop's `date` frontmatter to a past date, rebuild, and confirm it no longer renders with an upcoming-style date badge.
 

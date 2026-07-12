@@ -1,10 +1,21 @@
 ---
+import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
 import Container from "@components/Container.astro";
 import SectionHeader from "@components/SectionHeader.astro";
 import WorkshopCard from "@components/WorkshopCard.astro";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { getContentSlug } from "@utils/slugs";
+
+const now = Date.now();
+
+function eventRank(workshop: CollectionEntry<"workshops">): number {
+  if (!workshop.data.date) {
+    return 1;
+  }
+
+  return workshop.data.date.getTime() >= now ? 0 : 2;
+}
 
 const workshops = (await getCollection("workshops"))
   .filter((workshop) => !workshop.data.draft)
@@ -13,11 +24,17 @@ const workshops = (await getCollection("workshops"))
       return a.data.featured ? -1 : 1;
     }
 
-    const aTime = a.data.date?.getTime() ?? Number.MAX_SAFE_INTEGER;
-    const bTime = b.data.date?.getTime() ?? Number.MAX_SAFE_INTEGER;
+    const rankDiff = eventRank(a) - eventRank(b);
+
+    if (rankDiff !== 0) {
+      return rankDiff;
+    }
+
+    const aTime = a.data.date?.getTime() ?? 0;
+    const bTime = b.data.date?.getTime() ?? 0;
 
     if (aTime !== bTime) {
-      return aTime - bTime;
+      return eventRank(a) === 2 ? bTime - aTime : aTime - bTime;
     }
 
     return a.data.title.localeCompare(b.data.title);

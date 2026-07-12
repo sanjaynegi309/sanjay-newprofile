@@ -6,7 +6,7 @@ import Container from "@components/Container.astro";
 import BaseLayout from "./BaseLayout.astro";
 import { analytics } from "@config/analytics";
 import { site } from "@config/site";
-import { formatDate, formatList } from "@utils/format";
+import { formatList, getWorkshopDateInfo } from "@utils/format";
 import { getContentSlug } from "@utils/slugs";
 
 interface Props {
@@ -16,9 +16,7 @@ interface Props {
 const { workshop } = Astro.props;
 const { data } = workshop;
 const canonicalPath = `/workshops/${getContentSlug(workshop)}/`;
-const dateLabel = data.date
-  ? formatDate(data.date, site.language)
-  : "Available by request";
+const dateInfo = getWorkshopDateInfo(data.date, site.language);
 ---
 
 <BaseLayout
@@ -36,7 +34,7 @@ const dateLabel = data.date
         <div class="grid gap-10 lg:grid-cols-[1fr_0.8fr] lg:items-start">
           <div class="space-y-6">
             <div class="flex flex-wrap gap-2">
-              <Badge tone="accent">{dateLabel}</Badge>
+              <Badge tone={dateInfo.tone}>{dateInfo.label}</Badge>
               <Badge tone="neutral">{data.duration}</Badge>
               <Badge tone="neutral">{data.format.replaceAll("-", " ")}</Badge>
             </div>
