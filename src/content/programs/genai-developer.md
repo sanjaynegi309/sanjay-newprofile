@@ -27,4 +27,14 @@ seo:
   description: "Hands-on AI engineering program for developers and technical teams."
 ---
 
-This dummy entry validates the program collection schema and represents a future detail page.
+## What You Will Build
+
+Participants build a retrieval-augmented application end to end: ingesting and chunking real documents, evaluating retrieval quality, and shipping a feature with test coverage and clear safety boundaries.
+
+## Who It Is For
+
+This program is designed for software developers and technical leads who want to move past ad hoc prompting and build AI features they can trust in production.
+
+## Learning Approach
+
+Each week pairs a focused technical concept with a hands-on build session. Learners leave with working code, a repeatable evaluation harness, and habits for reviewing model output before it reaches users.

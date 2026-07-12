@@ -26,4 +26,14 @@ seo:
   description: "Live workshop for building maintainable RAG workflows."
 ---
 
-This dummy workshop proves scheduled event metadata validates correctly.
+## Workshop Outcome
+
+Participants leave with a working retrieval pipeline, a checklist for evaluating chunking and embedding choices, and a repeatable process for testing retrieval quality before shipping.
+
+## What We Cover
+
+The workshop walks through chunking strategy, embedding selection, retrieval evaluation, and the common failure modes that make RAG systems unreliable in production.
+
+## Best Fit
+
+This workshop is best for developers and data practitioners who are building or maintaining a retrieval-augmented system and want a more rigorous, testable approach.
