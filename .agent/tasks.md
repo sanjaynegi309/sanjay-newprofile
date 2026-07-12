@@ -147,7 +147,7 @@ Derived from `.agent/ux-review.md`. Ordered: content/broken-link fixes first (fa
   Add a visually-hidden `(opens in new tab)` span (or icon with accessible text) to every `target="_blank"` link: LMS login (`Header.astro`), social links (`Footer.astro`), workshop registration links.
   *Accept:* screen-reader-only text or an icon with `aria-label` is present on every `target="_blank"` anchor — `grep -rn 'target="_blank"' src` and confirm each match has an adjacent affordance.
 
-- [ ] **T27. Analytics consent gate**
+- [x] **T27. Analytics consent gate**
   In `src/components/Analytics.astro`: don't fire `gtag`/page-view events until the user accepts a lightweight consent banner (or switch to a cookieless analytics tool that doesn't require consent).
   *Accept:* on first visit with no prior consent stored, no `gtag`/`collect` network request fires until consent is given (check browser Network tab).
 

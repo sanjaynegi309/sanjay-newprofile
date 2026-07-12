@@ -1,5 +1,6 @@
 ---
 import { analytics } from "@config/analytics";
+import ConsentBanner from "./ConsentBanner.astro";
 
 const { enabled, measurementId, sendPageView } = analytics.googleAnalytics;
 const { events, attributes } = analytics;
@@ -57,12 +58,34 @@ document.addEventListener("click", function (event) {
 {
   enabled && measurementId && (
     <>
-      <script
-        is:inline
-        async
-        src={`https://www.googletagmanager.com/gtag/js?id=${measurementId}`}
-      />
-      <script is:inline set:html={analyticsScript} />
+      <ConsentBanner />
+      <script is:inline define:vars={{ measurementId, analyticsScript }}>
+        const CONSENT_KEY = "skillup:analytics-consent";
+
+        function loadAnalytics() {
+          if (window.__skillupAnalyticsLoaded) return;
+          window.__skillupAnalyticsLoaded = true;
+
+          const gtagSrc = document.createElement("script");
+          gtagSrc.async = true;
+          gtagSrc.src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
+          document.head.appendChild(gtagSrc);
+
+          const inline = document.createElement("script");
+          inline.textContent = analyticsScript;
+          document.head.appendChild(inline);
+        }
+
+        if (localStorage.getItem(CONSENT_KEY) === "granted") {
+          loadAnalytics();
+        }
+
+        window.addEventListener("skillup:analytics-consent-change", (event) => {
+          if (event.detail.granted) {
+            loadAnalytics();
+          }
+        });
+      </script>
     </>
   )
 }
