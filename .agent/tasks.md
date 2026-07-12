@@ -44,7 +44,7 @@ Derived from `.agent/ux-review.md`. Ordered: content/broken-link fixes first (fa
   Create a 1200×630 PNG/JPG and reference it via `config/seo.ts` `openGraph.image` (currently `/favicon.svg`, which most platforms won't render as a share card).
   *Accept:* view-source on `/` shows `og:image` pointing at a `.png`/`.jpg`, not `.svg`.
 
-- [ ] **T7. Global head & 404 hygiene**
+- [x] **T7. Global head & 404 hygiene**
   In `src/layouts/BaseLayout.astro`: fix viewport meta to `width=device-width, initial-scale=1`; add `<meta name="theme-color" content="#000000">`. Add `src/pages/404.astro` with brand header/footer and links back to `/programs/` and `/contact/`.
   *Accept:* `npm run build` succeeds and produces `dist/404.html`; view-source on any page shows `initial-scale=1` and a `theme-color` meta.
 
