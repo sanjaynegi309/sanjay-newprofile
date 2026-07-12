@@ -11,7 +11,6 @@ date: 2026-09-10
 duration: "Half day"
 format: "live-online"
 capacity: 40
-registrationUrl: "https://example.com/register/prompt-systems"
 topics:
   - "Prompt patterns"
   - "Workflow design"
@@ -20,7 +19,7 @@ topics:
 featured: false
 cta:
   label: "Register interest"
-  href: "https://example.com/register/prompt-systems"
+  href: "/contact/"
   analyticsEvent: "workshop_registration"
 seo:
   title: "Prompt Systems for Teams Workshop"

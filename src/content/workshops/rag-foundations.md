@@ -10,7 +10,6 @@ date: 2026-08-20
 duration: "1 day"
 format: "live-online"
 capacity: 30
-registrationUrl: "https://example.com/register/rag-foundations"
 topics:
   - "Chunking"
   - "Embeddings"
@@ -19,7 +18,7 @@ topics:
 featured: true
 cta:
   label: "Register interest"
-  href: "https://example.com/register/rag-foundations"
+  href: "/contact/"
   analyticsEvent: "workshop_registration"
 seo:
   title: "RAG Foundations Workshop"
