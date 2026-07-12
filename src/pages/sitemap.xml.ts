@@ -2,6 +2,7 @@ import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
 import { seo } from "@config/seo";
 import { getContentSlug } from "@utils/slugs";
+import { withBase } from "@utils/url";
 
 type SitemapEntry = {
   path: string;
@@ -9,10 +10,8 @@ type SitemapEntry = {
   lastmod?: Date;
 };
 
-const baseUrl = seo.canonicalBaseUrl.replace(/\/$/, "");
-
 function absoluteUrl(path: string): string {
-  return new URL(path, `${baseUrl}/`).toString();
+  return new URL(withBase(path), seo.canonicalBaseUrl).toString();
 }
 
 function escapeXml(value: string): string {

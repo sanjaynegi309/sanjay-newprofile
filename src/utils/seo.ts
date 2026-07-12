@@ -1,4 +1,5 @@
 import { seo } from "@config/seo";
+import { withBase } from "./url";
 
 export type PageSeo = {
   title?: string;
@@ -13,11 +14,12 @@ export function getSeoMeta(pageSeo: PageSeo = {}) {
     ? seo.titleTemplate.replace("%s", pageSeo.title)
     : seo.defaultTitle;
   const description = pageSeo.description ?? seo.defaultDescription;
-  const canonicalUrl = pageSeo.canonicalPath
-    ? new URL(pageSeo.canonicalPath, seo.canonicalBaseUrl).toString()
-    : seo.canonicalBaseUrl;
+  const canonicalUrl = new URL(
+    withBase(pageSeo.canonicalPath ?? "/"),
+    seo.canonicalBaseUrl
+  ).toString();
   const imagePath = pageSeo.ogImage ?? seo.openGraph.image;
-  const image = new URL(imagePath, seo.canonicalBaseUrl).toString();
+  const image = new URL(withBase(imagePath), seo.canonicalBaseUrl).toString();
 
   return {
     title,

@@ -1,14 +1,15 @@
 import type { APIRoute } from "astro";
 import { seo } from "@config/seo";
+import { withBase } from "@utils/url";
 
-const baseUrl = seo.canonicalBaseUrl.replace(/\/$/, "");
+const sitemapUrl = new URL(withBase("/sitemap.xml"), seo.canonicalBaseUrl).toString();
 
 export const GET: APIRoute = () =>
   new Response(
     [
       "User-agent: *",
       seo.robots.index ? "Allow: /" : "Disallow: /",
-      `Sitemap: ${baseUrl}/sitemap.xml`
+      `Sitemap: ${sitemapUrl}`
     ].join("\n"),
     {
       headers: {
