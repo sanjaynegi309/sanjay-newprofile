@@ -113,7 +113,7 @@ Derived from `.agent/ux-review.md`. Ordered: content/broken-link fixes first (fa
   In `src/pages/teams.astro`: give the `<Content />` markdown section (added when `teams.md` was wired up) a proper `SectionHeader` instead of appearing headerless; add a visual connector (line/ordinal styling) to the 4-step engagement cards to imply sequence.
   *Accept:* the markdown content section on `/teams/` has a visible eyebrow/heading; engagement steps show a connecting visual at `lg` width.
 
-- [ ] **T21. Simplify contact channels to one primary CTA**
+- [x] **T21. Simplify contact channels to one primary CTA**
   In `src/pages/contact.astro`/`config/contact.ts`: replace the three same-email cards with one primary "Email us" CTA plus a compact secondary list; label buttons by intent ("Program enquiry") instead of rendering the raw email address as the button text.
   *Accept:* `/contact/` shows one visually primary contact action; no button label is a raw email address.
 

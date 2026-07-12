@@ -26,7 +26,7 @@ export const contact = {
       description:
         "Ask about upcoming live cohorts, learner fit, outcomes, and recommended starting points.",
       href: `mailto:${site.contact.email}?subject=Program%20enquiry`,
-      label: site.contact.email,
+      label: "Ask about a program",
       analyticsEvent: analytics.events.programApply
     },
     {
@@ -34,7 +34,7 @@ export const contact = {
       description:
         "Share your team goals, audience, and business outcome so training can be scoped around the right change.",
       href: `mailto:${site.contact.email}?subject=Corporate%20training%20enquiry`,
-      label: site.contact.email,
+      label: "Ask about team training",
       analyticsEvent: analytics.events.corporateCta
     },
     {
@@ -42,7 +42,7 @@ export const contact = {
       description:
         "Discuss private workshops, live sessions, or focused AI adoption sprints.",
       href: `mailto:${site.contact.email}?subject=Workshop%20enquiry`,
-      label: site.contact.email,
+      label: "Ask about a workshop",
       analyticsEvent: analytics.events.workshopRegistration
     }
   ],
