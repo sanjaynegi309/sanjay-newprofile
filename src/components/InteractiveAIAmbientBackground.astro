@@ -104,6 +104,19 @@ const { variant = "hero", class: className } = Astro.props;
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
 
+  function isLowPowerDevice(): boolean {
+    const cores = navigator.hardwareConcurrency;
+
+    if (typeof cores === "number" && cores > 0 && cores <= 4) {
+      return true;
+    }
+
+    const memory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory;
+    return typeof memory === "number" && memory <= 4;
+  }
+
+  const lowPowerDevice = isLowPowerDevice();
+
   function motionDisabledByUser() {
     return localStorage.getItem(MOTION_KEY) === "off";
   }
@@ -156,7 +169,7 @@ const { variant = "hero", class: className } = Astro.props;
     }
 
     function particleCount() {
-      if (isMobileViewport()) {
+      if (isMobileViewport() || lowPowerDevice) {
         return config.mobileParticles;
       }
 
@@ -341,8 +354,12 @@ const { variant = "hero", class: className } = Astro.props;
         ctx.fillStyle = pulse.hot
           ? `rgba(255, 0, 110, ${0.65 * config.alpha})`
           : `rgba(0, 212, 255, ${0.65 * config.alpha})`;
-        ctx.shadowColor = pulse.hot ? "rgba(255, 0, 110, 0.5)" : "rgba(0, 212, 255, 0.5)";
-        ctx.shadowBlur = 12;
+
+        if (!lowPowerDevice) {
+          ctx.shadowColor = pulse.hot ? "rgba(255, 0, 110, 0.5)" : "rgba(0, 212, 255, 0.5)";
+          ctx.shadowBlur = 12;
+        }
+
         ctx.beginPath();
         ctx.arc(x, y, 2.5, 0, Math.PI * 2);
         ctx.fill();

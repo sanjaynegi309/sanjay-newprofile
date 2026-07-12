@@ -155,7 +155,7 @@ Derived from `.agent/ux-review.md`. Ordered: content/broken-link fixes first (fa
 
 ## Phase 8 — Performance
 
-- [ ] **T28. Particle canvas performance budget**
+- [x] **T28. Particle canvas performance budget**
   In `InteractiveAIAmbientBackground.astro`: gate particle density on `navigator.hardwareConcurrency`/`navigator.deviceMemory` where available, or lower `maxParticles` to ~70 and replace the per-particle `shadowBlur` draw with a pre-rendered glow sprite.
   *Accept:* on a throttled 4x CPU slowdown (Chrome devtools), hero canvas frame time stays reasonable and doesn't visibly jank scroll — spot-check via Performance panel.
 
