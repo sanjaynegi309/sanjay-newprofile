@@ -66,6 +66,7 @@ const currentYear = new Date().getFullYear();
                       rel={item.external ? "noreferrer" : undefined}
                     >
                       {item.label}
+                      {item.external && <span class="sr-only"> (opens in new tab)</span>}
                     </a>
                   </li>
                 ))}
@@ -88,6 +89,7 @@ const currentYear = new Date().getFullYear();
                       rel="noreferrer"
                     >
                       {SOCIAL_LABELS[key as keyof typeof site.social]}
+                      <span class="sr-only"> (opens in new tab)</span>
                     </a>
                   </li>
                 ))}

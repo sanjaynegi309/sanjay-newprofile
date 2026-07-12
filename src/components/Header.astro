@@ -44,6 +44,7 @@ function isCurrent(href: string): boolean {
               rel={item.external ? "noreferrer" : undefined}
             >
               {item.label}
+              {item.external && <span class="sr-only"> (opens in new tab)</span>}
             </a>
           ))
         }
@@ -94,6 +95,7 @@ function isCurrent(href: string): boolean {
           rel="noreferrer"
         >
           {site.lms.label}
+          <span class="sr-only"> (opens in new tab)</span>
         </Button>
       </div>
 
@@ -153,6 +155,7 @@ function isCurrent(href: string): boolean {
                   rel={item.external ? "noreferrer" : undefined}
                 >
                   {item.label}
+                  {item.external && <span class="sr-only"> (opens in new tab)</span>}
                 </a>
               ))
             }

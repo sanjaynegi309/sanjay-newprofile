@@ -143,7 +143,7 @@ Derived from `.agent/ux-review.md`. Ordered: content/broken-link fixes first (fa
 
 ## Phase 7 — Accessibility
 
-- [ ] **T26. External-link "opens in new tab" affordance**
+- [x] **T26. External-link "opens in new tab" affordance**
   Add a visually-hidden `(opens in new tab)` span (or icon with accessible text) to every `target="_blank"` link: LMS login (`Header.astro`), social links (`Footer.astro`), workshop registration links.
   *Accept:* screen-reader-only text or an icon with `aria-label` is present on every `target="_blank"` anchor — `grep -rn 'target="_blank"' src` and confirm each match has an adjacent affordance.
 
