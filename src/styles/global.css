@@ -10,7 +10,7 @@
 
   --accent: #00d4ff;
   --accent-2: #ff006e;
-  --accent-3: #8338ec;
+  --accent-3: #ab7cf7;
 
   --card: rgba(255, 255, 255, 0.03);
   --card-border: rgba(255, 255, 255, 0.1);
@@ -266,7 +266,7 @@ body::before {
     border-radius: 999px;
     border: 1px solid transparent;
     padding: 0.3rem 0.75rem;
-    font-size: 0.6875rem;
+    font-size: 0.75rem;
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
