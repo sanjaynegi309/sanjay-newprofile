@@ -57,7 +57,6 @@ function isCurrent(href: string): boolean {
           data-active="true"
           aria-pressed="true"
           aria-label="Toggle background motion"
-          title="Toggle background motion"
         >
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true">
             <circle cx="12" cy="12" r="3" fill="currentColor" />
@@ -71,6 +70,7 @@ function isCurrent(href: string): boolean {
               stroke-linecap="round"
             />
           </svg>
+          <span class="ambient-toggle-tip" aria-hidden="true">Background motion</span>
         </button>
         {
           navigation.utility.map((item) => (

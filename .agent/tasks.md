@@ -64,7 +64,7 @@ Derived from `.agent/ux-review.md`. Ordered: content/broken-link fixes first (fa
   Either prefix all root-absolute internal `href`s (`Header.astro`, `Footer.astro`, page CTAs) with `import.meta.env.BASE_URL`, or remove `BASE_PATH` support from `astro.config.mjs`/`config/site.ts` and document custom-domain-only deployment.
   *Accept:* `BASE_PATH=/skillup/ npm run build` followed by inspecting `dist/index.html` shows nav hrefs prefixed with `/skillup/` (or `BASE_PATH` is fully removed from the codebase — `grep -r BASE_PATH src config astro.config.mjs` returns nothing).
 
-- [ ] **T11. Ambient-motion toggle affordance + contrast**
+- [x] **T11. Ambient-motion toggle affordance + contrast**
   In `Header.astro`/`global.css`: add a discoverable label (tooltip text or move to a labeled footer control) for the ambient-motion toggle; raise the inactive-state color from `rgb(255 255 255 / 0.35)` to ≥0.45 opacity to clear 3:1 non-text contrast.
   *Accept:* inactive toggle icon contrast ratio against black ≥3:1 (check via browser devtools contrast picker).
 
