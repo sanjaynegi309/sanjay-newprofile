@@ -105,7 +105,7 @@ Derived from `.agent/ux-review.md`. Ordered: content/broken-link fixes first (fa
   In `src/pages/workshops/index.astro` (and `WorkshopCard.astro`): compute whether `data.date` is in the past at build time and either exclude past workshops from the listing or badge them "Past / Join waitlist" instead of showing them as upcoming.
   *Accept:* set a workshop's `date` frontmatter to a past date, rebuild, and confirm it no longer renders with an upcoming-style date badge.
 
-- [ ] **T19. Workshop card polish**
+- [x] **T19. Workshop card polish**
   In `WorkshopCard.astro`: fix the `<dl>` `sm:grid-cols-2` layout so the 3rd (capacity) item doesn't orphan onto its own row; use a neutral badge tone (not accent) for "Available by request" workshops so it's visually distinct from real dates.
   *Accept:* a workshop with `capacity` set shows no single-item row at `sm` width; a workshop without `date` renders its date badge in `badge-neutral`, not `badge-cyan`.
 
