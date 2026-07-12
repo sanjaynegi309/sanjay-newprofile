@@ -32,7 +32,7 @@ Derived from `.agent/ux-review.md`. Ordered: content/broken-link fixes first (fa
   Set `featured: true` on `src/content/testimonials/michael-chen.md` (or another entry) so the home "Learner outcomes" grid isn't a single stranded card.
   *Accept:* view `/` — the testimonials section shows 2 cards side by side at `lg` width, not one card alone.
 
-- [ ] **T5. Work "mentor-led" into brand positioning copy**
+- [x] **T5. Work "mentor-led" into brand positioning copy**
   Update `config/brand.ts` tagline and/or the home hero eyebrow (`config/home.ts`) to surface "mentor" — currently absent from hero, nav, and page titles despite being the core brand promise.
   *Accept:* "mentor" (case-insensitive) appears in the rendered `/` hero section.
 

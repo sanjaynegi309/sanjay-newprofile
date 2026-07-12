@@ -15,7 +15,7 @@ export type BrandConfig = {
 export const brand: BrandConfig = {
   name: "SkillUp",
   legalName: "SkillUp Learning",
-  tagline: "Practical AI education for modern teams",
+  tagline: "Mentor-led AI education for modern teams",
   description:
     "SkillUp helps professionals and organizations build useful AI skills through structured programs, workshops, and hands-on learning.",
   logo: {
