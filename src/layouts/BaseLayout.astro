@@ -10,6 +10,7 @@ import Footer from "@components/Footer.astro";
 import Header from "@components/Header.astro";
 import type { PageSeo } from "@utils/seo";
 import { getSeoMeta } from "@utils/seo";
+import { withBase } from "@utils/url";
 
 interface Props {
   seo?: PageSeo;
@@ -46,7 +47,7 @@ const robots = `${meta.robots.index ? "index" : "noindex"},${meta.robots.follow 
     <meta name="twitter:image" content={meta.image} />
     <meta name="twitter:image:alt" content={seoConfig.twitter.imageAlt} />
 
-    <link rel="icon" href={brand.logo.mark} />
+    <link rel="icon" href={withBase(brand.logo.mark)} />
     <slot name="head" />
     <Analytics />
   </head>

@@ -1,4 +1,6 @@
 ---
+import { withBase } from "@utils/url";
+
 export type ButtonVariant = "primary" | "secondary" | "hot";
 
 export interface ActionLink {
@@ -57,7 +59,7 @@ const classes = [
 {
   href ? (
     <a
-      href={href}
+      href={withBase(href)}
       class:list={classes}
       data-analytics-event={analyticsEvent}
       data-analytics-label={analyticsLabel}

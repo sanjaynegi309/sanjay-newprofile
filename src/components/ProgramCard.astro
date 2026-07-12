@@ -5,6 +5,7 @@ import Button from "./Button.astro";
 import Card from "./Card.astro";
 import { analytics } from "@config/analytics";
 import { formatList } from "@utils/format";
+import { withBase } from "@utils/url";
 
 interface Props {
   program: CollectionEntry<"programs">;
@@ -26,7 +27,7 @@ const { data } = program;
       {
         href ? (
           <a
-            href={href}
+            href={withBase(href)}
             class="hover:text-accent-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-500"
           >
             {data.title}

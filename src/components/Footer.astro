@@ -3,6 +3,7 @@ import { brand } from "@config/brand";
 import { analytics } from "@config/analytics";
 import { navigation } from "@config/navigation";
 import { site } from "@config/site";
+import { withBase } from "@utils/url";
 import Container from "./Container.astro";
 
 const socialLinks = Object.entries(site.social).filter(([, href]) => Boolean(href));
@@ -18,11 +19,11 @@ const currentYear = new Date().getFullYear();
     <div class="grid gap-10 py-12 md:grid-cols-[1.25fr_2fr]">
       <div class="space-y-4">
         <a
-          href="/"
+          href={withBase("/")}
           class="inline-flex items-center gap-3 font-semibold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-400"
           aria-label={`${brand.name} home`}
         >
-          <img src={brand.logo.mark} alt="" class="h-8 w-8" width="32" height="32" />
+          <img src={withBase(brand.logo.mark)} alt="" class="h-8 w-8" width="32" height="32" />
           <span>{brand.logo.text}</span>
         </a>
         <p class="max-w-sm text-sm leading-6 text-neutral-300">{brand.description}</p>
@@ -51,7 +52,7 @@ const currentYear = new Date().getFullYear();
                 {group.items.map((item) => (
                   <li>
                     <a
-                      href={item.href}
+                      href={withBase(item.href)}
                       class="inline-flex text-sm text-neutral-300 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-400"
                       data-analytics-event={item.analyticsEvent}
                       target={item.external ? "_blank" : undefined}

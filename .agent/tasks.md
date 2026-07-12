@@ -60,7 +60,7 @@ Derived from `.agent/ux-review.md`. Ordered: content/broken-link fixes first (fa
   In `src/components/Header.astro`: close the mobile `<details>` panel on link click, Escape, and outside click; add a hamburger/close icon that swaps on open state instead of the text-only "Menu" label.
   *Accept:* on a mobile viewport, tapping a nav link inside the open panel closes it; pressing Escape while open closes it.
 
-- [ ] **T10. Make internal nav links base-path aware**
+- [x] **T10. Make internal nav links base-path aware**
   Either prefix all root-absolute internal `href`s (`Header.astro`, `Footer.astro`, page CTAs) with `import.meta.env.BASE_URL`, or remove `BASE_PATH` support from `astro.config.mjs`/`config/site.ts` and document custom-domain-only deployment.
   *Accept:* `BASE_PATH=/skillup/ npm run build` followed by inspecting `dist/index.html` shows nav hrefs prefixed with `/skillup/` (or `BASE_PATH` is fully removed from the codebase — `grep -r BASE_PATH src config astro.config.mjs` returns nothing).
 
