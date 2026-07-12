@@ -123,8 +123,8 @@ body::before {
     transition: transform 0.6s ease;
   }
 
-  .glass-card:hover,
-  .glass-card:focus-within {
+  .glass-card--interactive:hover,
+  .glass-card--interactive:focus-within {
     transform: translateY(-8px);
     border-color: rgb(0 212 255 / 0.35);
     box-shadow:
@@ -132,9 +132,23 @@ body::before {
       0 0 32px rgb(0 212 255 / 0.18);
   }
 
-  .glass-card:hover::before,
-  .glass-card:focus-within::before {
+  .glass-card--interactive:hover::before,
+  .glass-card--interactive:focus-within::before {
     transform: translateX(100%);
+  }
+
+  /* ---------------------------------------------------------------
+   * Stretched link -- expands one real link's hit area to cover its
+   * nearest positioned ancestor (e.g. a whole glass-card), so the full
+   * card is clickable without nesting a second <a> inside it. Other
+   * links/buttons inside the same card need position:relative and a
+   * higher z-index to stay independently clickable above the overlay.
+   * --------------------------------------------------------------- */
+  .stretched-link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
   }
 
   .glass-card-hot {
@@ -149,8 +163,8 @@ body::before {
     background: linear-gradient(90deg, transparent, var(--accent-2), transparent);
   }
 
-  .glass-card-hot:hover,
-  .glass-card-hot:focus-within {
+  .glass-card--interactive.glass-card-hot:hover,
+  .glass-card--interactive.glass-card-hot:focus-within {
     transform: translateY(-8px) scale(1.01);
     border-color: rgb(255 0 110 / 0.6);
     box-shadow:

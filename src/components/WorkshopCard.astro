@@ -18,7 +18,7 @@ const { data } = workshop;
 const dateInfo = getWorkshopDateInfo(data.date, site.language);
 ---
 
-<Card class="flex h-full flex-col gap-5">
+<Card class="flex h-full flex-col gap-5" interactive={Boolean(href)}>
   <div class="flex flex-wrap gap-2">
     <Badge tone={dateInfo.tone}>{dateInfo.label}</Badge>
     <Badge tone="neutral">{data.duration}</Badge>
@@ -30,7 +30,7 @@ const dateInfo = getWorkshopDateInfo(data.date, site.language);
         href ? (
           <a
             href={withBase(href)}
-            class="hover:text-accent-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-500"
+            class="stretched-link hover:text-accent-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-500"
           >
             {data.title}
           </a>
@@ -78,7 +78,7 @@ const dateInfo = getWorkshopDateInfo(data.date, site.language);
 
   {
     (href || data.cta || data.registrationUrl) && (
-      <div class="mt-auto flex flex-wrap gap-3 pt-2">
+      <div class="relative z-10 mt-auto flex flex-wrap gap-3 pt-2">
         {
           href && (
             <Button

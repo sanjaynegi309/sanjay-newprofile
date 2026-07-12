@@ -4,18 +4,29 @@ import { withBase } from "@utils/url";
 interface Props {
   href?: string;
   hot?: boolean;
+  interactive?: boolean;
   class?: string;
 }
 
-const { href, hot = false, class: className } = Astro.props;
-const baseClasses = ["glass-card", hot && "glass-card-hot", "p-5 sm:p-6"];
-const interactiveClasses =
+const {
+  href,
+  hot = false,
+  interactive = Boolean(href),
+  class: className
+} = Astro.props;
+const baseClasses = [
+  "glass-card",
+  hot && "glass-card-hot",
+  interactive && "glass-card--interactive",
+  "p-5 sm:p-6"
+];
+const focusClasses =
   "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-500";
 ---
 
 {
   href ? (
-    <a href={withBase(href)} class:list={[...baseClasses, interactiveClasses, "block", className]}>
+    <a href={withBase(href)} class:list={[...baseClasses, focusClasses, "block", className]}>
       <slot />
     </a>
   ) : (

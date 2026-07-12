@@ -127,13 +127,13 @@ Derived from `.agent/ux-review.md`. Ordered: content/broken-link fixes first (fa
 
 ## Phase 6 — Component system
 
-- [ ] **T23. Split glass-card hover into interactive vs. static variants**
-  In `global.css`/`Card.astro`: add a `.glass-card--interactive` (or similar) modifier carrying the −8px lift + glow-sweep hover, and apply it only where the card is a link; non-interactive cards (founder card, corporate feature chips, hero metrics) keep the static `.glass-card` look with no hover motion.
-  *Accept:* hovering the home hero metrics card (non-link) produces no lift/glow; hovering a `ProgramCard` (link) still does.
+- [x] **T23. Split glass-card hover into interactive vs. static variants**
+  Implemented together with T24 (they were interdependent — see T24's note). `.glass-card--interactive` modifier in `global.css` now carries the hover lift/glow; base `.glass-card` (used raw in ~12 places: asides, chips, the founder card, etc.) is static by default. `Card.astro` takes an explicit `interactive?: boolean` prop (defaults to `Boolean(href)`).
+  *Accept:* verified in built HTML — founder card (`class="glass-card p-6"`, no href) has no `--interactive` modifier; `ProgramCard`/`WorkshopCard` (href present) do.
 
-- [ ] **T24. Fix card/button tap targets**
-  In `ProgramCard.astro`/`WorkshopCard.astro`: make the whole card a clickable stretched-link (or stop animating the card shell if it stays non-clickable as a whole); bump the `sm` button height in `Button.astro` from `min-h-9` (36px) to at least 44px on touch (e.g. `min-h-11` with a `md:min-h-9` desktop override).
-  *Accept:* tapping anywhere on a program/workshop card (not just the title or button) navigates to the detail page; `sm` button height ≥44px on a mobile viewport.
+- [x] **T24. Fix card/button tap targets**
+  Made the whole card a real stretched-link: the title `<a>` gets a `.stretched-link::after` pseudo-element (`position:absolute; inset:0`) that expands its hit area to the card's positioned ancestor (`.glass-card` already has `position:relative`), and the button row gets `relative z-10` to stay independently clickable above that overlay — the standard no-nested-anchors pattern. `sm` button height raised to 44px specifically under `@media (pointer:coarse)` (verified Tailwind compiled the real media-query rule, not just left the class unprocessed), leaving the 36px desktop/mouse size unchanged.
+  *Accept:* verified in built HTML: `stretched-link` on title anchors, `glass-card--interactive` only on cards with `href`, `relative z-10` on the button row, and the compiled CSS contains `@media (pointer:coarse){...min-height:2.75rem}`.
 
 - [ ] **T25. Component API cleanup**
   In `TestimonialCard.astro`: remove the `variant="light"` option (renders identically to `glass`) or implement a genuinely distinct light treatment. In `FAQ.astro`: add a hover state (`hover:text-accent-300` or row background) to the summary row so its clickability is signaled beyond the "+" glyph.
