@@ -29,11 +29,6 @@ export const home = {
         variant: "secondary",
         analyticsEvent: analytics.events.corporateCta
       }
-    ],
-    metrics: [
-      { label: "Learning formats", value: "Live + cohort" },
-      { label: "Focus", value: "Applied AI" },
-      { label: "Audience", value: "Professionals" }
     ]
   },
   whyLearnHere: {

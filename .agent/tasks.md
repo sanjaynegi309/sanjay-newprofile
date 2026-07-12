@@ -76,7 +76,7 @@ Derived from `.agent/ux-review.md`. Ordered: content/broken-link fixes first (fa
   *Revised from the original review:* `AGENTS.md` explicitly requires the animated gradient heading ("`.gradient-heading` (cyan → magenta → purple, animated) for hero h1s") and the sitewide `@media (prefers-reduced-motion: reduce)` rule in `global.css` already forces `animation-duration: 0.01ms` on `.gradient-heading` for motion-sensitive users — so removing the animation outright is out of scope. In `src/styles/global.css`: lighten only the purple stop (e.g. `#8338ec` → `#ab7cf7`) so all three gradient stops clear 4.5:1 on black at small H1 sizes. Bump the `.badge` font-size from `0.6875rem` to `0.75rem` minimum.
   *Accept:* the animated gradient still runs for users without `prefers-reduced-motion`; contrast-check the lightened purple stop at ≥4.5:1 against `#000000`.
 
-- [ ] **T13. Hero metrics — real proof numbers**
+- [x] **T13. Hero metrics — real proof numbers**
   Replace the filler hero metrics ("Focus: Applied AI", "Audience: Professionals" in `config/home.ts`) with real numbers (learners trained, cohorts run, next cohort date) or remove the metrics card if no real data exists yet.
   *Accept:* hero metrics card on `/` shows no label/value pair that merely restates the tagline.
 
