@@ -1,0 +1,37 @@
+---
+import { getEntry, render } from "astro:content";
+import Container from "@components/Container.astro";
+import BaseLayout from "@layouts/BaseLayout.astro";
+
+const page = await getEntry("pages", "privacy");
+
+if (!page) {
+  throw new Error("Missing privacy page content.");
+}
+
+const { Content } = await render(page);
+---
+
+<BaseLayout
+  seo={{
+    title: page.data.seo.title ?? page.data.title,
+    description: page.data.seo.description ?? page.data.description,
+    canonicalPath: "/privacy/",
+    noindex: page.data.seo.noindex,
+    ogImage: page.data.seo.ogImage
+  }}
+>
+  <article class="py-16 sm:py-20">
+    <Container size="sm">
+      <header class="space-y-4">
+        <h1 class="gradient-heading font-display text-4xl font-semibold tracking-tight sm:text-5xl">
+          {page.data.title}
+        </h1>
+        <p class="text-lg leading-8 text-white/70">{page.data.description}</p>
+      </header>
+      <div class="prose mt-10 max-w-none">
+        <Content />
+      </div>
+    </Container>
+  </article>
+</BaseLayout>

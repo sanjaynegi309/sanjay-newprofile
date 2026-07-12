@@ -54,6 +54,7 @@ export const GET: APIRoute = async () => {
     { path: "/about/", priority: seo.sitemap.priority.page },
     { path: "/contact/", priority: seo.sitemap.priority.page },
     { path: "/teams/", priority: seo.sitemap.priority.page },
+    { path: "/privacy/", priority: seo.sitemap.priority.page },
     { path: "/programs/", priority: seo.sitemap.priority.listing },
     { path: "/workshops/", priority: seo.sitemap.priority.listing },
     ...programs.map((program) => ({

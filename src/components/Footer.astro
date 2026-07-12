@@ -6,6 +6,13 @@ import { site } from "@config/site";
 import { withBase } from "@utils/url";
 import Container from "./Container.astro";
 
+const SOCIAL_LABELS: Record<keyof typeof site.social, string> = {
+  linkedin: "LinkedIn",
+  x: "X",
+  github: "GitHub",
+  youtube: "YouTube"
+};
+
 const socialLinks = Object.entries(site.social).filter(([, href]) => Boolean(href));
 const currentYear = new Date().getFullYear();
 ---
@@ -71,16 +78,16 @@ const currentYear = new Date().getFullYear();
             <div>
               <h2 class="text-sm font-semibold text-white">Social</h2>
               <ul class="mt-4 space-y-3">
-                {socialLinks.map(([label, href]) => (
+                {socialLinks.map(([key, href]) => (
                   <li>
                     <a
                       href={href}
-                      class="inline-flex text-sm capitalize text-neutral-300 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-400"
+                      class="inline-flex text-sm text-neutral-300 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-400"
                       data-analytics-event={analytics.events.outboundLink}
                       target="_blank"
                       rel="noreferrer"
                     >
-                      {label}
+                      {SOCIAL_LABELS[key as keyof typeof site.social]}
                     </a>
                   </li>
                 ))}

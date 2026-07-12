@@ -54,7 +54,8 @@ export const navigation: NavigationConfig = {
       label: "Company",
       items: [
         { label: "About", href: "/about/" },
-        { label: "Contact", href: "/contact/" }
+        { label: "Contact", href: "/contact/" },
+        { label: "Privacy", href: "/privacy/" }
       ]
     }
   ],
