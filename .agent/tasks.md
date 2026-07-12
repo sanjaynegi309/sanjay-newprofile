@@ -97,7 +97,7 @@ Derived from `.agent/ux-review.md`. Ordered: content/broken-link fixes first (fa
   In `ProgramCard.astro`/`ProgramLayout.astro`: stop repeating duration/audience in both the card badges and the `<dl>` — badges show level+format only, `<dl>` owns duration/audience. Add level-based sort or filter chips to `src/pages/programs/index.astro`.
   *Accept:* on a program detail page, level/duration/format each appear exactly once outside the aside `<dl>`; `/programs/` groups or filters by level.
 
-- [ ] **T17. Add pricing/schedule info to programs**
+- [x] **T17. Add pricing/schedule info to programs**
   Add a `nextCohort`/`fee` (or similar) field to the program schema in `src/content/config.ts`, populate it in program frontmatter, and display it in `ProgramLayout.astro`'s aside (value can be "Contact for dates" where unknown).
   *Accept:* every program detail page's aside shows a schedule/fee row, even if the value is a contact prompt.
 

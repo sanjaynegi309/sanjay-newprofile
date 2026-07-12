@@ -37,6 +37,8 @@ const programSchema = baseContentSchema.extend({
   level: z.enum(["beginner", "intermediate", "advanced"]),
   duration: z.string(),
   format: z.enum(["self-paced", "cohort", "corporate", "hybrid"]),
+  nextCohort: z.string().default("Contact for dates"),
+  fee: z.string().default("Contact for pricing"),
   outcomes: z.array(z.string()).min(1),
   topics: z.array(z.string()).default([]),
   featured: z.boolean().default(false),
