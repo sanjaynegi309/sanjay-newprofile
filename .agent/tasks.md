@@ -159,7 +159,7 @@ Derived from `.agent/ux-review.md`. Ordered: content/broken-link fixes first (fa
   In `InteractiveAIAmbientBackground.astro`: gate particle density on `navigator.hardwareConcurrency`/`navigator.deviceMemory` where available, or lower `maxParticles` to ~70 and replace the per-particle `shadowBlur` draw with a pre-rendered glow sprite.
   *Accept:* on a throttled 4x CPU slowdown (Chrome devtools), hero canvas frame time stays reasonable and doesn't visibly jank scroll — spot-check via Performance panel.
 
-- [ ] **T29. Reduce blur/font-swap rendering cost**
+- [x] **T29. Reduce blur/font-swap rendering cost**
   In `global.css`: reduce badge `backdrop-filter: blur(12px)` to a solid semi-transparent fill or lower blur radius. Set `font-display: optional` (or preload self-hosted fonts from T8) to avoid visible heading reflow on slow connections.
   *Accept:* `npm run build` passes; badges no longer use `blur(12px)`, or the value is measurably reduced.
 
