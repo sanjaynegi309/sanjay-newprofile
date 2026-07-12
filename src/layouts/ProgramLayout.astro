@@ -34,7 +34,6 @@ const canonicalPath = `/programs/${getContentSlug(program)}/`;
               <Badge tone={data.featured ? "accent" : "neutral"}>
                 {data.level}
               </Badge>
-              <Badge tone="neutral">{data.duration}</Badge>
               <Badge tone="neutral">{data.format.replaceAll("-", " ")}</Badge>
             </div>
             <div class="space-y-4">
@@ -62,16 +61,6 @@ const canonicalPath = `/programs/${getContentSlug(program)}/`;
               <div>
                 <dt class="font-medium text-white">Audience</dt>
                 <dd class="mt-1 text-neutral-300">{formatList(data.audience)}</dd>
-              </div>
-              <div>
-                <dt class="font-medium text-white">Format</dt>
-                <dd class="mt-1 capitalize text-neutral-300">
-                  {data.format.replaceAll("-", " ")}
-                </dd>
-              </div>
-              <div>
-                <dt class="font-medium text-white">Level</dt>
-                <dd class="mt-1 capitalize text-neutral-300">{data.level}</dd>
               </div>
               <div>
                 <dt class="font-medium text-white">Duration</dt>

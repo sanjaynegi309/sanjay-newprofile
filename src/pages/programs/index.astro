@@ -15,6 +15,19 @@ const programs = (await getCollection("programs"))
 
     return a.data.title.localeCompare(b.data.title);
   });
+
+const LEVEL_ORDER = ["beginner", "intermediate", "advanced"] as const;
+const LEVEL_LABELS: Record<(typeof LEVEL_ORDER)[number], string> = {
+  beginner: "Beginner",
+  intermediate: "Intermediate",
+  advanced: "Advanced"
+};
+
+const groupedPrograms = LEVEL_ORDER.map((level) => ({
+  level,
+  label: LEVEL_LABELS[level],
+  programs: programs.filter((program) => program.data.level === level)
+})).filter((group) => group.programs.length > 0);
 ---
 
 <BaseLayout
@@ -38,13 +51,22 @@ const programs = (await getCollection("programs"))
 
   <section class="bg-black py-16 sm:py-20">
     <Container>
-      <div class="grid gap-5 lg:grid-cols-2">
+      <div class="space-y-14">
         {
-          programs.map((program) => (
-            <ProgramCard
-              program={program}
-              href={`/programs/${getContentSlug(program)}/`}
-            />
+          groupedPrograms.map((group) => (
+            <div class="space-y-5">
+              <h2 class="font-display text-sm font-semibold uppercase tracking-[0.08em] text-white/50">
+                {group.label}
+              </h2>
+              <div class="grid gap-5 lg:grid-cols-2">
+                {group.programs.map((program) => (
+                  <ProgramCard
+                    program={program}
+                    href={`/programs/${getContentSlug(program)}/`}
+                  />
+                ))}
+              </div>
+            </div>
           ))
         }
       </div>

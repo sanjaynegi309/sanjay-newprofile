@@ -19,7 +19,7 @@ const { data } = program;
 <Card class="flex h-full flex-col gap-5">
   <div class="flex flex-wrap gap-2">
     <Badge tone={data.featured ? "accent" : "neutral"}>{data.level}</Badge>
-    <Badge tone="neutral">{data.duration}</Badge>
+    <Badge tone="neutral">{data.format.replaceAll("-", " ")}</Badge>
   </div>
 
   <div class="space-y-3">
@@ -46,8 +46,8 @@ const { data } = program;
       <dd>{formatList(data.audience)}</dd>
     </div>
     <div>
-      <dt class="font-medium text-white">Format</dt>
-      <dd class="capitalize">{data.format.replaceAll("-", " ")}</dd>
+      <dt class="font-medium text-white">Duration</dt>
+      <dd>{data.duration}</dd>
     </div>
   </dl>
 

@@ -93,7 +93,7 @@ Derived from `.agent/ux-review.md`. Ordered: content/broken-link fixes first (fa
   *Revised from the original review:* `AGENTS.md`'s documented "preferred homepage rhythm" is hero (strongest atmospheric+particle effect) → glass-card section → one AI/process section (medium effect) → featured/hot section → testimonials in glass cards (no atmospheric) → CTA (lighter effect) → footer. So 3 atmospheric-tier uses (hero/process/CTA) is by design, not a defect — the actual outlier is the testimonials section (`index.astro`) using the full `section-atmospheric` treatment when the documented rhythm puts testimonials in plain glass cards instead. In `src/pages/index.astro`: drop `section-atmospheric` from the testimonials section (keep the glass `TestimonialCard`s). Separately, align `CTASection`'s `py-16` to the `py-16 sm:py-20` pattern used elsewhere.
   *Accept:* testimonials section on `/` no longer uses `section-atmospheric`; hero, one process/corporate-training section, and the CTA still do; `CTASection` markup includes `sm:py-20`.
 
-- [ ] **T16. Program listing & card info architecture**
+- [x] **T16. Program listing & card info architecture**
   In `ProgramCard.astro`/`ProgramLayout.astro`: stop repeating duration/audience in both the card badges and the `<dl>` — badges show level+format only, `<dl>` owns duration/audience. Add level-based sort or filter chips to `src/pages/programs/index.astro`.
   *Accept:* on a program detail page, level/duration/format each appear exactly once outside the aside `<dl>`; `/programs/` groups or filters by level.
 
