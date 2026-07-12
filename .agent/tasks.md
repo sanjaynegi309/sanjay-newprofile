@@ -135,7 +135,7 @@ Derived from `.agent/ux-review.md`. Ordered: content/broken-link fixes first (fa
   Made the whole card a real stretched-link: the title `<a>` gets a `.stretched-link::after` pseudo-element (`position:absolute; inset:0`) that expands its hit area to the card's positioned ancestor (`.glass-card` already has `position:relative`), and the button row gets `relative z-10` to stay independently clickable above that overlay — the standard no-nested-anchors pattern. `sm` button height raised to 44px specifically under `@media (pointer:coarse)` (verified Tailwind compiled the real media-query rule, not just left the class unprocessed), leaving the 36px desktop/mouse size unchanged.
   *Accept:* verified in built HTML: `stretched-link` on title anchors, `glass-card--interactive` only on cards with `href`, `relative z-10` on the button row, and the compiled CSS contains `@media (pointer:coarse){...min-height:2.75rem}`.
 
-- [ ] **T25. Component API cleanup**
+- [x] **T25. Component API cleanup**
   In `TestimonialCard.astro`: remove the `variant="light"` option (renders identically to `glass`) or implement a genuinely distinct light treatment. In `FAQ.astro`: add a hover state (`hover:text-accent-300` or row background) to the summary row so its clickability is signaled beyond the "+" glyph.
   *Accept:* `grep -r 'variant="light"' src` returns no call sites, or the light variant visibly differs from glass when rendered; hovering an FAQ question row shows a visible state change.
 
