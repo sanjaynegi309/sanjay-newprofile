@@ -109,7 +109,7 @@ Derived from `.agent/ux-review.md`. Ordered: content/broken-link fixes first (fa
   In `WorkshopCard.astro`: fix the `<dl>` `sm:grid-cols-2` layout so the 3rd (capacity) item doesn't orphan onto its own row; use a neutral badge tone (not accent) for "Available by request" workshops so it's visually distinct from real dates.
   *Accept:* a workshop with `capacity` set shows no single-item row at `sm` width; a workshop without `date` renders its date badge in `badge-neutral`, not `badge-cyan`.
 
-- [ ] **T20. Teams page content section + engagement sequencing**
+- [x] **T20. Teams page content section + engagement sequencing**
   In `src/pages/teams.astro`: give the `<Content />` markdown section (added when `teams.md` was wired up) a proper `SectionHeader` instead of appearing headerless; add a visual connector (line/ordinal styling) to the 4-step engagement cards to imply sequence.
   *Accept:* the markdown content section on `/teams/` has a visible eyebrow/heading; engagement steps show a connecting visual at `lg` width.
 
