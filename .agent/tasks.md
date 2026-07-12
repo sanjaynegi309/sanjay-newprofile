@@ -48,7 +48,7 @@ Derived from `.agent/ux-review.md`. Ordered: content/broken-link fixes first (fa
   In `src/layouts/BaseLayout.astro`: fix viewport meta to `width=device-width, initial-scale=1`; add `<meta name="theme-color" content="#000000">`. Add `src/pages/404.astro` with brand header/footer and links back to `/programs/` and `/contact/`.
   *Accept:* `npm run build` succeeds and produces `dist/404.html`; view-source on any page shows `initial-scale=1` and a `theme-color` meta.
 
-- [ ] **T8. Self-host Google Fonts**
+- [x] **T8. Self-host Google Fonts**
   Replace the Google Fonts `<link>` in `BaseLayout.astro` with a self-hosted `@fontsource-variable` (or equivalent) import for Inter and Space Grotesk.
   *Accept:* view-source on `/` shows no `fonts.googleapis.com`/`fonts.gstatic.com` requests; `npm run build` still passes.
 

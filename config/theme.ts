@@ -155,8 +155,16 @@ export const theme: ThemeConfig = {
     card: "0 14px 36px rgb(0 0 0 / 0.4)"
   },
   fontFamily: {
-    sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
-    display: ["Space Grotesk", "Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+    sans: ["Inter Variable", "Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+    display: [
+      "Space Grotesk Variable",
+      "Space Grotesk",
+      "Inter Variable",
+      "Inter",
+      "ui-sans-serif",
+      "system-ui",
+      "sans-serif"
+    ],
     mono: ["JetBrains Mono", "ui-monospace", "SFMono-Regular", "monospace"]
   },
   borderRadius: {
