@@ -1,5 +1,9 @@
 ---
 import { getEntry, render } from "astro:content";
+import { Image } from "astro:assets";
+import session1 from "@assets/sessions/session-1.jpeg";
+import session2 from "@assets/sessions/session-2.jpeg";
+import session3 from "@assets/sessions/session-3.jpeg";
 import Card from "@components/Card.astro";
 import Container from "@components/Container.astro";
 import Hero from "@components/Hero.astro";
@@ -14,6 +18,7 @@ if (!page) {
 }
 
 const { Content } = await render(page);
+const sessionPhotos = [session1, session2, session3];
 ---
 
 <BaseLayout
@@ -65,6 +70,31 @@ const { Content } = await render(page);
       <article class="prose max-w-none">
         <Content />
       </article>
+    </Container>
+  </section>
+
+  <section class="border-t border-white/10 bg-black py-16 sm:py-20">
+    <Container>
+      <SectionHeader
+        eyebrow="Live sessions"
+        title="Real cohorts, working through real problems."
+      />
+      <div class="mt-10 grid gap-4 sm:grid-cols-3">
+        {
+          sessionPhotos.map((photo, index) => (
+            <div class="glass-card overflow-hidden">
+              <Image
+                src={photo}
+                alt="SkillUp live training session"
+                width={640}
+                height={360}
+                loading={index === 0 ? "eager" : "lazy"}
+                class="aspect-video w-full object-cover"
+              />
+            </div>
+          ))
+        }
+      </div>
     </Container>
   </section>
 </BaseLayout>

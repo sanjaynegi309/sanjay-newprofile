@@ -57,7 +57,7 @@ const robots = `${meta.robots.index ? "index" : "noindex"},${meta.robots.follow 
       href={spaceGroteskFontUrl}
       crossorigin
     />
-    <link rel="icon" href={withBase(brand.logo.mark)} />
+    <link rel="icon" type="image/png" href={withBase(brand.logo.mark)} />
     <slot name="head" />
     <Analytics />
   </head>

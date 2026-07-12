@@ -20,7 +20,7 @@ export const brand: BrandConfig = {
     "SkillUp helps professionals and organizations build useful AI skills through structured programs, workshops, and hands-on learning.",
   logo: {
     text: "SkillUp",
-    mark: "/favicon.svg"
+    mark: "/logo.png"
   },
   voice: {
     adjectives: ["professional", "practical", "clear", "engineering-first"]

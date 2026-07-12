@@ -80,10 +80,9 @@ Derived from `.agent/ux-review.md`. Ordered: content/broken-link fixes first (fa
   Replace the filler hero metrics ("Focus: Applied AI", "Audience: Professionals" in `config/home.ts`) with real numbers (learners trained, cohorts run, next cohort date) or remove the metrics card if no real data exists yet.
   *Accept:* hero metrics card on `/` shows no label/value pair that merely restates the tagline.
 
-- [ ] **T14. Founder presence — portrait + credential** — *PARTIALLY DONE, blocked on a real photo*
-  ~~Fix the founder card layout so it doesn't read as a broken image slot~~ — done: replaced the empty `mt-16` gap with an initials avatar ("SN" in a gradient circle) sized/positioned next to the name, so the card reads as intentional even without a photo.
-  Remaining: a real founder portrait. **Not fabricated on purpose** — generating a fake photo of a real, named person (Sanjay Negi) would misrepresent who they are, which is a materially different problem than a missing stock asset. Needs an actual photo file from the site owner.
-  *Accept:* view `/` — founder section shows an actual photo, not an empty gap between badge and name. (Currently: no empty gap, but still no photo — will re-check once a real image is supplied.)
+- [x] **T14. Founder presence — portrait + credential**
+  Real photo supplied by the site owner (`src/assets/founder/sanjay-negi.jpeg`) now renders via `astro:assets` `<Image>` in the home founder section, replacing the initials-avatar interim fix — Astro's image pipeline auto-converts it to WebP (32kB → 2kB).
+  *Accept:* verified in built HTML — `<img src="/_astro/sanjay-negi....webp" alt="Sanjay Negi" ...>` renders in place of the old avatar div.
 
 ---
 
@@ -171,9 +170,9 @@ Derived from `.agent/ux-review.md`. Ordered: content/broken-link fixes first (fa
   Audited — no changes needed. `grep` found zero `tone="hot"`/`variant="hot"`/`hot` prop call sites anywhere in content or pages (nothing currently renders `badge-magenta`, `btn-glow-hot`, or `glass-card-hot`), and zero `text-purple-*`/`bg-purple-*`/`text-magenta-*`/`bg-magenta-*` Tailwind utility usage. The one active magenta usage sitewide is the particle background's `hot: Math.random() < 0.25` pulse — a rare (25% of infrequent pulses), small (2.5px dot), momentary accent that is precisely what `AGENTS.md` describes ("cyan lines/particles with occasional magenta pulses"). The `hero-atmosphere` background gradient's low-opacity purple glow is also explicitly sanctioned ("purple stays in gradients... small highlights"). Nothing sitewide currently violates the documented scope.
   *Accept:* confirmed via `grep -rn "badge-magenta\|btn-glow-hot\|glass-card-hot\|tone=\"hot\"\|variant=\"hot\"" src` and `grep -rn "text-purple-\|bg-purple-\|text-magenta-\|bg-magenta-" src` — no over-scope usage found.
 
-- [ ] **T31. Add trust artifacts**
-  Add 2–3 real organization logos (with permission) near testimonials, and one real session/product screenshot somewhere on `/` or `/about/` (founder portrait already covered by T14).
-  *Accept:* `/` or `/about/` renders at least one non-decorative image that isn't the founder portrait, logo mark, or an SVG background pattern.
+- [x] **T31. Add trust artifacts**
+  Real client organization logos weren't provided (only SkillUp's own logo, which was used to fix the site's brand mark instead — see below). Three real session screenshots were provided and now render in a "Live sessions" gallery on `/about/` (`src/assets/sessions/`, optimized to WebP via `astro:assets`).
+  *Accept:* verified in built HTML — `/about/` renders 3 `<img>` tags with `alt="SkillUp live training session"`, none of which are the founder portrait, logo mark, or an SVG pattern.
 
 ---
 
