@@ -50,9 +50,9 @@ const sessionPhotos = [session1, session2, session3];
             about.principles.items.map((item) => (
               <Card>
                 <div class="space-y-3">
-                  <h2 class="font-display text-lg font-semibold text-white">
+                  <h3 class="font-display text-lg font-semibold text-white">
                     {item.title}
-                  </h2>
+                  </h3>
                   <p class="text-sm leading-6 text-white/70">
                     {item.description}
                   </p>
@@ -85,10 +85,10 @@ const sessionPhotos = [session1, session2, session3];
             <div class="glass-card overflow-hidden">
               <Image
                 src={photo}
-                alt="SkillUp live training session"
+                alt={`SkillUp live training session ${index + 1}`}
                 width={640}
                 height={360}
-                loading={index === 0 ? "eager" : "lazy"}
+                loading="lazy"
                 class="aspect-video w-full object-cover"
               />
             </div>

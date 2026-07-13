@@ -8,6 +8,7 @@ interface Props {
   description?: string;
   align?: "left" | "center";
   tone?: "light" | "dark";
+  headingLevel?: "h1" | "h2" | "h3";
   class?: string;
 }
 
@@ -17,6 +18,7 @@ const {
   description,
   align = "left",
   tone = "light",
+  headingLevel = "h2",
   class: className
 } = Astro.props;
 ---
@@ -30,7 +32,7 @@ const {
 >
   {eyebrow && <Badge tone={tone === "dark" ? "neutral" : "accent"}>{eyebrow}</Badge>}
   <div class="space-y-3">
-    <Heading as="h2" size="lg">{title}</Heading>
+    <Heading as={headingLevel} size="lg">{title}</Heading>
     {
       description && (
         <p

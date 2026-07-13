@@ -88,12 +88,6 @@ body::before {
     background-image: theme("backgroundImage.navy-tint");
   }
 
-  .section-hot {
-    position: relative;
-    background-image: theme("backgroundImage.hot-atmosphere");
-    color: #ffffff;
-  }
-
   /* ---------------------------------------------------------------
    * Glassmorphism cards
    * --------------------------------------------------------------- */
@@ -385,10 +379,6 @@ body::before {
   .ambient-toggle:focus-visible .ambient-toggle-tip {
     opacity: 1;
     transform: translateY(0);
-  }
-
-  .teal-glow {
-    box-shadow: theme("boxShadow.glow-cyan");
   }
 
   /* ---------------------------------------------------------------

@@ -31,7 +31,14 @@ const currentYear = new Date().getFullYear();
           class="inline-flex items-center gap-3 font-semibold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-400"
           aria-label={`${brand.name} home`}
         >
-          <img src={withBase(brand.logo.mark)} alt="" class="h-8 w-8" width="32" height="32" />
+          <img
+            src={withBase(brand.logo.mark)}
+            alt=""
+            class="h-8 w-8"
+            width="32"
+            height="32"
+            loading="lazy"
+          />
           <span>{brand.logo.text}</span>
         </a>
         <p class="max-w-sm text-sm leading-6 text-neutral-300">{brand.description}</p>

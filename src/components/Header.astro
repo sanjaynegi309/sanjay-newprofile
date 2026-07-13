@@ -238,6 +238,8 @@ function isCurrent(href: string): boolean {
   const mobileNav = document.querySelector<HTMLDetailsElement>("[data-mobile-nav]");
 
   if (mobileNav) {
+    const mobileNavToggle = mobileNav.querySelector<HTMLElement>("summary");
+
     const closeMobileNav = () => {
       mobileNav.open = false;
     };
@@ -249,6 +251,10 @@ function isCurrent(href: string): boolean {
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape" && mobileNav.open) {
         closeMobileNav();
+        // Keyboard-driven close: return focus to the toggle so it isn't
+        // stranded on a now-hidden element. Outside-click closes don't need
+        // this -- the click itself already moved focus somewhere sensible.
+        mobileNavToggle?.focus();
       }
     });
 
