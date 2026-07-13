@@ -63,7 +63,7 @@ const workshops = (await getCollection("workshops"))
 
   <section class="bg-black py-16 sm:py-20">
     <Container>
-      <div class="grid gap-5 lg:grid-cols-2">
+      <div class="grid gap-5 lg:grid-cols-2 [&>*:last-child:nth-child(odd)]:lg:col-span-2">
         {
           workshops.map((workshop) => (
             <WorkshopCard

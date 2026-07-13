@@ -8,43 +8,62 @@
   aria-label="Cookie consent"
   hidden
 >
-  <p class="text-sm leading-6 text-white/80">
-    This site uses Google Analytics to understand how visitors use it. You can
-    accept or decline — declining won't affect your ability to browse.
-  </p>
-  <div class="mt-4 flex flex-wrap gap-3">
-    <button
-      type="button"
-      data-consent="accept"
-      class="btn-glow inline-flex min-h-9 items-center justify-center rounded-full px-4 text-sm font-display font-semibold tracking-tight transition duration-base focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-500"
-    >
-      Accept
-    </button>
-    <button
-      type="button"
-      data-consent="decline"
-      class="btn-ghost-glass inline-flex min-h-9 items-center justify-center rounded-full px-4 text-sm font-display font-semibold tracking-tight transition duration-base focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-500"
-    >
-      Decline
-    </button>
+  <div class="consent-banner-inner">
+    <p class="text-xs leading-5 text-white/80">
+      This site uses Google Analytics to understand how visitors use it. You
+      can accept or decline — declining won't affect your ability to browse.
+    </p>
+    <div class="flex shrink-0 gap-2">
+      <button
+        type="button"
+        data-consent="accept"
+        class="btn-glow inline-flex min-h-8 items-center justify-center rounded-full px-3 text-xs font-display font-semibold tracking-tight transition duration-base focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-500"
+      >
+        Accept
+      </button>
+      <button
+        type="button"
+        data-consent="decline"
+        class="btn-ghost-glass inline-flex min-h-8 items-center justify-center rounded-full px-3 text-xs font-display font-semibold tracking-tight transition duration-base focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-500"
+      >
+        Decline
+      </button>
+    </div>
   </div>
 </div>
 
 <style>
+  /* Full-width bar flush with the bottom edge, not a floating corner
+     card. A corner card has to gamble on which corner collides least
+     with page content -- this site's two-column layouts (asides, card
+     grids) run close to both edges on most pages, so every corner
+     loses somewhere. A thin edge-anchored bar sidesteps the problem
+     instead of trying to win it. */
   .consent-banner {
     position: fixed;
     z-index: 60;
-    right: 1rem;
-    bottom: 1rem;
-    left: 1rem;
-    max-width: 24rem;
+    inset-inline: 0;
+    bottom: 0;
+    border-radius: 0;
+    border-width: 1px 0 0 0;
+    padding: 0.75rem 1rem;
+  }
+
+  .consent-banner-inner {
     margin-inline: auto;
-    padding: 1.25rem;
+    display: flex;
+    max-width: 72rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.625rem;
   }
 
   @media (min-width: 640px) {
-    .consent-banner {
-      left: auto;
+    .consent-banner-inner {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
     }
   }
 </style>

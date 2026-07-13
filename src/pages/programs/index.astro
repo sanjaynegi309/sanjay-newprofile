@@ -59,7 +59,7 @@ const groupedPrograms = LEVEL_ORDER.map((level) => ({
               <h2 class="font-display text-sm font-semibold uppercase tracking-[0.08em] text-white/50">
                 {group.label}
               </h2>
-              <div class="grid gap-5 lg:grid-cols-2">
+              <div class="grid gap-5 lg:grid-cols-2 [&>*:last-child:nth-child(odd)]:lg:col-span-2">
                 {group.programs.map((program) => (
                   <ProgramCard
                     program={program}
