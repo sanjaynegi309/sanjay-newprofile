@@ -17,6 +17,11 @@
 
   --text: #ffffff;
   --text-muted: rgba(255, 255, 255, 0.7);
+
+  /* Fine, near-invisible grain -- adds material/tactile depth to large
+     flat dark sections without reading as a "pattern" the way a grid
+     does. Pure white noise at ~5% max alpha via feColorMatrix. */
+  --noise-texture: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 html {
@@ -42,11 +47,10 @@ body::before {
   z-index: -1;
   pointer-events: none;
   background-image:
-    linear-gradient(rgb(255 255 255 / 0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(255 255 255 / 0.025) 1px, transparent 1px),
+    var(--noise-texture),
     radial-gradient(circle at 12% 8%, rgb(0 212 255 / 0.07), transparent 34%),
     radial-gradient(circle at 88% 92%, rgb(131 56 236 / 0.08), transparent 38%);
-  background-size: 64px 64px, 64px 64px, auto, auto;
+  background-size: 100px 100px, auto, auto;
 }
 
 :focus-visible {
@@ -61,11 +65,8 @@ body::before {
   .section-atmospheric {
     position: relative;
     overflow: hidden;
-    background-image:
-      linear-gradient(rgb(255 255 255 / 0.035) 1px, transparent 1px),
-      linear-gradient(90deg, rgb(255 255 255 / 0.035) 1px, transparent 1px),
-      theme("backgroundImage.section-atmosphere");
-    background-size: 56px 56px, 56px 56px, auto;
+    background-image: theme("backgroundImage.section-atmosphere");
+    background-size: auto;
     color: #ffffff;
   }
 
