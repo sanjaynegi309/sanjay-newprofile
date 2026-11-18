@@ -1,0 +1,33 @@
+---
+import Container from "@components/Container.astro";
+import FAQ from "@components/FAQ.astro";
+import SectionHeader from "@components/SectionHeader.astro";
+import { faq } from "@config/faq";
+import BaseLayout from "@layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  seo={{
+    title: faq.title,
+    description: faq.description,
+    canonicalPath: "/faq/"
+  }}
+>
+  <section class="section-atmospheric border-b border-white/10 workshop-section">
+    <Container>
+      <SectionHeader
+        eyebrow={faq.eyebrow}
+        title={faq.title}
+        description={faq.description}
+        tone="dark"
+        headingLevel="h1"
+      />
+    </Container>
+  </section>
+
+  <section class="bg-black workshop-section">
+    <Container size="md">
+      <FAQ items={faq.items} />
+    </Container>
+  </section>
+</BaseLayout>

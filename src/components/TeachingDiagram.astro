@@ -1,0 +1,72 @@
+---
+import type { TeachingDiagramContent } from "../types/teaching";
+interface Props {
+  content: TeachingDiagramContent;
+}
+const { content } = Astro.props;
+---
+
+<figure class="teaching-diagram" aria-labelledby="teaching-diagram-title">
+  <p class="workshop-annotation">{content.label}</p>
+  <h2 id="teaching-diagram-title" class="mt-4 font-display text-2xl font-semibold text-heading sm:text-3xl">{content.title}</h2>
+  <p class="mt-5 border-b border-white/20 pb-4 text-sm text-copy">{content.question}</p>
+  <ol class="diagram-steps">
+    {content.steps.map((step, index) => (
+      <li class="diagram-step">
+        <span class="diagram-number" aria-hidden="true">{index + 1}</span>
+        <div>
+          <h3 class="font-display text-lg font-semibold text-heading">{step.title}</h3>
+          <p class="mt-1 max-w-sm text-sm leading-6 text-copy">{step.description}</p>
+        </div>
+      </li>
+    ))}
+  </ol>
+  <p class="border-l-2 border-accent-500 pl-4 text-sm leading-6 text-heading">{content.note}</p>
+  <figcaption class="mt-4 text-xs leading-5 text-copy">{content.caption}</figcaption>
+</figure>
+
+<style>
+.teaching-diagram {
+  padding: 1.5rem;
+  border: 1px solid var(--card-border);
+  background: var(--primary);
+}
+.diagram-steps {
+  display: grid;
+  gap: 1.25rem;
+  padding-block: 1.5rem;
+}
+.diagram-step {
+  display: flex;
+  gap: 1rem;
+}
+.diagram-number {
+  display: flex;
+  flex: 0 0 2rem;
+  width: 2rem;
+  height: 2rem;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--link);
+  color: var(--link);
+  font-family: var(--workshop-mono);
+  font-size: 0.875rem;
+}
+@media (max-width: 1023px) {
+  .diagram-steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+  .diagram-step {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .diagram-step h3 {
+    font-size: 1rem;
+  }
+  .diagram-step p {
+    font-size: 0.75rem;
+    line-height: 1.5;
+  }
+}
+</style>

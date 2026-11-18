@@ -1,0 +1,26 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { analytics } from "@config/analytics";
+import { getContentSlug } from "@utils/slugs";
+import { withBase } from "@utils/url";
+interface Props {
+  program: CollectionEntry<"programs">;
+  actionLabel: string;
+}
+const { program, actionLabel } = Astro.props;
+const { data } = program;
+---
+
+<article class="summary-row">
+  <div>
+    <p class="workshop-annotation">{data.duration} / {data.level}</p>
+    <h3 class="mt-3 font-display text-xl font-semibold text-heading sm:text-2xl">{data.title}</h3>
+  </div>
+  <div>
+    <p class="text-sm leading-6 text-copy">{data.outcomes[0]}</p>
+  </div>
+  <a href={withBase(`/programs/${getContentSlug(program)}/`)} class="workshop-link inline-flex min-h-11 items-center text-sm font-semibold"
+    data-analytics-event={analytics.events.ctaClick} data-analytics-label={data.title}>
+    {actionLabel}<span class="sr-only">: {data.title}</span>
+  </a>
+</article>

@@ -10,6 +10,7 @@ export default {
       boxShadow: theme.boxShadow,
       fontFamily: theme.fontFamily,
       borderRadius: theme.borderRadius,
+      spacing: theme.spacing,
       transitionDuration: theme.motion.duration,
       transitionTimingFunction: theme.motion.easing
     }

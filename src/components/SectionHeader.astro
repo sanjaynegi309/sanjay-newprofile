@@ -1,5 +1,4 @@
 ---
-import Badge from "./Badge.astro";
 import Heading from "./Heading.astro";
 
 interface Props {
@@ -9,6 +8,7 @@ interface Props {
   align?: "left" | "center";
   tone?: "light" | "dark";
   headingLevel?: "h1" | "h2" | "h3";
+  headingSize?: "lg" | "md";
   class?: string;
 }
 
@@ -19,6 +19,7 @@ const {
   align = "left",
   tone = "light",
   headingLevel = "h2",
+  headingSize = "lg",
   class: className
 } = Astro.props;
 ---
@@ -27,18 +28,19 @@ const {
   class:list={[
     "space-y-4",
     align === "center" && "mx-auto max-w-3xl text-center",
+    `section-header-${tone}`,
     className
   ]}
 >
-  {eyebrow && <Badge tone={tone === "dark" ? "neutral" : "accent"}>{eyebrow}</Badge>}
+  {eyebrow && <p class="workshop-annotation">{eyebrow}</p>}
   <div class="space-y-3">
-    <Heading as={headingLevel} size="lg">{title}</Heading>
+    <Heading as={headingLevel} size={headingSize}>{title}</Heading>
     {
       description && (
         <p
           class:list={[
             "text-base leading-7 sm:text-lg",
-            tone === "dark" ? "text-white/60" : "text-white/70"
+            "text-copy max-w-prose"
           ]}
         >
           {description}

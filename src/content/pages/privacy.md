@@ -26,4 +26,4 @@ Google Analytics may set cookies in your browser to distinguish visitors. No oth
 
 ## Questions
 
-For any privacy questions, contact SkillUp using the email address on the [Contact](/contact/) page.
+For any privacy questions, contact SkillUp using the email address on the [Contact](../contact/) page.

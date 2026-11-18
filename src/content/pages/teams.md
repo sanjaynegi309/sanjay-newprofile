@@ -1,6 +1,6 @@
 ---
 title: "AI Training for Teams"
-description: "Corporate AI education programs designed around practical workflows and measurable outcomes."
+description: "Corporate AI education programs designed around practical workflows and defined business goals."
 publishedAt: 2026-07-06
 pageType: "landing"
 seo:
@@ -14,8 +14,8 @@ SkillUp designs corporate AI training around your team's existing tools, workflo
 
 ## What a typical engagement includes
 
-Most engagements start with a short discovery conversation to identify the roles, workflows, and business outcomes training should support. From there, SkillUp designs a mix of live workshops, cohort sessions, or leadership briefings — each ending with a concrete next-action plan the team can execute without further coaching.
+A scoped engagement starts with a short discovery conversation to identify the roles, workflows, and business goals training should support. From there, the proposed format may combine live workshops, cohort sessions, or leadership briefings, with next actions agreed during scoping.
 
-## Why teams choose SkillUp
+## Why use this approach
 
-Training is treated as a capability-building investment, not a one-off event. Leaders get shared language for evaluating AI opportunities, practitioners get review habits and reusable patterns, and the organization leaves with a documented adoption plan it can act on immediately.
+The approach treats training as capability building rather than a one-off presentation. It is designed to help leaders develop shared language for evaluating AI opportunities and help practitioners practise review habits and reusable patterns. Specific deliverables are confirmed during scoping.

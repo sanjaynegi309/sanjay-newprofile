@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import Card from "./Card.astro";
+import { withBase } from "@utils/url";
 
 interface Props {
   testimonial: CollectionEntry<"testimonials">;
@@ -8,19 +9,52 @@ interface Props {
 
 const { testimonial } = Astro.props;
 const { data } = testimonial;
+
+const initials = data.name
+  .split(" ")
+  .map((part) => part[0])
+  .join("")
+  .slice(0, 2)
+  .toUpperCase();
 ---
 
 <Card class="h-full">
-  <figure class="space-y-5">
+  <figure class="flex h-full flex-col gap-5">
     <blockquote class="text-base leading-7 text-white/90">
       <p>&ldquo;{data.quote}&rdquo;</p>
     </blockquote>
-    <figcaption class="border-t border-white/10 pt-4">
-      <p class="font-semibold text-white">{data.name}</p>
-      <p class="text-sm text-white/60">
-        {data.role}, {data.organization}
-      </p>
-      {data.program && <p class="mt-1 text-sm text-accent-300">{data.program}</p>}
+    {
+      data.outcome && (
+        <p class="badge badge-cyan self-start">{data.outcome}</p>
+      )
+    }
+    <figcaption class="mt-auto flex items-center gap-3 border-t border-white/10 pt-4">
+      {
+        data.image ? (
+          <img
+            src={withBase(data.image)}
+            alt=""
+            width={48}
+            height={48}
+            loading="lazy"
+            class="h-12 w-12 shrink-0 rounded-full object-cover"
+          />
+        ) : (
+          <span
+            class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white/10 font-display text-sm font-semibold text-white/70"
+            aria-hidden="true"
+          >
+            {initials}
+          </span>
+        )
+      }
+      <div>
+        <p class="font-semibold text-white">{data.name}</p>
+        <p class="text-sm text-white/60">
+          {data.role}, {data.organization}
+        </p>
+        {data.program && <p class="mt-1 text-sm text-accent-300">{data.program}</p>}
+      </div>
     </figcaption>
   </figure>
 </Card>

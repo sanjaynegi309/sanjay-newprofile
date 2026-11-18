@@ -1,0 +1,281 @@
+---
+import Button from "./Button.astro";
+import { forms } from "@config/forms";
+
+interface EnquiryTypeOption { value: string; label: string; analyticsEvent: string; }
+interface Props {
+  heading: string;
+  description?: string;
+  formType?: string;
+  typeOptions?: readonly EnquiryTypeOption[];
+  interestLabel?: string;
+  interestPlaceholder?: string;
+  goalsLabel?: string;
+  qualifyingLabel?: string;
+  analyticsEvent?: string;
+  submitLabel?: string;
+  fallbackEmail?: string;
+  id?: string;
+}
+
+const {
+  heading, description, formType, typeOptions,
+  interestLabel = "Program, bootcamp, or team of interest",
+  interestPlaceholder = "e.g. AI Engineer",
+  goalsLabel,
+  qualifyingLabel = "What would you like help deciding?",
+  submitLabel = "Send", analyticsEvent, fallbackEmail, id = "enquiry-form"
+} = Astro.props;
+
+const requestedType = Astro.url.searchParams.get("type") ?? formType ?? typeOptions?.[0]?.value ?? "enquiry";
+const selectedType = typeOptions?.some((option) => option.value === requestedType) ? requestedType : (formType ?? typeOptions?.[0]?.value ?? requestedType);
+const initialInterest = Astro.url.searchParams.get("interest") ?? "";
+const source = Astro.url.searchParams.get("source") ?? Astro.url.pathname;
+const email = fallbackEmail ?? "";
+const initialSubject = `${selectedType === "corporate" ? "Team training" : "Learning"} enquiry${initialInterest ? ` — ${initialInterest}` : ""}`;
+const initialBody = [`Enquiry type: ${selectedType}`, initialInterest ? `Interest: ${initialInterest}` : "", `Source: ${source}`].filter(Boolean).join("\n");
+const initialMailto = `mailto:${email}?subject=${encodeURIComponent(initialSubject)}&body=${encodeURIComponent(initialBody)}`;
+const inputClasses = "mt-1.5 w-full rounded-md border border-white/45 bg-white/5 px-3 py-2.5 text-base text-white placeholder:text-white/55 transition duration-base focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-500 focus:border-accent-500/60";
+---
+
+<div
+  class="glass-card p-5 sm:p-6"
+  data-enquiry-form-wrapper
+  data-recipient={email}
+  data-source={source}
+  data-completion-event={analyticsEvent}
+  data-endpoint={forms.endpoint}
+  data-fallback-message={forms.fallbackMessage}
+  id={id}
+>
+  <h3 class="font-display text-xl font-semibold text-white">{heading}</h3>
+  {description && <p class="mt-2 text-sm leading-6 text-white/65">{description}</p>}
+  <p class="mt-4 border-l-2 border-accent-400 pl-3 text-sm leading-6 text-white/75">{forms.handoffMessage}</p>
+
+  <form class="mt-6 space-y-4" data-enquiry-form novalidate>
+    {!typeOptions && <input type="hidden" name="formType" value={selectedType} />}
+
+    <div class="absolute left-[-9999px] h-0 w-0 overflow-hidden" aria-hidden="true">
+      <label for={`${id}-company`}>Leave this field blank</label>
+      <input id={`${id}-company`} type="text" name="company" tabindex={-1} autocomplete="off" />
+    </div>
+
+    <div class="grid gap-4 sm:grid-cols-2">
+      <label class="block text-sm" for={`${id}-name`}>
+        <span class="text-white/75">Name <span aria-hidden="true">*</span></span>
+        <input id={`${id}-name`} type="text" name="name" required class={inputClasses} autocomplete="name" aria-describedby={`${id}-name-error`} />
+        <span id={`${id}-name-error`} class="mt-1.5 block text-sm text-magenta-300" data-error="name" hidden>Enter your name.</span>
+      </label>
+      <label class="block text-sm" for={`${id}-email`}>
+        <span class="text-white/75">Email <span aria-hidden="true">*</span></span>
+        <input id={`${id}-email`} type="email" name="email" required class={inputClasses} autocomplete="email" aria-describedby={`${id}-email-error`} />
+        <span id={`${id}-email-error`} class="mt-1.5 block text-sm text-magenta-300" data-error="email" hidden>Enter a valid email address.</span>
+      </label>
+    </div>
+
+    {typeOptions && (
+      <label class="block text-sm" for={`${id}-type`}>
+        <span class="text-white/75">Enquiry path</span>
+        <select id={`${id}-type`} name="formType" required class={inputClasses} data-type-select>
+          {typeOptions.map((option) => (
+            <option
+              value={option.value}
+              selected={option.value === selectedType}
+              data-analytics-event={option.analyticsEvent}
+              style="background-color: var(--card); color: var(--text);"
+            >
+              {option.label}
+            </option>
+          ))}
+        </select>
+      </label>
+    )}
+
+    <label class="block text-sm" for={`${id}-interest`}>
+      <span class="text-white/75">{interestLabel}</span>
+      <input id={`${id}-interest`} type="text" name="interest" value={initialInterest} placeholder={interestPlaceholder} class={inputClasses} />
+    </label>
+
+    {goalsLabel && (
+      <label class="block text-sm" for={`${id}-goals`}>
+        <span class="text-white/75">{goalsLabel} <span aria-hidden="true">*</span></span>
+        <textarea id={`${id}-goals`} name="goals" required rows="3" class={inputClasses} aria-describedby={`${id}-goals-error`}></textarea>
+        <span id={`${id}-goals-error`} class="mt-1.5 block text-sm text-magenta-300" data-error="goals" hidden>Tell us what capability or business outcome the training should support.</span>
+      </label>
+    )}
+
+    <label class="block text-sm" for={`${id}-message`}>
+      <span class="text-white/75">{qualifyingLabel} <span aria-hidden="true">*</span></span>
+      <textarea id={`${id}-message`} name="message" required rows="4" class={inputClasses} aria-describedby={`${id}-message-error`}></textarea>
+      <span id={`${id}-message-error`} class="mt-1.5 block text-sm text-magenta-300" data-error="message" hidden>Add a short note so Sanjay can respond to the right question.</span>
+    </label>
+
+    <div class="rounded-md border border-magenta-400/40 bg-magenta-950/30 p-3 text-sm text-magenta-200" data-error-summary role="alert" tabindex="-1" hidden>
+      Check the highlighted fields, then try again.
+    </div>
+
+    <div class="flex flex-col items-stretch gap-3 pt-2 sm:flex-row sm:items-center">
+      <Button type="submit" data-submit-button>{submitLabel}</Button>
+      {email && <a href={initialMailto} data-direct-email class="inline-flex min-h-11 items-center justify-center text-sm text-white/65 underline underline-offset-4 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-500">Email {email} directly</a>}
+    </div>
+  </form>
+
+  <p class="mt-4 text-sm leading-6 text-accent-300" data-form-status role="status" aria-live="polite" hidden></p>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-enquiry-form-wrapper]").forEach((wrapper) => {
+    const form = wrapper.querySelector<HTMLFormElement>("[data-enquiry-form]");
+    const summary = wrapper.querySelector<HTMLElement>("[data-error-summary]");
+    const status = wrapper.querySelector<HTMLElement>("[data-form-status]");
+    const typeSelect = wrapper.querySelector<HTMLSelectElement>("[data-type-select]");
+    const directEmail = wrapper.querySelector<HTMLAnchorElement>("[data-direct-email]");
+    const submitButton = wrapper.querySelector<HTMLButtonElement>("[data-submit-button]");
+    const recipient = wrapper.dataset.recipient ?? "";
+    const completionEventAttr = wrapper.dataset.completionEvent ?? "";
+    const endpoint = wrapper.dataset.endpoint ?? "";
+    const fallbackMessage = wrapper.dataset.fallbackMessage ?? "";
+    const submitLabel = submitButton?.textContent ?? "Send";
+    const urlParams = new URLSearchParams(location.search);
+    const source = urlParams.get("source") ?? wrapper.dataset.source ?? location.pathname;
+    if (!form || !recipient) return;
+    let enquiryStarted = false;
+    let submitting = false;
+
+    const field = (name: string) => form.elements.namedItem(name) as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | null;
+    const error = (name: string) => wrapper.querySelector<HTMLElement>(`[data-error="${name}"]`);
+
+    const validate = (name: "name" | "email" | "goals" | "message") => {
+      const input = field(name);
+      if (!input) return true;
+      const valid = input.value.trim().length > 0 && (name !== "email" || (input as HTMLInputElement).validity.valid);
+      input.setAttribute("aria-invalid", String(!valid));
+      const message = error(name);
+      if (message) message.hidden = valid;
+      return valid;
+    };
+
+    const buildMailto = () => {
+      const type = field("formType")?.value || "enquiry";
+      const interest = field("interest")?.value.trim() || "Not specified";
+      const subject = `${type === "corporate" ? "Team training" : "Learning"} enquiry — ${interest}`;
+      const body = [
+        `Name: ${field("name")?.value.trim() || ""}`,
+        `Email: ${field("email")?.value.trim() || ""}`,
+        `Enquiry type: ${type}`,
+        `Interest: ${interest}`,
+        field("goals")?.value.trim() ? `Training goals: ${field("goals")?.value.trim()}` : "",
+        "",
+        field("message")?.value.trim() || "",
+        "",
+        `Source: ${source}`
+      ].join("\n");
+      return `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    };
+
+    const completionEvent = () => {
+      const selected = typeSelect?.selectedOptions[0] as HTMLOptionElement | undefined;
+      return selected?.dataset.analyticsEvent || completionEventAttr || "enquiry_completion";
+    };
+
+    const showStatus = (message: string) => {
+      if (!status) return;
+      status.textContent = message;
+      status.hidden = false;
+    };
+
+    const requestedType = urlParams.get("type");
+    if (requestedType && typeSelect && [...typeSelect.options].some((option) => option.value === requestedType)) {
+      typeSelect.value = requestedType;
+    }
+    const requestedInterest = urlParams.get("interest");
+    const interestInput = field("interest");
+    if (requestedInterest && interestInput) interestInput.value = requestedInterest;
+    if (directEmail) directEmail.href = buildMailto();
+
+    typeSelect?.addEventListener("change", () => {
+      if (directEmail) directEmail.href = buildMailto();
+    });
+
+    form.addEventListener("input", () => {
+      if (enquiryStarted) return;
+      enquiryStarted = true;
+      document.dispatchEvent(new CustomEvent("skillup:analytics-event", {
+        detail: { name: "enquiry_start", label: field("formType")?.value || "enquiry" }
+      }));
+    });
+
+    (["name", "email", ...(field("goals") ? ["goals" as const] : []), "message"] as const).forEach((name) => {
+      const input = field(name);
+      input?.addEventListener("blur", () => validate(name));
+      input?.addEventListener("input", () => {
+        if (input.getAttribute("aria-invalid") === "true") validate(name);
+        if (directEmail) directEmail.href = buildMailto();
+      });
+    });
+    field("interest")?.addEventListener("input", () => { if (directEmail) directEmail.href = buildMailto(); });
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (submitting) return;
+      const checks = (["name", "email", ...(field("goals") ? ["goals" as const] : []), "message"] as const).map(validate);
+      const valid = checks.every(Boolean);
+      if (summary) summary.hidden = valid;
+      if (!valid) {
+        summary?.focus();
+        return;
+      }
+
+      // Honeypot: bots fill every field, including this hidden one. Real
+      // visitors never see it, so a non-empty value is never a false positive.
+      if ((field("company") as HTMLInputElement | null)?.value) {
+        showStatus("Thanks — this has been sent to Sanjay.");
+        form.reset();
+        return;
+      }
+
+      if (!endpoint) {
+        showStatus(fallbackMessage);
+        window.location.href = buildMailto();
+        return;
+      }
+
+      submitting = true;
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.textContent = "Sending…";
+      }
+
+      try {
+        const payload = new URLSearchParams({
+          formType: field("formType")?.value || "enquiry",
+          name: field("name")?.value.trim() || "",
+          email: field("email")?.value.trim() || "",
+          interest: field("interest")?.value.trim() || "",
+          message: [field("goals")?.value.trim() ? `Training goals: ${field("goals")?.value.trim()}` : "", field("message")?.value.trim() || ""].filter(Boolean).join("\n\n"),
+          pageUrl: location.href
+        });
+        const response = await fetch(endpoint, { method: "POST", body: payload });
+        if (!response.ok) throw new Error(`Submission failed: ${response.status}`);
+        const result = await response.json();
+        if (result?.result !== "success") throw new Error("Unexpected response from forms backend.");
+
+        showStatus("Thanks — this has been sent to Sanjay directly. Expect a reply soon.");
+        document.dispatchEvent(new CustomEvent("skillup:analytics-event", {
+          detail: { name: completionEvent(), label: field("formType")?.value || "enquiry" }
+        }));
+        form.reset();
+        if (directEmail) directEmail.href = buildMailto();
+      } catch {
+        showStatus(fallbackMessage);
+        window.location.href = buildMailto();
+      } finally {
+        submitting = false;
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.textContent = submitLabel;
+        }
+      }
+    });
+  });
+</script>

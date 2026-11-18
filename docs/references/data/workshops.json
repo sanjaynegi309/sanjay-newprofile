@@ -1,0 +1,33 @@
+[
+  {
+    "id": "genai-jumpstart-first-ai-agent",
+    "title": "GenAI Jumpstart: Build Your First AI Agent",
+    "summary": "Build your first working AI agent while understanding how prompts, tools, memory, and orchestration fit together inside a real GenAI system.",
+    "duration": "1-Day Live Bootcamp",
+    "dates": "August 1, 2026",
+    "timings": "10:00 AM - 1:00 PM IST",
+    "schedule": "1 Saturday",
+    "instructor": "Sanjay Negi",
+    "format": "Live Online",
+    "tags": [
+      "BUILD TOGETHER LIVE",
+      "AI AGENTS"
+    ],
+    "idealFor": [
+      "Experienced developers new to GenAI systems",
+      "Tech leads exploring agentic AI",
+      "Professionals who want a guided first build"
+    ],
+    "buildOutcome": "A working AI agent that can reason through a task, use tools, and produce a useful result.",
+    "features": [
+      "Understand the building blocks of a practical AI agent",
+      "Connect an LLM to tools and external functions",
+      "Build and run a guided agent workflow",
+      "See where memory, RAG, and multi-agent patterns fit",
+      "Leave with starter code and an extension roadmap"
+    ],
+    "image": "",
+    "url": "genai-jumpstart-workshop.html",
+    "cta": "Build My First AI Agent →"
+  }
+]

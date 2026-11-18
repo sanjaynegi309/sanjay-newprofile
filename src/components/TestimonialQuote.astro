@@ -1,0 +1,20 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  testimonial: CollectionEntry<"testimonials">;
+}
+const { testimonial } = Astro.props;
+const { data } = testimonial;
+---
+
+<figure class="summary-row">
+  <blockquote class="text-sm leading-6 text-copy">
+    <p>&ldquo;{data.quote}&rdquo;</p>
+  </blockquote>
+  <figcaption>
+    <p class="font-display text-base font-semibold text-heading">{data.name}</p>
+    <p class="text-xs text-copy">{data.role}, {data.organization}</p>
+    {data.outcome && <p class="mt-1 text-xs font-semibold text-accent-300">{data.outcome}</p>}
+  </figcaption>
+</figure>

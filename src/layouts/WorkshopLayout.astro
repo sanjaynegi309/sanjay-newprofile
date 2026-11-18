@@ -8,6 +8,7 @@ import { analytics } from "@config/analytics";
 import { site } from "@config/site";
 import { formatList, getWorkshopDateInfo } from "@utils/format";
 import { getContentSlug } from "@utils/slugs";
+import { getEnquiryHref } from "@utils/enquiry";
 
 interface Props {
   workshop: CollectionEntry<"workshops">;
@@ -47,12 +48,19 @@ const dateInfo = getWorkshopDateInfo(data.date, site.language);
               </p>
             </div>
             {
-              data.cta ? (
+              dateInfo.isPast ? (
+                <Button href={getEnquiryHref("workshop", data.title, canonicalPath)} analyticsEvent={analytics.events.contact}>
+                  Join the waitlist for the next session
+                </Button>
+              ) : data.cta ? (
                 <Button
                   href={data.cta.href}
                   analyticsEvent={data.cta.analyticsEvent}
+                  target={data.cta.external ? "_blank" : undefined}
+                  rel={data.cta.external ? "noreferrer" : undefined}
                 >
                   {data.cta.label}
+                  {data.cta.external && <span class="sr-only"> (opens in new tab)</span>}
                 </Button>
               ) : (
                 data.registrationUrl && (
@@ -101,9 +109,9 @@ const dateInfo = getWorkshopDateInfo(data.date, site.language);
       </Container>
     </section>
 
-    <section class="section-navy-tint">
+    <section class="workbook">
       <Container>
-      <div class="grid gap-12 py-16 lg:grid-cols-[1fr_18rem] lg:items-start">
+      <div class="grid gap-12 workshop-section lg:grid-cols-[1fr_18rem] lg:items-start">
         <div class="prose max-w-none">
           <slot />
         </div>

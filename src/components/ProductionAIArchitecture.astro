@@ -1,0 +1,57 @@
+<figure class="architecture-visual glass-card relative overflow-hidden p-4 sm:p-5" aria-labelledby="architecture-title architecture-caption">
+  <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_75%_15%,rgba(34,211,238,0.10),transparent_42%)]" aria-hidden="true"></div>
+  <div class="relative">
+    <div class="flex items-center justify-between gap-4 border-b border-white/10 pb-4">
+      <div>
+        <p class="font-mono text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-accent-300">Production AI System</p>
+        <h2 id="architecture-title" class="mt-1 font-display text-lg font-semibold text-white">From application to model</h2>
+      </div>
+      <span class="flex items-center gap-2 text-xs text-white/45"><span class="h-2 w-2 rounded-full bg-accent-300 shadow-[0_0_12px_rgba(34,211,238,0.7)]" aria-hidden="true"></span>Live architecture</span>
+    </div>
+
+    <ol class="architecture-flow mt-5" aria-label="Production AI architecture flow">
+      <li class="architecture-node">
+        <span class="architecture-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M7 6.5h.01M10 6.5h.01"/></svg></span>
+        <div><p class="architecture-label font-display">Business Application</p><p class="architecture-detail">User workflow and APIs</p></div>
+      </li>
+      <li class="architecture-node">
+        <span class="architecture-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/></svg></span>
+        <div><p class="architecture-label font-display">AI Agent / Orchestration</p><p class="architecture-detail">Reasoning, tools, and control</p></div>
+      </li>
+      <li class="architecture-node">
+        <span class="architecture-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg></span>
+        <div><p class="architecture-label font-display">Retrieval / Knowledge</p><p class="architecture-detail">Grounded enterprise context</p></div>
+      </li>
+      <li class="architecture-node">
+        <span class="architecture-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M8 4h8l4 4v8l-4 4H8l-4-4V8l4-4Z"/><path d="M9 9h6v6H9z"/></svg></span>
+        <div><p class="architecture-label font-display">Foundation Model</p><p class="architecture-detail">Model inference and generation</p></div>
+      </li>
+    </ol>
+
+    <div class="mt-5 grid grid-cols-3 gap-2 border-t border-white/10 pt-4" aria-label="Cross-cutting engineering practices">
+      {[
+        ["Evaluation", "Quality"],
+        ["Observability", "Signals"],
+        ["Deployment", "Runtime"]
+      ].map(([title, detail]) => (
+        <div class="rounded-control border border-white/10 bg-black/20 px-2 py-2.5 text-center">
+          <p class="text-[0.68rem] font-semibold text-white/75 sm:text-xs">{title}</p>
+          <p class="mt-0.5 hidden text-[0.62rem] text-white/40 sm:block">{detail}</p>
+        </div>
+      ))}
+    </div>
+    <figcaption id="architecture-caption" class="mt-3 text-xs leading-5 text-white/45">A simplified view of the engineering layers behind a production-oriented AI application.</figcaption>
+  </div>
+</figure>
+
+<style>
+  .architecture-flow { display: grid; gap: 1.35rem; }
+  .architecture-node { position: relative; display: flex; align-items: center; gap: 0.8rem; min-width: 0; border: 1px solid rgb(255 255 255 / 0.1); border-radius: var(--surface-radius); background: rgb(0 0 0 / 0.2); padding: 0.75rem; }
+  .architecture-node:not(:last-child)::after { content: ""; position: absolute; left: 1.75rem; top: calc(100% + 1px); height: 1.35rem; width: 1px; background: linear-gradient(var(--accent), rgb(34 211 238 / 0.12)); }
+  .architecture-node:not(:last-child)::before { content: ""; position: absolute; z-index: 1; left: calc(1.75rem - 3px); top: calc(100% + 1rem); width: 7px; height: 7px; border-right: 1px solid var(--accent); border-bottom: 1px solid var(--accent); transform: rotate(45deg); }
+  .architecture-icon { display: grid; width: 2rem; height: 2rem; flex: 0 0 2rem; place-items: center; border: 1px solid rgb(34 211 238 / 0.25); border-radius: 0.5rem; background: rgb(8 145 178 / 0.08); color: var(--accent); }
+  .architecture-icon svg { width: 1.1rem; height: 1.1rem; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .architecture-label { overflow-wrap: anywhere; font-size: 0.83rem; font-weight: 650; color: var(--text); }
+  .architecture-detail { margin-top: 0.15rem; font-size: 0.68rem; color: rgb(255 255 255 / 0.45); }
+  @media (prefers-reduced-motion: reduce) { .architecture-visual * { animation: none !important; } }
+</style>

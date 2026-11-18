@@ -15,7 +15,7 @@ interface Props {
 const { title, description, actions = [], class: className } = Astro.props;
 ---
 
-<section class:list={["section-atmospheric border-y border-white/10 py-16 sm:py-20", className]}>
+<section class:list={["section-atmospheric section-divider workshop-section", className]}>
   <InteractiveAIAmbientBackground variant="cta" />
   <Container size="md">
     <div class="grid gap-8 md:grid-cols-[1fr_auto] md:items-center">

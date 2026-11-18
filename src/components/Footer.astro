@@ -5,6 +5,8 @@ import { navigation } from "@config/navigation";
 import { site } from "@config/site";
 import { withBase } from "@utils/url";
 import Container from "./Container.astro";
+import BrandLockup from "./BrandLockup.astro";
+import Button from "./Button.astro";
 
 const SOCIAL_LABELS: Record<keyof typeof site.social, string> = {
   linkedin: "LinkedIn",
@@ -18,35 +20,26 @@ const socialLinks = Object.entries(site.social).filter(([, href]) => Boolean(hre
 const currentYear = new Date().getFullYear();
 ---
 
-<footer class="relative border-t border-white/10 bg-black text-white/70">
-  <div
-    class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent-500/60 to-transparent"
-    aria-hidden="true"
-  />
+<footer class="site-footer">
   <Container>
+    <div class="footer-invitation">
+      <div class="space-y-3">
+        <p class="workshop-annotation">{brand.mentor.role} / {brand.mentor.name}</p>
+        <h2 class="font-display text-2xl font-semibold text-heading sm:text-3xl">{navigation.prospectAction.label}</h2>
+      </div>
+      <Button href={navigation.prospectAction.href} analyticsEvent={navigation.prospectAction.analyticsEvent}>
+        {navigation.prospectAction.label} <span aria-hidden="true" class="ml-2">&#8599;</span>
+      </Button>
+    </div>
     <div class="grid gap-10 py-12 md:grid-cols-[1.25fr_2fr]">
       <div class="space-y-4">
-        <a
-          href={withBase("/")}
-          class="inline-flex items-center gap-3 font-semibold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-400"
-          aria-label={`${brand.name} home`}
-        >
-          <img
-            src={withBase(brand.logo.mark)}
-            alt=""
-            class="h-8 w-8"
-            width="32"
-            height="32"
-            loading="lazy"
-          />
-          <span>{brand.logo.text}</span>
-        </a>
+        <BrandLockup lazy />
         <p class="max-w-sm text-sm leading-6 text-neutral-300">{brand.description}</p>
         {
           site.contact.email && (
             <a
               href={`mailto:${site.contact.email}`}
-              class="inline-flex text-sm font-medium text-accent-200 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-400"
+              class="inline-flex min-h-11 items-center text-sm font-medium text-accent-200 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-400"
               data-analytics-event={analytics.events.contact}
             >
               {site.contact.email}
@@ -56,7 +49,7 @@ const currentYear = new Date().getFullYear();
       </div>
 
       <nav
-        class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3"
+        class="grid grid-cols-2 gap-8 lg:grid-cols-3"
         aria-label="Footer navigation"
       >
         {
@@ -64,11 +57,11 @@ const currentYear = new Date().getFullYear();
             <div>
               <h2 class="text-sm font-semibold text-white">{group.label}</h2>
               <ul class="mt-4 space-y-3">
-                {group.items.map((item) => (
+                {group.items.filter((item) => !item.hidden).map((item) => (
                   <li>
                     <a
                       href={withBase(item.href)}
-                      class="inline-flex text-sm text-neutral-300 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-400"
+                      class="inline-flex min-h-11 items-center text-sm text-neutral-300 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-400"
                       data-analytics-event={item.analyticsEvent}
                       target={item.external ? "_blank" : undefined}
                       rel={item.external ? "noreferrer" : undefined}
@@ -84,14 +77,14 @@ const currentYear = new Date().getFullYear();
         }
         {
           socialLinks.length > 0 && (
-            <div>
+            <div class="col-span-2 lg:col-span-1">
               <h2 class="text-sm font-semibold text-white">Social</h2>
-              <ul class="mt-4 space-y-3">
+              <ul class="mt-4 grid grid-cols-2 gap-x-4 lg:block lg:space-y-3">
                 {socialLinks.map(([key, href]) => (
                   <li>
                     <a
                       href={href}
-                      class="inline-flex text-sm text-neutral-300 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-400"
+                      class="inline-flex min-h-11 items-center text-sm text-neutral-300 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-400"
                       data-analytics-event={analytics.events.outboundLink}
                       target="_blank"
                       rel="noreferrer"
@@ -108,7 +101,16 @@ const currentYear = new Date().getFullYear();
       </nav>
     </div>
 
-    <div class="border-t border-white/10 py-6 text-sm text-neutral-400">
+    <div class="flex flex-wrap items-center justify-between gap-4 border-t border-white/10 py-6 text-sm text-neutral-300">
+      <button type="button" class="ambient-toggle" data-ambient-toggle data-active="false" aria-pressed="false" aria-label="Enable background motion" title="Enable background motion">
+        <svg class="motion-on-icon size-4" aria-hidden="true" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M3.5 2.5h3v11h-3zM9.5 2.5h3v11h-3z" />
+        </svg>
+        <svg class="motion-off-icon size-4" aria-hidden="true" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M4 2.5v11l9-5.5-9-5.5Z" />
+        </svg>
+        <span class="sr-only" data-motion-label>Enable background motion</span>
+      </button>
       <p>&copy; {currentYear} {brand.legalName}. All rights reserved.</p>
     </div>
   </Container>

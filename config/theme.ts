@@ -19,6 +19,7 @@ export type ThemeConfig = {
     magenta: ColorScale;
     purple: ColorScale;
     neutral: ColorScale;
+    workbook: { paper: string; ink: string; muted: string; rule: string };
     atmosphere: {
       deep: string;
       dark: string;
@@ -34,6 +35,7 @@ export type ThemeConfig = {
     mono: string[];
   };
   borderRadius: Record<string, string>;
+  spacing: Record<string, string>;
   container: {
     maxWidth: string;
     padding: string;
@@ -52,15 +54,7 @@ export type ThemeConfig = {
 
 export const theme: ThemeConfig = {
   colors: {
-    // Repurposed as a neutral ink scale; the visible AI-native identity now
-    // lives in accent (cyan), magenta, and purple below.
-    //
-    // brand/magenta/purple are not currently consumed as Tailwind utility
-    // classes (bg-brand-*, text-magenta-*, etc.) — global.css reaches these
-    // hues via raw rgb() literals and the boxShadow/backgroundImage tokens
-    // instead. Kept as a full scale intentionally: it's the reserved
-    // AI-native palette for components that adopt Tailwind color utilities
-    // directly in the future, not dead configuration.
+    // Cyan leads. Warm paper supports reading; other accents are reserved.
     brand: {
       50: "#f6f8fb",
       100: "#e7edf5",
@@ -129,25 +123,23 @@ export const theme: ThemeConfig = {
       900: "#0f172a",
       950: "#020617"
     },
+    workbook: { paper: "#f4f0e6", ink: "#172320", muted: "#4c5b56", rule: "#c8c8b8" },
     atmosphere: {
-      deep: "#000000",
-      dark: "#050507",
-      rich: "#0a0a0a",
-      elevated: "#101014"
+      deep: "#101916",
+      dark: "#14201c",
+      rich: "#192822",
+      elevated: "#20332b"
     }
   },
   backgroundImage: {
-    "hero-atmosphere":
-      "radial-gradient(circle at 16% 12%, rgb(0 212 255 / 0.16), transparent 34%), radial-gradient(circle at 84% 8%, rgb(131 56 236 / 0.2), transparent 38%), radial-gradient(circle at 60% 80%, rgb(255 0 110 / 0.08), transparent 40%), linear-gradient(160deg, #000000 0%, #05050a 45%, #0a0a12 100%)",
-    "section-atmosphere":
-      "radial-gradient(circle at 10% 6%, rgb(0 212 255 / 0.12), transparent 30%), radial-gradient(circle at 86% 16%, rgb(131 56 236 / 0.16), transparent 34%), linear-gradient(165deg, #000000 0%, #050507 55%, #0a0a0f 100%)",
-    "navy-tint":
-      "radial-gradient(circle at 20% 0%, rgb(0 212 255 / 0.05), transparent 32%), linear-gradient(180deg, #000000 0%, #060608 100%)",
+    "hero-atmosphere": "radial-gradient(ellipse at 85% 15%, rgb(0 212 255 / 0.07), transparent 55%), linear-gradient(145deg, #101916, #192822)",
+    "section-atmosphere": "linear-gradient(150deg, #101916, #14201c)",
+    "navy-tint": "linear-gradient(180deg, #14201c, #192822)",
     "hot-atmosphere":
       "radial-gradient(circle at 20% 20%, rgb(255 0 110 / 0.18), transparent 36%), linear-gradient(160deg, #120005 0%, #08000a 60%, #000000 100%)"
   },
   boxShadow: {
-    glass: "0 24px 70px rgb(0 0 0 / 0.55)",
+    glass: "0 8px 24px rgb(0 0 0 / 0.12)",
     "teal-glow": "0 0 32px rgb(0 212 255 / 0.22)",
     "glow-cyan": "0 0 28px rgb(0 212 255 / 0.35)",
     "glow-magenta": "0 0 28px rgb(255 0 110 / 0.35)",
@@ -168,8 +160,11 @@ export const theme: ThemeConfig = {
     mono: ["JetBrains Mono", "ui-monospace", "SFMono-Regular", "monospace"]
   },
   borderRadius: {
-    DEFAULT: "0.5rem"
+    DEFAULT: "0.5rem",
+    surface: "0.5rem",
+    control: "0.375rem"
   },
+  spacing: { section: "clamp(4rem, 8vw, 7rem)", editorial: "3rem" },
   container: {
     maxWidth: "72rem",
     padding: "1rem"

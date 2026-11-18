@@ -7,13 +7,17 @@ import { analytics } from "@config/analytics";
 import { formatList, getWorkshopDateInfo } from "@utils/format";
 import { site } from "@config/site";
 import { withBase } from "@utils/url";
+import { getEnquiryHref } from "@utils/enquiry";
+import { getContentSlug } from "@utils/slugs";
 
 interface Props {
   workshop: CollectionEntry<"workshops">;
   href?: string;
+  ctaLabel?: string;
+  compact?: boolean;
 }
 
-const { workshop, href } = Astro.props;
+const { workshop, href, ctaLabel = "View bootcamp", compact = false } = Astro.props;
 const { data } = workshop;
 const dateInfo = getWorkshopDateInfo(data.date, site.language);
 ---
@@ -39,35 +43,39 @@ const dateInfo = getWorkshopDateInfo(data.date, site.language);
         )
       }
     </h3>
-    <p class="text-sm leading-6 text-white/70">{data.description}</p>
+    <p class:list={["text-sm leading-6 text-white/70", compact && "line-clamp-2"]}>
+      {data.description}
+    </p>
   </div>
 
-  <dl
-    class:list={[
-      "grid gap-3 text-sm text-white/70",
-      data.capacity ? "sm:grid-cols-3" : "sm:grid-cols-2"
-    ]}
-  >
-    <div>
-      <dt class="font-medium text-white">Audience</dt>
-      <dd>{formatList(data.audience)}</dd>
-    </div>
-    <div>
-      <dt class="font-medium text-white">Format</dt>
-      <dd class="capitalize">{data.format.replaceAll("-", " ")}</dd>
-    </div>
-    {
-      data.capacity && (
+  {
+    !compact && (
+      <dl
+        class:list={[
+          "grid gap-3 text-sm text-white/70",
+          data.capacity ? "sm:grid-cols-3" : "sm:grid-cols-2"
+        ]}
+      >
         <div>
-          <dt class="font-medium text-white">Capacity</dt>
-          <dd>{data.capacity} learners</dd>
+          <dt class="font-medium text-white">Audience</dt>
+          <dd>{formatList(data.audience)}</dd>
         </div>
-      )
-    }
-  </dl>
+        <div>
+          <dt class="font-medium text-white">Format</dt>
+          <dd class="capitalize">{data.format.replaceAll("-", " ")}</dd>
+        </div>
+        {data.capacity && (
+          <div>
+            <dt class="font-medium text-white">Capacity</dt>
+            <dd>{data.capacity} learners</dd>
+          </div>
+        )}
+      </dl>
+    )
+  }
 
   {
-    data.topics.length > 0 && (
+    !compact && data.topics.length > 0 && (
       <div class="flex flex-wrap gap-2">
         {data.topics.slice(0, 4).map((topic) => (
           <Badge tone="neutral">{topic}</Badge>
@@ -87,32 +95,45 @@ const dateInfo = getWorkshopDateInfo(data.date, site.language);
               size="sm"
               analyticsEvent={analytics.events.ctaClick}
             >
-              View workshop
+              {ctaLabel}
             </Button>
           )
         }
         {
-          data.cta ? (
-            <Button
-              href={data.cta.href}
-              variant="secondary"
-              size="sm"
-              analyticsEvent={data.cta.analyticsEvent}
-            >
-              {data.cta.label}
-            </Button>
-          ) : (
-            data.registrationUrl && (
+          !compact &&
+            (dateInfo.isPast ? (
               <Button
-                href={data.registrationUrl}
+                href={getEnquiryHref("workshop", data.title, `/workshops/${getContentSlug(workshop)}/`)}
                 variant="secondary"
                 size="sm"
-                analyticsEvent={analytics.events.workshopRegistration}
+                analyticsEvent={analytics.events.contact}
               >
-                Register interest
+                Join the waitlist for the next session
               </Button>
-            )
-          )
+            ) : data.cta ? (
+              <Button
+                href={data.cta.href}
+                variant="secondary"
+                size="sm"
+                analyticsEvent={data.cta.analyticsEvent}
+                target={data.cta.external ? "_blank" : undefined}
+                rel={data.cta.external ? "noreferrer" : undefined}
+              >
+                {data.cta.label}
+                {data.cta.external && <span class="sr-only"> (opens in new tab)</span>}
+              </Button>
+            ) : (
+              data.registrationUrl && (
+                <Button
+                  href={data.registrationUrl}
+                  variant="secondary"
+                  size="sm"
+                  analyticsEvent={analytics.events.workshopRegistration}
+                >
+                  Register interest
+                </Button>
+              )
+            ))
         }
       </div>
     )

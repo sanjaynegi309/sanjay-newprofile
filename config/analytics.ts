@@ -6,7 +6,14 @@ export type AnalyticsEventName =
   | "corporate_cta"
   | "contact"
   | "login"
-  | "outbound_link";
+  | "outbound_link"
+  | "waitlist_signup"
+  | "teaching_experiment"
+  | "primary_cta_click"
+  | "program_view"
+  | "lesson_completion"
+  | "enquiry_start"
+  | "enquiry_completion";
 
 export type AnalyticsConfig = {
   googleAnalytics: {
@@ -27,6 +34,13 @@ export type AnalyticsConfig = {
     contact: AnalyticsEventName;
     login: AnalyticsEventName;
     outboundLink: AnalyticsEventName;
+    waitlistSignup: AnalyticsEventName;
+    teachingExperiment: AnalyticsEventName;
+    primaryCtaClick: AnalyticsEventName;
+    programView: AnalyticsEventName;
+    lessonCompletion: AnalyticsEventName;
+    enquiryStart: AnalyticsEventName;
+    enquiryCompletion: AnalyticsEventName;
   };
 };
 
@@ -48,6 +62,13 @@ export const analytics: AnalyticsConfig = {
     corporateCta: "corporate_cta",
     contact: "contact",
     login: "login",
-    outboundLink: "outbound_link"
+    outboundLink: "outbound_link",
+    waitlistSignup: "waitlist_signup",
+    teachingExperiment: "teaching_experiment",
+    primaryCtaClick: "primary_cta_click",
+    programView: "program_view",
+    lessonCompletion: "lesson_completion",
+    enquiryStart: "enquiry_start",
+    enquiryCompletion: "enquiry_completion"
   }
 } as const;

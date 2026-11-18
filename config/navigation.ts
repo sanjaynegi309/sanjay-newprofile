@@ -6,6 +6,7 @@ export type NavigationItem = {
   description?: string;
   external?: boolean;
   analyticsEvent?: string;
+  hidden?: boolean;
 };
 
 export type NavigationGroup = {
@@ -17,19 +18,27 @@ export type NavigationConfig = {
   primary: NavigationItem[];
   footer: NavigationGroup[];
   utility: NavigationItem[];
+  prospectAction: NavigationItem;
 };
 
 export const navigation: NavigationConfig = {
+  prospectAction: { label: "Find your learning path", href: "/contact/", analyticsEvent: analytics.events.primaryCtaClick },
   primary: [
+    {
+      label: "Bootcamps",
+      href: "/bootcamps/",
+      description: "Independent live AI intensives"
+    },
     {
       label: "Programs",
       href: "/programs/",
       description: "Structured AI learning paths"
     },
     {
-      label: "Workshops",
-      href: "/workshops/",
-      description: "Focused hands-on sessions"
+      label: "Self-Paced",
+      href: "/self-paced/",
+      description: "Recorded courses — coming soon",
+      hidden: true
     },
     {
       label: "For Teams",
@@ -46,8 +55,9 @@ export const navigation: NavigationConfig = {
     {
       label: "Learning",
       items: [
+        { label: "Bootcamps", href: "/bootcamps/" },
         { label: "Programs", href: "/programs/" },
-        { label: "Workshops", href: "/workshops/" }
+        { label: "Self-Paced", href: "/self-paced/", hidden: true }
       ]
     },
     {
@@ -55,6 +65,7 @@ export const navigation: NavigationConfig = {
       items: [
         { label: "About", href: "/about/" },
         { label: "Contact", href: "/contact/" },
+        { label: "FAQ", href: "/faq/" },
         { label: "Privacy", href: "/privacy/" }
       ]
     }
@@ -68,5 +79,8 @@ export const navigation: NavigationConfig = {
   ]
 };
 
-export const primaryNavigation = navigation.primary;
-export const footerNavigation = navigation.footer;
+export const primaryNavigation = navigation.primary.filter((item) => !item.hidden);
+export const footerNavigation = navigation.footer.map((group) => ({
+  ...group,
+  items: group.items.filter((item) => !item.hidden)
+}));

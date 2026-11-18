@@ -1,0 +1,45 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { analytics } from "@config/analytics";
+import { getContentSlug } from "@utils/slugs";
+import { withBase } from "@utils/url";
+interface Props {
+  program: CollectionEntry<"programs">;
+  sectionHeading: string;
+  label: string;
+  note: string;
+  actionLabel: string;
+}
+const { program, sectionHeading, label, note, actionLabel } = Astro.props;
+// Read the real Markdown section, so evidence stays in sync with the curriculum.
+const sections = program.body.split(/^#{2,3} /m);
+const section = sections.find(
+  (entry) => entry.split("\n")[0].trim() === sectionHeading
+);
+const bullets =
+  section
+    ?.split("\n")
+    .filter((line) => line.startsWith("- "))
+    .slice(1, 4)
+    .map((line) => line.slice(2)) ?? [];
+if (!section || !bullets.length)
+  throw new Error(
+    `Missing curriculum evidence section: ${program.id} / ${sectionHeading}`
+  );
+const displayHeading = sectionHeading.replace(/^Module \d+ — /, "");
+---
+
+{bullets.length > 0 && (
+  <article class="border-l-2 border-accent-500 pl-5 sm:pl-8">
+    <p class="workshop-annotation">{label}</p>
+    <h3 class="mt-4 font-display text-xl font-semibold text-heading">{displayHeading}</h3>
+    <ul class="mt-5 list-disc space-y-2 pl-5 text-sm leading-6 text-copy">
+      {bullets.map((bullet) => <li>{bullet}</li>)}
+    </ul>
+    <p class="mt-5 max-w-prose text-xs leading-5 text-copy">{note}</p>
+    <a href={withBase(`/programs/${getContentSlug(program)}/`)} class="workshop-link mt-3 inline-flex min-h-11 items-center text-sm font-semibold"
+      data-analytics-event={analytics.events.ctaClick} data-analytics-label={`${program.data.title} curriculum excerpt`}>
+      {actionLabel}
+    </a>
+  </article>
+)}

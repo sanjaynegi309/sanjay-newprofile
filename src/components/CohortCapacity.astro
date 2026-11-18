@@ -1,0 +1,18 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div class:list={["grid gap-4 rounded-surface border border-accent-400/30 bg-accent-950/15 p-5 sm:grid-cols-[auto_1fr] sm:items-center", className]}>
+  <div class="flex items-baseline gap-2 sm:block">
+    <strong class="font-display text-4xl font-semibold text-accent-300 sm:text-5xl">15</strong>
+    <span class="text-xs font-semibold uppercase tracking-[0.12em] text-accent-300 sm:block">Professionals</span>
+  </div>
+  <div>
+    <p class="font-display text-lg font-semibold text-white">Limited to 15 Professionals Per Batch.</p>
+    <p class="mt-1 text-sm leading-6 text-white/70">Small cohorts designed for meaningful technical discussions, personalized attention, and practical architecture feedback.</p>
+  </div>
+</div>

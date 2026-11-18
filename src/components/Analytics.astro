@@ -17,16 +17,38 @@ function trackEvent(eventName, params) {
   gtag("event", eventName, params);
 }
 
+function safePageLocation() {
+  return window.location.origin + window.location.pathname;
+}
+
 const analyticsEvents = ${JSON.stringify(events)};
 const analyticsAttributes = ${JSON.stringify(attributes)};
 
 if (${JSON.stringify(sendPageView)}) {
   trackEvent(analyticsEvents.pageView, {
     page_title: document.title,
-    page_location: window.location.href,
+    page_location: safePageLocation(),
     page_path: window.location.pathname
   });
 }
+
+const programMatch = window.location.pathname.match(/\/programs\/([^/]+)\/?$/);
+if (programMatch) {
+  trackEvent(analyticsEvents.programView, {
+    program_slug: programMatch[1],
+    page_path: window.location.pathname
+  });
+}
+
+document.addEventListener("skillup:analytics-event", function (event) {
+  const detail = event.detail || {};
+  if (!detail.name) return;
+  trackEvent(detail.name, {
+    event_category: "engagement",
+    event_label: detail.label || detail.name,
+    page_path: window.location.pathname
+  });
+});
 
 document.addEventListener("click", function (event) {
   const target = event.target.closest("a, button");
@@ -34,22 +56,27 @@ document.addEventListener("click", function (event) {
 
   const configuredEvent = target.getAttribute(analyticsAttributes.event);
   const href = target instanceof HTMLAnchorElement ? target.href : "";
+  const isEmail = href.startsWith("mailto:");
   const isOutbound =
-    href && new URL(href, window.location.href).origin !== window.location.origin;
+    href && !isEmail && new URL(href, window.location.href).origin !== window.location.origin;
   const eventName =
     configuredEvent || (isOutbound ? analyticsEvents.outboundLink : undefined);
 
   if (!eventName) return;
 
+  const parsedHref = href && !isEmail ? new URL(href, window.location.href) : null;
   trackEvent(eventName, {
     event_category: "engagement",
-    event_label:
-      target.getAttribute(analyticsAttributes.label) ||
+    event_label: isEmail ? "email_handoff" : target.getAttribute(analyticsAttributes.label) ||
       target.textContent?.trim() ||
-      href ||
       eventName,
-    link_url: href || undefined,
-    page_location: window.location.href
+    link_url: parsedHref && parsedHref.origin !== window.location.origin
+      ? parsedHref.origin + parsedHref.pathname
+      : undefined,
+    link_path: parsedHref && parsedHref.origin === window.location.origin
+      ? parsedHref.pathname
+      : undefined,
+    page_location: safePageLocation()
   });
 });
 `;

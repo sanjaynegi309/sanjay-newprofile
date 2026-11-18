@@ -1,51 +1,68 @@
 import { analytics } from "./analytics";
-import { site } from "./site";
 
 export const contact = {
   hero: {
     eyebrow: "Contact",
     title: "Talk through the right AI learning path.",
     description:
-      "Use the contact options below for live programs, workshops, corporate training, or a focused conversation about team AI capability.",
+      "Choose an individual or team path, add one useful question, and open a prefilled email to Sanjay.",
     actions: [
       {
-        label: "Email SkillUp",
-        href: `mailto:${site.contact.email}`,
-        analyticsEvent: analytics.events.contact
+        label: "Start an enquiry",
+        href: "#enquiry-form",
+        analyticsEvent: analytics.events.primaryCtaClick
       }
     ],
     metrics: [
-      { label: "Best for", value: "Programs" },
-      { label: "Teams", value: "Workshops" },
-      { label: "Response", value: "Email" }
+      { label: "Individual", value: "Programs" },
+      { label: "Teams", value: "Training" },
+      { label: "Reviewed by", value: "Sanjay, personally" }
     ]
   },
   channels: [
     {
       title: "Program enquiries",
       description:
-        "Ask about upcoming live cohorts, learner fit, outcomes, and recommended starting points.",
-      href: `mailto:${site.contact.email}?subject=Program%20enquiry`,
-      label: "Ask about a program",
-      analyticsEvent: analytics.events.programApply
+        "Ask about learner fit, commitments, current availability, or the right starting point.",
+      href: "/contact/?type=program#enquiry-form"
     },
     {
       title: "Corporate training",
       description:
-        "Share your team goals, audience, and business outcome so training can be scoped around the right change.",
-      href: `mailto:${site.contact.email}?subject=Corporate%20training%20enquiry`,
-      label: "Ask about team training",
-      analyticsEvent: analytics.events.corporateCta
+        "Share the team, business goal, and likely timeline for a focused training conversation.",
+      href: "/contact/?type=corporate#enquiry-form"
     },
     {
-      title: "Workshop planning",
+      title: "Bootcamp enquiries",
       description:
-        "Discuss private workshops, live sessions, or focused AI adoption sprints.",
-      href: `mailto:${site.contact.email}?subject=Workshop%20enquiry`,
-      label: "Ask about a workshop",
-      analyticsEvent: analytics.events.workshopRegistration
+        "Ask about a specific bootcamp or the next available session.",
+      href: "/contact/?type=workshop#enquiry-form"
     }
   ],
+  form: {
+    id: "enquiry-form",
+    heading: "Prepare your enquiry",
+    description:
+      "Only your name, email, and question are required. We'll send it straight through; if that doesn't go through, you'll get a prefilled email to send instead.",
+    typeOptions: [
+      {
+        value: "program",
+        label: "Program enquiry",
+        analyticsEvent: analytics.events.programApply
+      },
+      {
+        value: "workshop",
+        label: "Bootcamp enquiry",
+        analyticsEvent: analytics.events.workshopRegistration
+      },
+      {
+        value: "corporate",
+        label: "Corporate training enquiry",
+        analyticsEvent: analytics.events.corporateCta
+      }
+    ],
+    submitLabel: "Send enquiry"
+  },
   note:
-    "Every enquiry goes straight to a real person — no ticketing queue, no automated response."
+    "Choose a path below. If you arrived from a program or bootcamp, its name is kept in the form."
 } as const;

@@ -1,0 +1,57 @@
+---
+import { Image } from "astro:assets";
+import founderPhoto from "@assets/founder/sanjay-negi.jpeg";
+import Button from "@components/Button.astro";
+import Container from "@components/Container.astro";
+import InteractiveAIAmbientBackground from "@components/InteractiveAIAmbientBackground.astro";
+import JanuaryBootcampCard from "@components/JanuaryBootcampCard.astro";
+import SectionHeader from "@components/SectionHeader.astro";
+import { analytics } from "@config/analytics";
+import { about } from "@config/about";
+import { brand } from "@config/brand";
+import type { JanuaryBootcamp } from "@config/januaryBootcamps";
+import { januaryBootcamps } from "@config/januaryBootcamps";
+import BaseLayout from "./BaseLayout.astro";
+
+interface Props { bootcamp: JanuaryBootcamp }
+const { bootcamp } = Astro.props;
+const otherBootcamps = januaryBootcamps.filter((item) => item.slug !== bootcamp.slug);
+---
+
+<BaseLayout seo={{ title: bootcamp.seo.title, description: bootcamp.seo.description, canonicalPath: `/bootcamps/${bootcamp.slug}/` }}>
+  <article>
+    <section class="section-atmospheric relative overflow-hidden border-b border-white/10 py-14 sm:py-20">
+      <InteractiveAIAmbientBackground variant="hero" />
+      <Container>
+        <div class="relative z-10 grid gap-10 lg:grid-cols-[1fr_0.72fr] lg:items-start">
+          <div>
+            <div class="flex flex-wrap gap-2"><span class="badge badge-cyan">{bootcamp.category}</span><span class="badge badge-purple">Independent Bootcamp</span></div>
+            <h1 class="gradient-heading mt-6 font-display text-4xl font-semibold leading-tight tracking-tight sm:text-6xl">{bootcamp.title}</h1>
+            <p class="mt-5 font-display text-2xl font-semibold leading-tight text-white">{bootcamp.headline}</p>
+            <p class="mt-5 max-w-3xl text-lg leading-8 text-white/70">{bootcamp.description}</p>
+            <div class="mt-7">{bootcamp.registrationUrl ? <Button href={bootcamp.registrationUrl} size="lg" target="_blank" rel="noopener noreferrer" analyticsEvent={analytics.events.workshopRegistration}>Reserve Your Seat <span class="sr-only"> (opens in new tab)</span></Button> : <button type="button" class="btn-glow min-h-11 cursor-not-allowed px-6 font-display font-semibold opacity-55" disabled>Registration Opening Soon</button>}</div>
+          </div>
+          <aside class="glass-card p-6">
+            <dl class="grid gap-5 text-sm sm:grid-cols-2 lg:grid-cols-1">
+              {[['Date',bootcamp.dateLabel],['Time',bootcamp.time],['Duration',bootcamp.duration],['Format',bootcamp.format],['Suitable for',bootcamp.audienceSummary]].map(([term,value]) => <div class="border-b border-white/10 pb-4 last:border-0 last:pb-0"><dt class="text-white/45">{term}</dt><dd class="mt-1 font-medium leading-6 text-white">{value}</dd></div>)}
+            </dl>
+          </aside>
+        </div>
+      </Container>
+    </section>
+
+    <section class="bg-black py-14 sm:py-16 lg:py-20"><Container size="md"><SectionHeader eyebrow="Why this bootcamp matters" title="The Engineering Problem" description={bootcamp.why} /></Container></section>
+
+    <section class="section-atmospheric border-y border-white/10 py-14 sm:py-16 lg:py-20"><Container><SectionHeader eyebrow="What you'll learn" title="Practical Capabilities You Can Apply" /><div class="mt-9 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">{bootcamp.learning.map((item,index) => <div class="glass-card p-5"><span class="font-mono text-xs text-accent-300">0{index+1}</span><p class="mt-4 text-sm font-medium leading-6 text-white/75">{item}</p></div>)}</div></Container></section>
+
+    <section class="bg-atmosphere-rich py-14 sm:py-16 lg:py-20"><Container><div class="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-center"><div><p class="workshop-annotation">What you'll build</p><h2 class="mt-4 font-display text-3xl font-semibold text-white sm:text-4xl">{bootcamp.project.title}</h2><p class="mt-5 text-base leading-7 text-white/70">{bootcamp.project.description}</p></div><div class="glass-card overflow-hidden"><div class="border-b border-white/10 px-5 py-4 sm:px-6"><p class="text-xs font-semibold uppercase tracking-[0.12em] text-accent-300">Bootcamp project</p></div><div class="p-5 sm:p-6"><div class="rounded-control border border-white/10 bg-black/25 p-4 sm:p-5"><div class="flex items-start gap-3"><span aria-hidden="true" class="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full bg-accent-300 shadow-[0_0_14px_rgba(34,211,238,0.55)]"></span><div><p class="font-display text-base font-semibold text-white sm:text-lg">{bootcamp.project.title}</p><p class="mt-1 text-sm leading-6 text-white/55">Practical implementation developed during the live session</p></div></div><div class="mt-5 grid gap-2 sm:grid-cols-3"><span class="rounded-control border border-accent-400/20 bg-accent-950/20 px-3 py-2 text-center text-xs font-semibold uppercase tracking-wide text-accent-200">Design</span><span class="rounded-control border border-white/10 bg-white/[0.03] px-3 py-2 text-center text-xs font-semibold uppercase tracking-wide text-white/70">Build</span><span class="rounded-control border border-purple-400/20 bg-purple-950/15 px-3 py-2 text-center text-xs font-semibold uppercase tracking-wide text-purple-200">Review</span></div></div><p class="mt-4 text-sm leading-6 text-white/60">A focused, reviewable implementation scoped for this three-hour live bootcamp.</p></div></div></div></Container></section>
+
+    <section class="border-y border-white/10 bg-black py-14 sm:py-16 lg:py-20"><Container><div class="grid gap-10 lg:grid-cols-2"><div><SectionHeader eyebrow="Technologies & concepts" title="Tools in Context" description="Technologies may include the following, with depth determined by the practical workflow—not by a promise to master every tool." /><div class="mt-7 flex flex-wrap gap-2">{bootcamp.technologies.map((item) => <span class="badge badge-neutral">{item}</span>)}</div></div><div><SectionHeader eyebrow="Who should attend" title="Built for Working Professionals" /><div class="mt-7 grid gap-5 sm:grid-cols-2"><div><h3 class="font-display font-semibold text-white">Relevant roles</h3><ul class="mt-3 space-y-2 text-sm leading-6 text-white/65">{bootcamp.audience.map((item) => <li>— {item}</li>)}</ul></div><div><h3 class="font-display font-semibold text-white">Prerequisites</h3><ul class="mt-3 space-y-2 text-sm leading-6 text-white/65">{bootcamp.prerequisites.map((item) => <li>— {item}</li>)}</ul></div></div></div></div></Container></section>
+
+    <section class="section-atmospheric py-14 sm:py-16"><Container><div class="grid gap-8 lg:grid-cols-[auto_1fr] lg:items-center"><Image src={founderPhoto} alt={`${brand.mentor.name}, AI Engineering Mentor`} widths={[200,320,480]} sizes="(min-width:1024px) 240px, 200px" loading="lazy" class="aspect-square w-48 rounded-surface border border-white/10 object-cover sm:w-60" /><div><p class="workshop-annotation">Meet your mentor</p><h2 class="mt-4 font-display text-3xl font-semibold text-white">Learn with {brand.mentor.name}</h2><p class="mt-4 max-w-3xl text-base leading-7 text-white/70">{about.hero.description}</p><div class="mt-6"><Button href="/about/" variant="secondary">Meet Sanjay Negi</Button></div></div></div></Container></section>
+
+    <section class="border-y border-white/10 bg-gradient-to-br from-accent-950/15 via-atmosphere-deep to-purple-950/15 py-14 sm:py-20"><Container size="md" class="text-center"><span class="badge badge-purple">Independent Bootcamp</span><h2 class="mt-5 font-display text-3xl font-semibold text-white sm:text-5xl">Join {bootcamp.title}</h2><p class="mt-4 text-base text-white/70">{bootcamp.dateLabel} · {bootcamp.time} · {bootcamp.duration} · {bootcamp.format}</p><div class="mt-8">{bootcamp.registrationUrl ? <Button href={bootcamp.registrationUrl} size="lg" target="_blank" rel="noopener noreferrer" analyticsEvent={analytics.events.workshopRegistration}>Reserve Your Seat <span class="sr-only"> (opens in new tab)</span></Button> : <button type="button" class="btn-glow min-h-11 cursor-not-allowed px-6 font-display font-semibold opacity-55" disabled>Registration Opening Soon</button>}</div><p class="mt-4 text-sm text-white/50">Registration is separate from every other January bootcamp.</p></Container></section>
+
+    <section class="bg-black py-14 sm:py-16 lg:py-20"><Container><div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between"><SectionHeader eyebrow="Keep exploring" title="Explore Other January Bootcamps" description="Each bootcamp is independent. Choose only the topics relevant to your work." /><Button href="/bootcamps/" variant="secondary">Back to All Bootcamps</Button></div><div class="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{otherBootcamps.map((item) => <JanuaryBootcampCard bootcamp={item} compact />)}</div></Container></section>
+  </article>
+</BaseLayout>

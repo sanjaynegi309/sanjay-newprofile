@@ -1,0 +1,31 @@
+---
+import { Image } from "astro:assets";
+import type { CaseStudyEvidence } from "../types/evidence";
+
+interface Props { study: CaseStudyEvidence; }
+const { study } = Astro.props;
+const publishable = study.permission === "approved" && Boolean(
+  study.startingPoint && study.challenge && study.intervention && study.artifact.image &&
+  study.artifact.alt && study.verifiedResult && study.attribution && study.evidenceSource
+);
+---
+
+{publishable && (
+  <article class="grid overflow-hidden rounded-surface border border-white/10 bg-atmosphere-rich lg:grid-cols-[0.9fr_1.1fr]">
+    <figure class="bg-black/20">
+      <Image src={study.artifact.image} alt={study.artifact.alt} widths={[480, 720, 960]} sizes="(min-width: 1024px) 45vw, 100vw" loading="lazy" class="h-full min-h-64 w-full object-cover" />
+      <figcaption class="border-t border-white/10 px-5 py-3 text-xs leading-5 text-white/50">{study.artifact.caption}</figcaption>
+    </figure>
+    <div class="p-6 sm:p-8">
+      <p class="workshop-annotation">Verified case study</p>
+      <h3 class="mt-4 font-display text-2xl font-semibold text-white">{study.title}</h3>
+      <dl class="mt-7 space-y-5 text-sm leading-6">
+        <div><dt class="font-semibold text-accent-300">Starting point</dt><dd class="mt-1 text-white/70">{study.startingPoint}</dd></div>
+        <div><dt class="font-semibold text-accent-300">Project or challenge</dt><dd class="mt-1 text-white/70">{study.challenge}</dd></div>
+        <div><dt class="font-semibold text-accent-300">Mentoring intervention</dt><dd class="mt-1 text-white/70">{study.intervention}</dd></div>
+        <div><dt class="font-semibold text-accent-300">Verified result</dt><dd class="mt-1 text-white/70">{study.verifiedResult}</dd></div>
+      </dl>
+      <p class="mt-7 border-t border-white/10 pt-4 text-xs text-white/50">{study.attribution}</p>
+    </div>
+  </article>
+)}

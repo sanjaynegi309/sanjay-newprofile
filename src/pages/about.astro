@@ -1,100 +1,120 @@
 ---
-import { getEntry, render } from "astro:content";
 import { Image } from "astro:assets";
-import session1 from "@assets/sessions/session-1.jpeg";
-import session2 from "@assets/sessions/session-2.jpeg";
-import session3 from "@assets/sessions/session-3.jpeg";
-import Card from "@components/Card.astro";
+import founderPhoto from "@assets/founder/sanjay-negi.jpeg";
+import Button from "@components/Button.astro";
 import Container from "@components/Container.astro";
-import Hero from "@components/Hero.astro";
+import InteractiveAIAmbientBackground from "@components/InteractiveAIAmbientBackground.astro";
 import SectionHeader from "@components/SectionHeader.astro";
 import { about } from "@config/about";
+import { analytics } from "@config/analytics";
+import { brand } from "@config/brand";
+import { site } from "@config/site";
 import BaseLayout from "@layouts/BaseLayout.astro";
+import { withBase } from "@utils/url";
 
-const page = await getEntry("pages", "about");
-
-if (!page) {
-  throw new Error("Missing about page content.");
-}
-
-const { Content } = await render(page);
-const sessionPhotos = [session1, session2, session3];
+const publicChannels = [
+  { label: "LinkedIn", description: "Professional profile and AI engineering perspectives.", href: site.social.linkedin, external: true },
+  { label: "GitHub", description: "Public repositories and technical work.", href: site.social.github, external: true },
+  { label: "YouTube", description: "SkillUp learning videos and technical discussions.", href: site.social.youtube, external: true },
+  { label: "Programs", description: "Explore the flagship AI engineering mentorship.", href: "/programs/", external: false }
+].filter((channel) => Boolean(channel.href));
 ---
 
 <BaseLayout
   seo={{
-    title: page.data.seo.title ?? page.data.title,
-    description: page.data.seo.description ?? page.data.description,
-    canonicalPath: "/about/",
-    noindex: page.data.seo.noindex,
-    ogImage: page.data.seo.ogImage
+    title: "About Sanjay Negi | AI Engineering Mentor",
+    description: "Meet Sanjay Negi, the mentor behind SkillUp. Learn how two decades of software engineering experience shape practical mentorship in AI Engineering, Forward Deployed Engineering, and GenAI Architecture.",
+    canonicalPath: "/about/"
   }}
 >
-  <Hero
-    eyebrow={about.hero.eyebrow}
-    title={about.hero.title}
-    description={about.hero.description}
-    metrics={about.hero.metrics}
-  />
-
-  <section class="bg-black py-16 sm:py-20">
+  <section class="section-atmospheric relative overflow-hidden border-b border-white/10 py-12 sm:py-16 lg:py-20">
+    <InteractiveAIAmbientBackground variant="hero" />
     <Container>
-      <div class="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-        <SectionHeader
-          eyebrow={about.principles.eyebrow}
-          title={about.principles.title}
-          description={about.principles.description}
-        />
-        <div class="grid gap-4">
-          {
-            about.principles.items.map((item) => (
-              <Card>
-                <div class="space-y-3">
-                  <h3 class="font-display text-lg font-semibold text-white">
-                    {item.title}
-                  </h3>
-                  <p class="text-sm leading-6 text-white/70">
-                    {item.description}
-                  </p>
-                </div>
-              </Card>
-            ))
-          }
+      <div class="relative z-10 grid gap-10 lg:grid-cols-[1.08fr_0.92fr] lg:items-center lg:gap-14">
+        <div>
+          <p class="workshop-annotation">{about.hero.eyebrow}</p>
+          <h1 class="gradient-heading mt-5 font-display text-4xl font-semibold leading-[1.04] tracking-[-0.045em] sm:text-6xl lg:text-7xl">{about.hero.title}</h1>
+          <p class="mt-6 max-w-3xl font-display text-xl font-semibold leading-8 text-white sm:text-2xl">{about.hero.supporting}</p>
+          <div class="mt-5 max-w-3xl space-y-3 text-base leading-7 text-white/70">{about.hero.paragraphs.map((paragraph) => <p>{paragraph}</p>)}</div>
+          <div class="mt-6 grid max-w-3xl gap-px overflow-hidden rounded-surface border border-white/10 bg-white/10 sm:grid-cols-2">
+            {about.hero.highlights.map((highlight) => <div class="bg-atmosphere-deep/95 p-4 font-display text-sm font-semibold text-accent-300 sm:p-5">{highlight}</div>)}
+          </div>
+          <div class="mt-7 flex flex-col gap-3 sm:flex-row">{about.hero.actions.map((action) => <Button href={action.href} variant={action.variant ?? "primary"} size="lg" analyticsEvent={action.analyticsEvent}>{action.label}</Button>)}</div>
         </div>
+
+        <figure class="mx-auto w-full max-w-md">
+          <div class="relative rounded-surface border border-accent-400/25 bg-black/40 p-3 shadow-glass">
+            <div aria-hidden="true" class="absolute -inset-4 -z-10 rounded-full bg-accent-400/10 blur-3xl"></div>
+            <Image src={founderPhoto} alt={`${brand.mentor.name}, AI Engineering Mentor`} widths={[320, 480, 640, 800]} sizes="(min-width: 1024px) 420px, min(100vw - 2rem, 448px)" loading="eager" class="aspect-square w-full rounded-control object-cover" />
+            <figcaption class="p-4 pb-2"><strong class="block font-display text-xl text-white">{brand.mentor.name}</strong><span class="mt-1 block text-sm font-medium text-accent-300">AI Engineering Mentor</span><span class="mt-2 block text-sm leading-6 text-white/55">Founder-led mentorship grounded in complete software and AI system thinking.</span></figcaption>
+          </div>
+        </figure>
       </div>
     </Container>
   </section>
 
-  <section class="section-navy-tint border-t border-white/10 py-16 sm:py-20">
-    <Container size="sm">
-      <article class="prose max-w-none">
-        <Content />
-      </article>
-    </Container>
-  </section>
-
-  <section class="border-t border-white/10 bg-black py-16 sm:py-20">
+  <section class="bg-black py-14 sm:py-16 lg:py-20">
     <Container>
-      <SectionHeader
-        eyebrow="Live sessions"
-        title="Real cohorts, working through real problems."
-      />
-      <div class="mt-10 grid gap-4 sm:grid-cols-3">
-        {
-          sessionPhotos.map((photo, index) => (
-            <div class="glass-card overflow-hidden">
-              <Image
-                src={photo}
-                alt={`SkillUp live training session ${index + 1}`}
-                width={640}
-                height={360}
-                loading="lazy"
-                class="aspect-video w-full object-cover"
-              />
-            </div>
-          ))
-        }
+      <div class="grid gap-10 lg:grid-cols-[0.75fr_1.25fr] lg:items-start lg:gap-16">
+        <div class="lg:sticky lg:top-28"><p class="workshop-annotation">{about.story.eyebrow}</p><h2 class="mt-4 font-display text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl">{about.story.title}</h2></div>
+        <div><div class="space-y-5 text-base leading-8 text-white/70 sm:text-lg">{about.story.paragraphs.map((paragraph) => <p>{paragraph}</p>)}</div><blockquote class="mt-8 border-l-2 border-accent-400 py-2 pl-5 font-display text-xl font-semibold leading-8 text-white">“{about.story.quote}”</blockquote></div>
       </div>
     </Container>
+  </section>
+
+  <section class="section-atmospheric border-y border-white/10 py-14 sm:py-16 lg:py-20">
+    <InteractiveAIAmbientBackground variant="process" />
+    <Container>
+      <SectionHeader eyebrow={about.experience.eyebrow} title={about.experience.title} description={about.experience.description} />
+      <ol class="relative mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {about.experience.capabilities.map((capability, index) => <li class="glass-card grid grid-cols-[auto_1fr] gap-4 p-5"><span class="flex size-9 items-center justify-center rounded-control border border-accent-400/30 bg-accent-950/20 font-mono text-xs text-accent-300">0{index + 1}</span><div><h3 class="font-display text-lg font-semibold text-white">{capability.title}</h3><p class="mt-2 text-sm leading-6 text-white/65">{capability.description}</p></div></li>)}
+      </ol>
+    </Container>
+  </section>
+
+  <section id="teaching-philosophy" class="scroll-mt-28 bg-atmosphere-rich py-14 sm:py-16 lg:py-20">
+    <Container>
+      <SectionHeader eyebrow={about.method.eyebrow} title={about.method.title} description={about.method.description} />
+      <ol class="mt-10 grid gap-px overflow-hidden rounded-surface border border-white/10 bg-white/10 md:grid-cols-2 lg:grid-cols-4">
+        {about.method.steps.map((step, index) => <li class="relative bg-atmosphere-deep p-6"><span class="font-mono text-sm font-semibold text-accent-300">{step.number}</span><h3 class="mt-7 font-display text-xl font-semibold text-white">{step.title}</h3><p class="mt-3 text-sm leading-6 text-white/65">{step.description}</p>{index < about.method.steps.length - 1 && <span aria-hidden="true" class="absolute -right-2 top-8 z-10 hidden text-accent-300 lg:block">→</span>}</li>)}
+      </ol>
+    </Container>
+  </section>
+
+  <section class="border-y border-white/10 bg-black py-14 sm:py-16 lg:py-20">
+    <Container>
+      <SectionHeader eyebrow={about.audience.eyebrow} title={about.audience.title} description={about.audience.description} />
+      <div class="mt-9 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{about.audience.roles.map((role, index) => <div class="glass-card flex gap-4 p-5"><span class="font-mono text-xs text-accent-300">0{index + 1}</span><p class="font-display font-semibold leading-6 text-white">{role}</p></div>)}</div>
+      <p class="mt-7 max-w-4xl border-l-2 border-purple-400 pl-5 text-base leading-7 text-white/70">{about.audience.note}</p>
+    </Container>
+  </section>
+
+  <section class="section-atmospheric py-14 sm:py-16 lg:py-20">
+    <Container>
+      <SectionHeader eyebrow={about.mentoring.eyebrow} title={about.mentoring.title} description={about.mentoring.description} />
+      <div class="mt-10 grid gap-4 md:grid-cols-2">{about.mentoring.experiences.map((experience, index) => <article class="glass-card grid grid-cols-[auto_1fr] gap-4 p-6"><span class="font-mono text-sm text-accent-300">0{index + 1}</span><div><h3 class="font-display text-xl font-semibold text-white">{experience.title}</h3><p class="mt-2 text-sm leading-6 text-white/70">{experience.description}</p></div></article>)}</div>
+      <p class="mt-7 max-w-4xl rounded-control border border-white/10 bg-black/25 p-4 text-sm leading-6 text-white/60">{about.mentoring.boundary}</p>
+    </Container>
+  </section>
+
+  <section class="border-y border-purple-400/25 bg-gradient-to-br from-purple-950/15 via-atmosphere-deep to-accent-950/10 py-14 sm:py-16 lg:py-20">
+    <Container>
+      <div class="grid gap-8 lg:grid-cols-[1fr_0.9fr] lg:items-center">
+        <div><p class="workshop-annotation">{about.continued.eyebrow}</p><h2 class="gradient-heading mt-4 font-display text-3xl font-semibold tracking-tight sm:text-5xl">{about.continued.title}</h2><p class="mt-5 max-w-3xl text-base leading-7 text-white/70">{about.continued.description}</p><p class="mt-4 text-sm leading-6 text-white/55">{about.continued.note}</p><div class="mt-7"><Button href="/programs/" size="lg" analyticsEvent={analytics.events.ctaClick}>Explore the AI Engineering Journey</Button></div></div>
+        <div class="grid gap-px overflow-hidden rounded-surface border border-white/10 bg-white/10 sm:grid-cols-3 lg:grid-cols-1">{about.continued.metrics.map(([value, label]) => <div class="bg-atmosphere-deep p-5"><strong class="font-display text-2xl text-accent-300">{value}</strong><span class="mt-1 block text-sm text-white/60">{label}</span></div>)}</div>
+      </div>
+    </Container>
+  </section>
+
+  <section class="bg-black py-14 sm:py-16 lg:py-20">
+    <Container>
+      <SectionHeader eyebrow={about.work.eyebrow} title={about.work.title} description={about.work.description} />
+      <div class="mt-9 grid gap-px overflow-hidden rounded-surface border border-white/10 bg-white/10 sm:grid-cols-2">{publicChannels.map((channel) => <a class="group bg-atmosphere-deep p-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-accent-500" href={channel.external ? channel.href : withBase(channel.href)} target={channel.external ? "_blank" : undefined} rel={channel.external ? "noopener noreferrer" : undefined} data-analytics-event={channel.external ? analytics.events.outboundLink : analytics.events.ctaClick}><span class="font-display text-xl font-semibold text-white group-hover:text-accent-300">{channel.label}</span><span class="mt-2 block text-sm leading-6 text-white/60">{channel.description}</span>{channel.external && <span class="sr-only"> (opens in new tab)</span>}</a>)}</div>
+    </Container>
+  </section>
+
+  <section class="section-atmospheric relative overflow-hidden border-t border-white/10 py-14 sm:py-20">
+    <InteractiveAIAmbientBackground variant="cta" />
+    <Container size="md" class="relative z-10 text-center"><h2 class="gradient-heading font-display text-3xl font-semibold leading-tight tracking-tight sm:text-5xl">Ready to Build on Your Experience?</h2><p class="mx-auto mt-5 max-w-3xl text-base leading-7 text-white/70">Explore a mentor-led AI Engineering journey built for experienced professionals who want to engineer, deliver, and architect production-grade AI systems.</p><div class="mt-8"><Button href="/programs/" size="lg" analyticsEvent={analytics.events.primaryCtaClick}>Explore the Flagship Program</Button></div><p class="mt-4 font-display text-sm font-semibold text-accent-300">One Journey. Three AI Engineering Capabilities.</p></Container>
   </section>
 </BaseLayout>

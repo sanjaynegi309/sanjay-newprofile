@@ -4,128 +4,115 @@ import Badge from "@components/Badge.astro";
 import Button from "@components/Button.astro";
 import Container from "@components/Container.astro";
 import BaseLayout from "./BaseLayout.astro";
-import { formatList } from "@utils/format";
+import { analytics } from "@config/analytics";
+import { availabilityTone, formatOfferDate, getProgramAvailability } from "@utils/offers";
 import { getContentSlug } from "@utils/slugs";
 
-interface Props {
-  program: CollectionEntry<"programs">;
-}
+interface Props { program: CollectionEntry<"programs">; }
 
 const { program } = Astro.props;
 const { data } = program;
 const canonicalPath = `/programs/${getContentSlug(program)}/`;
+const availability = getProgramAvailability(program);
+const primaryEvent = data.cta?.analyticsEvent ?? analytics.events.programApply;
+const selfPacedComingSoon = data.format === "self-paced" && data.launchStatus === "coming-soon";
 ---
 
-<BaseLayout
-  seo={{
-    title: data.seo.title ?? data.title,
-    description: data.seo.description ?? data.description,
-    canonicalPath,
-    noindex: data.seo.noindex,
-    ogImage: data.seo.ogImage
-  }}
->
+<BaseLayout seo={{ title: data.seo.title ?? data.title, description: data.seo.description ?? data.description, canonicalPath, noindex: data.seo.noindex, ogImage: data.seo.ogImage }}>
   <article>
-    <section class="section-atmospheric border-b border-white/10 py-16 sm:py-20">
+    <section class="section-atmospheric border-b border-white/10 py-14 sm:py-20">
       <Container>
-        <div class="grid gap-10 lg:grid-cols-[1fr_0.8fr] lg:items-start">
+        <div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
           <div class="space-y-6">
-            <div class="flex flex-wrap gap-2">
-              <Badge tone={data.featured ? "accent" : "neutral"}>
-                {data.level}
-              </Badge>
-              <Badge tone="neutral">{data.format.replaceAll("-", " ")}</Badge>
+            <div class="flex flex-wrap items-center gap-2">
+              <Badge tone={availabilityTone(availability.status)}>{availability.label}</Badge>
+              <span class="text-sm capitalize text-white/55">{data.level} · {data.deliveryFormat ?? data.format.replaceAll("-", " ")}</span>
             </div>
             <div class="space-y-4">
-              <h1 class="gradient-heading font-display text-4xl font-semibold tracking-tight sm:text-5xl">
-                {data.title}
-              </h1>
-              <p class="max-w-3xl text-lg leading-8 text-white/70">
-                {data.description}
-              </p>
+              <p class="font-display text-sm font-semibold uppercase tracking-[0.1em] text-accent-300">SkillUp with Sanjay Negi</p>
+              <h1 class="gradient-heading font-display text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">{data.title}</h1>
+              {data.bestFor && <p class="font-display text-xl font-semibold text-white">{data.bestFor}</p>}
+              <p class="max-w-3xl text-lg leading-8 text-white/70">{data.description}</p>
             </div>
-            {
-              data.cta && (
-                <Button
-                  href={data.cta.href}
-                  analyticsEvent={data.cta.analyticsEvent}
-                >
-                  {data.cta.label}
-                </Button>
-              )
-            }
+            <div class="flex flex-wrap gap-3">
+              <Button href={availability.actionHref} analyticsEvent={primaryEvent} target={availability.actionExternal ? "_blank" : undefined} rel={availability.actionExternal ? "noreferrer" : undefined}>
+                {availability.actionLabel}{availability.actionExternal && <span class="sr-only"> (opens in new tab)</span>}
+              </Button>
+              <Button href="#program-fit" variant="secondary">Check your fit</Button>
+            </div>
           </div>
 
-          <aside class="glass-card p-6">
-            <dl class="space-y-5 text-sm">
-              <div>
-                <dt class="font-medium text-white">Audience</dt>
-                <dd class="mt-1 text-neutral-300">{formatList(data.audience)}</dd>
-              </div>
-              <div>
-                <dt class="font-medium text-white">Duration</dt>
-                <dd class="mt-1 text-neutral-300">{data.duration}</dd>
-              </div>
-              <div>
-                <dt class="font-medium text-white">Next cohort</dt>
-                <dd class="mt-1 text-neutral-300">{data.nextCohort}</dd>
-              </div>
-              <div>
-                <dt class="font-medium text-white">Fee</dt>
-                <dd class="mt-1 text-neutral-300">{data.fee}</dd>
-              </div>
+          <aside class="glass-card p-6" aria-label="Program at a glance">
+            <p class="text-xs font-semibold uppercase tracking-[0.08em] text-accent-300">At a glance</p>
+            <dl class="program-facts mt-5 divide-y divide-white/10 text-sm">
+              <div><dt>Duration</dt><dd>{data.duration}</dd></div>
+              {data.weeklyCommitment && <div><dt>Weekly commitment</dt><dd>{data.weeklyCommitment}</dd></div>}
+              {data.liveSchedule && <div><dt>Live sessions</dt><dd>{data.liveSchedule}</dd></div>}
+              {data.timezone && <div><dt>Timezone</dt><dd>{data.timezone}</dd></div>}
+              {availability.startsAt && <div><dt>Published start date</dt><dd>{formatOfferDate(availability.startsAt)}</dd></div>}
+              {selfPacedComingSoon ? <div><dt>Access</dt><dd>Included in the All-Access Pass</dd></div> : <div><dt>Fee</dt><dd>{data.fee}</dd></div>}
+              {data.recordingAccess && <div><dt>Recordings</dt><dd>{data.recordingAccess}</dd></div>}
             </dl>
+            <p class="mt-5 border-l-2 border-accent-400 pl-3 text-sm leading-6 text-white/65">{availability.detail}</p>
           </aside>
         </div>
       </Container>
     </section>
 
-    <section class="section-navy-tint">
+    <section class="workbook">
       <Container>
-      <div class="grid gap-12 py-16 lg:grid-cols-[1fr_18rem] lg:items-start">
-        <div class="prose max-w-none">
-          <slot />
+        <div class="workshop-section space-y-14">
+          <section id="program-fit" class:list={["grid gap-8", data.prerequisites.length > 0 && "lg:grid-cols-2"]} aria-labelledby="fit-heading">
+            <div>
+              <p class="annotation-label">01 · Fit</p>
+              <h2 id="fit-heading" class="mt-3 font-display text-3xl font-semibold text-workbook-ink">Who this is for</h2>
+              <ul class="editorial-list mt-6">{data.audience.map((item) => <li>{item}</li>)}</ul>
+            </div>
+            {data.prerequisites.length > 0 && <div class="workbook-note"><h3 class="font-display text-xl font-semibold text-workbook-ink">Prerequisites</h3><ul class="editorial-list mt-4">{data.prerequisites.map((item) => <li>{item}</li>)}</ul></div>}
+          </section>
+
+          <section class="border-y border-workbook-ink/10 py-12" aria-labelledby="build-heading">
+            <p class="annotation-label">02 · Evidence</p>
+            <h2 id="build-heading" class="mt-3 font-display text-3xl font-semibold text-workbook-ink">What you will build</h2>
+            <div class="mt-7 grid gap-x-10 gap-y-5 md:grid-cols-2">
+              {(data.deliverables.length > 0 ? data.deliverables : data.outcomes).map((item, index) => (
+                <div class="flex gap-4"><span class="font-display text-sm font-semibold text-accent-700">0{index + 1}</span><p class="leading-7 text-workbook-muted">{item}</p></div>
+              ))}
+            </div>
+            <p class="mt-6 text-sm text-workbook-muted">These are curriculum deliverables. They are not presented as past learner results.</p>
+          </section>
+
+          {(data.support.length > 0 || data.recordingAccess) && (
+            <section class="grid gap-8 lg:grid-cols-[0.8fr_1.2fr]" aria-labelledby="support-heading">
+              <div><p class="annotation-label">03 · Support</p><h2 id="support-heading" class="mt-3 font-display text-3xl font-semibold text-workbook-ink">How mentoring supports the work</h2>{data.recordingAccess && <p class="mt-4 leading-7 text-workbook-muted"><strong class="text-workbook-ink">Recording access:</strong> {data.recordingAccess}.</p>}</div>
+              <ul class="editorial-list">{data.support.map((item) => <li>{item}</li>)}</ul>
+            </section>
+          )}
+
+          <div class="grid gap-12 border-t border-workbook-ink/10 pt-12 lg:grid-cols-[minmax(0,1fr)_19rem] lg:items-start">
+            <div class="prose max-w-none"><slot /></div>
+            <aside class="space-y-5 lg:sticky lg:top-24">
+              <section class="glass-card p-5">
+                <Badge tone={availabilityTone(availability.status)}>{availability.label}</Badge>
+                <p class="mt-4 text-sm leading-6 text-white/65">{availability.detail}</p>
+                <Button class="mt-5 w-full" href={availability.actionHref} analyticsEvent={primaryEvent} target={availability.actionExternal ? "_blank" : undefined} rel={availability.actionExternal ? "noreferrer" : undefined}>{availability.actionLabel}</Button>
+              </section>
+              {data.terms.length > 0 && <section class="border-l-2 border-accent-500/60 pl-4"><h2 class="text-sm font-semibold uppercase tracking-[0.08em] text-workbook-ink">Terms to know</h2><ul class="mt-3 space-y-3 text-sm leading-6 text-workbook-muted">{data.terms.map((term) => <li>{term}</li>)}</ul></section>}
+            </aside>
+          </div>
         </div>
-
-        <aside class="space-y-6 lg:sticky lg:top-24">
-          {
-            data.outcomes.length > 0 && (
-              <section class="glass-card p-5">
-                <h2 class="text-sm font-semibold uppercase tracking-[0.08em] text-white">
-                  Outcomes
-                </h2>
-                <ul class="mt-4 space-y-3 text-sm leading-6 text-white/70">
-                  {data.outcomes.map((outcome) => (
-                    <li class="flex gap-2">
-                      <span
-                        aria-hidden="true"
-                        class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent-400"
-                      />
-                      <span>{outcome}</span>
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            )
-          }
-
-          {
-            data.topics.length > 0 && (
-              <section class="glass-card p-5">
-                <h2 class="text-sm font-semibold uppercase tracking-[0.08em] text-white">
-                  Topics
-                </h2>
-                <div class="mt-4 flex flex-wrap gap-2">
-                  {data.topics.map((topic) => (
-                    <Badge tone="neutral">{topic}</Badge>
-                  ))}
-                </div>
-              </section>
-            )
-          }
-        </aside>
-      </div>
       </Container>
     </section>
   </article>
 </BaseLayout>
+
+<style>
+  .program-facts > div { padding: 0.8rem 0; }
+  .program-facts dt { color: rgb(255 255 255 / 0.5); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+  .program-facts dd { margin-top: 0.25rem; color: rgb(255 255 255 / 0.84); line-height: 1.5; }
+  .annotation-label { color: var(--link); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+  .workbook-note { border-left: 3px solid rgb(var(--accent-500)); padding-left: 1.5rem; }
+  .editorial-list { display: grid; gap: 0.75rem; color: var(--text-muted); }
+  .editorial-list li { position: relative; padding-left: 1.25rem; line-height: 1.7; }
+  .editorial-list li::before { background: var(--accent); border-radius: 999px; content: ""; height: 0.4rem; left: 0; position: absolute; top: 0.7rem; width: 0.4rem; }
+</style>

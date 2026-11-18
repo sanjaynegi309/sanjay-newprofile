@@ -1,0 +1,25 @@
+---
+import Button from "@components/Button.astro";
+import { analytics } from "@config/analytics";
+
+interface Props {
+  href: string;
+  analyticsLabel: string;
+  class?: string;
+}
+
+const { href, analyticsLabel, class: className } = Astro.props;
+---
+
+<Button
+  href={href}
+  size="lg"
+  target="_blank"
+  rel="noopener noreferrer"
+  analyticsEvent={analytics.events.programApply}
+  analyticsLabel={analyticsLabel}
+  class={className}
+>
+  Reserve Your Seat
+  <span class="sr-only"> (opens in new tab)</span>
+</Button>

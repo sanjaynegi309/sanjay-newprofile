@@ -7,6 +7,7 @@ import "@styles/global.css";
 import { brand } from "@config/brand";
 import { seo as seoConfig } from "@config/seo";
 import { site } from "@config/site";
+import { theme } from "@config/theme";
 import Analytics from "@components/Analytics.astro";
 import Footer from "@components/Footer.astro";
 import Header from "@components/Header.astro";
@@ -28,7 +29,7 @@ const robots = `${meta.robots.index ? "index" : "noindex"},${meta.robots.follow 
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
+    <meta name="theme-color" content={theme.colors.atmosphere.deep} />
     <title>{meta.title}</title>
     <meta name="description" content={meta.description} />
     <meta name="robots" content={robots} />

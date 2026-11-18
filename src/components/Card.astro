@@ -5,20 +5,22 @@ interface Props {
   href?: string;
   hot?: boolean;
   interactive?: boolean;
+  variant?: "surface" | "editorial";
   class?: string;
 }
 
 const {
   href,
   hot = false,
+  variant = "surface",
   interactive = Boolean(href),
   class: className
 } = Astro.props;
 const baseClasses = [
-  "glass-card",
+  variant === "editorial" ? "editorial-note" : "glass-card",
   hot && "glass-card-hot",
   interactive && "glass-card--interactive",
-  "p-5 sm:p-6"
+  variant === "surface" && "p-5 sm:p-6"
 ];
 const focusClasses =
   "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-500";

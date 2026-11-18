@@ -1,0 +1,11 @@
+---
+import type { GetStaticPaths } from "astro";
+import type { JanuaryBootcamp } from "@config/januaryBootcamps";
+import { januaryBootcamps } from "@config/januaryBootcamps";
+import JanuaryBootcampLayout from "@layouts/JanuaryBootcampLayout.astro";
+
+export const getStaticPaths: GetStaticPaths = () => januaryBootcamps.map((bootcamp) => ({ params: { slug: bootcamp.slug }, props: { bootcamp } }));
+const { bootcamp } = Astro.props as { bootcamp: JanuaryBootcamp };
+---
+
+<JanuaryBootcampLayout bootcamp={bootcamp} />

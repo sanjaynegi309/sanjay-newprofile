@@ -1,0 +1,16 @@
+---
+import RegistrationAction from "@components/RegistrationAction.astro";
+interface Batch { id: string; name: string; days: string; time: string; timezone: string; hours: string; duration: string }
+interface Props { batches: readonly Batch[]; registrationUrl: string }
+const { batches, registrationUrl } = Astro.props;
+---
+<div data-batch-selector>
+  <fieldset><legend class="sr-only">Choose a preferred batch schedule</legend>
+    <div class="grid gap-4 lg:grid-cols-3">{batches.map((batch, index) => <label class="glass-card glass-card--interactive relative block cursor-pointer p-6 has-[:checked]:border-accent-400 has-[:checked]:bg-accent-950/30"><input class="peer sr-only" type="radio" name="preferred-batch" value={batch.id} checked={index === 0} /><span class="absolute right-5 top-5 flex size-5 items-center justify-center rounded-full border border-white/30 peer-checked:border-accent-300 before:size-2 before:rounded-full before:bg-transparent peer-checked:before:bg-accent-300"></span><span class="text-xs font-semibold uppercase tracking-[0.12em] text-accent-300">Batch {index + 1}</span><span data-batch-name class="mt-3 block pr-8 font-display text-xl font-semibold text-white">{batch.name}</span><dl class="mt-6 space-y-3 text-sm"><div><dt class="text-white/45">Days</dt><dd class="mt-1 text-white">{batch.days}</dd></div><div><dt class="text-white/45">Time</dt><dd class="mt-1 text-white">{batch.time} {batch.timezone}</dd></div><div class="flex flex-wrap gap-x-5 gap-y-1 border-t border-white/10 pt-3 text-white/65"><dd>{batch.hours}</dd><dd>{batch.duration}</dd></div></dl></label>)}</div>
+  </fieldset>
+  <p class="mt-6 max-w-4xl text-base leading-7 text-white/75">All batches follow the same curriculum. Each batch is limited to 15 learners. Your preferred schedule will be confirmed after enrollment.</p>
+  <div class="mt-6 flex flex-col items-start gap-4 sm:flex-row sm:items-start"><RegistrationAction href={registrationUrl} analyticsLabel="flagship_batch_registration" /><div><p class="text-sm leading-6 text-white/70" data-batch-status aria-live="polite">Preferred schedule: {batches[0].name}. This does not reserve a seat or guarantee availability.</p><p class="mt-1 max-w-2xl text-sm leading-6 text-white/70">Enroll now. We'll contact you via email or WhatsApp to collect your preferred batch schedule and confirm availability.</p></div></div>
+</div>
+<script>
+  document.querySelectorAll<HTMLElement>("[data-batch-selector]").forEach((selector) => { const status = selector.querySelector<HTMLElement>("[data-batch-status]"); selector.querySelectorAll<HTMLInputElement>('input[name="preferred-batch"]').forEach((input) => { input.addEventListener("change", () => { const label = input.closest("label")?.querySelector<HTMLElement>("[data-batch-name]")?.textContent?.trim(); if (status && label) status.textContent = `Preferred schedule: ${label}. This does not reserve a seat or guarantee availability.`; try { localStorage.setItem("skillup:preferred-flagship-batch", input.value); } catch {} }); }); });
+</script>

@@ -1,0 +1,141 @@
+---
+import { getCollection } from "astro:content";
+import Card from "@components/Card.astro";
+import Container from "@components/Container.astro";
+import EnquiryForm from "@components/EnquiryForm.astro";
+import FAQ from "@components/FAQ.astro";
+import ProgramCard from "@components/ProgramCard.astro";
+import SectionHeader from "@components/SectionHeader.astro";
+import { selfPaced } from "@config/self-paced";
+import { site } from "@config/site";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { getContentSlug } from "@utils/slugs";
+
+// Learner-journey order per docs/references/self-paced/courses_topics.md:
+// shared foundation first, then career paths in the order the curriculum
+// document introduces them (Engineer/FDE/AI-Native tier, then
+// Architect/Product), with Leadership last as a separate shortcut branch.
+const CURRICULUM_ORDER = [
+  "ai-genai-foundations",
+  "genai-builder",
+  "ai-genai-engineer-path",
+  "forward-deployed-engineer-path",
+  "ai-native-developer-path",
+  "genai-architect-path",
+  "ai-product-path",
+  "ai-leadership-path"
+];
+
+const selfPacedCourses = (await getCollection("programs"))
+  .filter((program) => !program.data.draft && program.data.format === "self-paced")
+  .sort((a, b) => {
+    const aIndex = CURRICULUM_ORDER.indexOf(getContentSlug(a));
+    const bIndex = CURRICULUM_ORDER.indexOf(getContentSlug(b));
+    return (aIndex === -1 ? CURRICULUM_ORDER.length : aIndex) -
+      (bIndex === -1 ? CURRICULUM_ORDER.length : bIndex);
+  });
+---
+
+<BaseLayout
+  seo={{
+    title: "Self-Paced Courses",
+    description: selfPaced.hero.description,
+    canonicalPath: "/self-paced/"
+  }}
+>
+  <section class="section-atmospheric border-b border-white/10 workshop-section">
+    <Container>
+      <SectionHeader
+        eyebrow={selfPaced.hero.eyebrow}
+        title={selfPaced.hero.title}
+        description={selfPaced.hero.description}
+        tone="dark"
+        headingLevel="h1"
+      />
+    </Container>
+  </section>
+
+  <section class="bg-black workshop-section">
+    <Container>
+      <div class="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+        <SectionHeader
+          eyebrow={selfPaced.howItWorks.eyebrow}
+          title={selfPaced.howItWorks.title}
+        />
+        <div class="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
+          {
+            selfPaced.howItWorks.items.map((item) => (
+              <Card>
+                <div class="space-y-3">
+                  <h3 class="font-display text-lg font-semibold text-white">
+                    {item.title}
+                  </h3>
+                  <p class="text-sm leading-6 text-white/70">{item.description}</p>
+                </div>
+              </Card>
+            ))
+          }
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <section class="section-navy-tint workshop-section">
+    <Container>
+      <div class="space-y-10">
+        <SectionHeader
+          eyebrow="Course library"
+          title="What's launching in the All-Access Pass."
+          description="The catalog is in development — courses appear here as they're confirmed. Join the waitlist below to be notified as the library grows."
+        />
+        {
+          selfPacedCourses.length > 0 ? (
+            <div class="grid gap-5 lg:grid-cols-2 [&>*:last-child:nth-child(odd)]:lg:col-span-2">
+              {selfPacedCourses.map((course) => (
+                <ProgramCard
+                  program={course}
+                  href={`/programs/${getContentSlug(course)}/`}
+                />
+              ))}
+            </div>
+          ) : (
+            <div class="glass-card p-8 text-center">
+              <p class="text-base leading-7 text-white/70">
+                The first self-paced courses haven't been announced yet. Join the waitlist to be the first to know what's included and when it opens.
+              </p>
+            </div>
+          )
+        }
+      </div>
+    </Container>
+  </section>
+
+  <section class="bg-black workshop-section">
+    <Container>
+      <div class="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
+        <SectionHeader
+          eyebrow={selfPaced.faq.eyebrow}
+          title={selfPaced.faq.title}
+        />
+        <FAQ items={selfPaced.faq.items} />
+      </div>
+    </Container>
+  </section>
+
+  <section class="section-atmospheric border-t border-white/10 workshop-section">
+    <Container size="sm">
+      <EnquiryForm
+        id={selfPaced.form.id}
+        heading={selfPaced.form.heading}
+        description={selfPaced.form.description}
+        formType={selfPaced.form.formType}
+        analyticsEvent={selfPaced.form.analyticsEvent}
+        interestLabel={selfPaced.form.interestLabel}
+        interestPlaceholder={selfPaced.form.interestPlaceholder}
+        qualifyingLabel={selfPaced.form.qualifyingLabel}
+        submitLabel={selfPaced.form.submitLabel}
+        fallbackEmail={site.contact.email}
+      />
+    </Container>
+  </section>
+</BaseLayout>

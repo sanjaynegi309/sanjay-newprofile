@@ -3,26 +3,37 @@ import { analytics } from "./analytics";
 export const corporate = {
   hero: {
     eyebrow: "Corporate training",
-    title: "AI capability programs built around business outcomes.",
+    title: "Build AI Capabilities That Translate Into Business Outcomes.",
     description:
-      "SkillUp helps teams identify useful AI opportunities, adopt safer workflows, and build shared decision-making habits without turning training into a disconnected curriculum exercise.",
+      "Practical, customizable AI engineering and GenAI training for teams that want to identify valuable opportunities, build reliable solutions, and develop stronger technical decision-making. Personally designed and led by Sanjay Negi, drawing on 20+ years of software engineering experience.",
     actions: [
       {
-        label: "Start a training conversation",
-        href: "/contact/",
-        analyticsEvent: analytics.events.corporateCta
+        label: "Discuss Your Team's AI Training Needs",
+        href: "#corporate-enquiry-form",
+        analyticsEvent: analytics.events.primaryCtaClick
       },
       {
-        label: "View workshops",
-        href: "/workshops/",
+        label: "Explore Training Tracks",
+        href: "#training-tracks",
         variant: "secondary",
-        analyticsEvent: analytics.events.workshopRegistration
+        analyticsEvent: analytics.events.ctaClick
       }
     ],
     metrics: [
-      { label: "Primary focus", value: "Business outcomes" },
-      { label: "Delivery", value: "Private teams" },
-      { label: "Output", value: "Adoption plan" }
+      { label: "Experience", value: "20+ years" },
+      { label: "Led by", value: "Sanjay Negi" },
+      { label: "Approach", value: "Goal first" }
+    ]
+  },
+  tracks: {
+    eyebrow: "Corporate training tracks",
+    title: "Focused AI Training. Tailored to Your Team.",
+    description: "Choose a starting focus. We'll tailor the depth, exercises, duration, and delivery format around your team's experience and business goals.",
+    items: [
+      { title: "AI Engineering & Agentic AI", description: "AI application engineering, LLM workflows, tool integration, agent orchestration, RAG, and evaluation.", detail: "Technologies may include LangChain, LangGraph, Hugging Face, and relevant model APIs." },
+      { title: "Enterprise RAG & Production AI", description: "Retrieval architecture, enterprise integrations, evaluation, observability, reliability, and deployment patterns.", detail: "" },
+      { title: "Forward Deployed AI Engineering", description: "Translate business problems into implementation plans, integrate AI with real workflows, and explore practical delivery trade-offs.", detail: "" },
+      { title: "GenAI Architecture & Technical Leadership", description: "System design, scalability, governance, security, evaluation strategy, cloud architecture, and cost-performance decisions.", detail: "" }
     ]
   },
   outcomes: {
@@ -34,28 +45,28 @@ export const corporate = {
       {
         title: "Prioritized AI opportunities",
         description:
-          "Teams leave with a clearer view of where AI can reduce friction, improve throughput, or create better customer and employee experiences."
+          "Exercises are designed to clarify where AI may reduce friction, improve throughput, or support customer and employee experiences."
       },
       {
         title: "Shared evaluation habits",
         description:
-          "Participants learn how to judge AI output quality, identify failure modes, and define acceptance criteria before scaling a workflow."
+          "Participants practise judging AI output quality, identifying failure modes, and defining acceptance criteria before scaling a workflow."
       },
       {
         title: "Responsible adoption patterns",
         description:
-          "Leaders and practitioners align on boundaries for data use, review, escalation, and human oversight."
+          "Sessions can help leaders and practitioners discuss boundaries for data use, review, escalation, and human oversight."
       },
       {
         title: "Workflow-level implementation plans",
         description:
-          "Training sessions produce practical next steps for roles, processes, and tools rather than generic AI enthusiasm."
+          "A scoped engagement can include practical next steps for roles, processes, and tools."
       }
     ]
   },
   engagement: {
     eyebrow: "How engagements work",
-    title: "A lightweight path from discovery to measurable capability.",
+    title: "A lightweight path from discovery to practical capability.",
     steps: [
       {
         title: "Define the business target",
@@ -83,22 +94,43 @@ export const corporate = {
     eyebrow: "Teams",
     title: "Designed for cross-functional adoption.",
     items: [
-      "Engineering and platform teams",
-      "Product and innovation teams",
-      "Operations and business teams",
-      "Leadership groups planning AI adoption"
+      "Engineering & Platform Teams",
+      "Product & Innovation Teams",
+      "Operations & Business Teams",
+      "Leadership Groups Planning AI Adoption"
     ]
   },
+  deliverables: {
+    eyebrow: "Example deliverables",
+    title: "What Your Team Can Walk Away With",
+    items: [
+      "AI Opportunity Prioritization Matrix",
+      "Working AI Workflow or Proof of Concept",
+      "Architecture Blueprint & Decision Record",
+      "Evaluation & Production-Readiness Checklist"
+    ],
+    note: "Deliverables depend on the agreed engagement scope, team readiness, and training format."
+  },
+  why: {
+    eyebrow: "Why SkillUp",
+    title: "Practitioner-Led. Built Around Your Real Work.",
+    description: "SkillUp training is personally designed and led by Sanjay Negi. With more than two decades of experience across the enterprise software lifecycle, the approach connects modern AI engineering to requirements, architecture, implementation, testing, deployment, monitoring, and production considerations."
+  },
   finalCta: {
-    title: "Turn AI training into operational progress.",
+    title: "Let's Discuss Your Team's AI Training Needs.",
     description:
-      "Start with the business outcome, then choose the workshops and programs that move the team toward it.",
-    actions: [
-      {
-        label: "Contact SkillUp",
-        href: "/contact/",
-        analyticsEvent: analytics.events.contact
-      }
-    ]
+      "Share your team context, training goals, and expected timeline so we can scope a relevant learning intervention."
+  },
+  form: {
+    id: "corporate-enquiry-form",
+    heading: "Let's Discuss Your Team's AI Training Needs.",
+    description:
+      "Share your team goals, audience, and business outcome. We'll send it straight to Sanjay; if that doesn't go through, you'll get a prefilled email instead.",
+    analyticsEvent: analytics.events.corporateCta,
+    interestLabel: "Company or team",
+    interestPlaceholder: "e.g. Platform Engineering, Acme Ltd.",
+    goalsLabel: "Training goals",
+    qualifyingLabel: "Team size and timeline",
+    submitLabel: "Request a Training Discussion"
   }
 } as const;

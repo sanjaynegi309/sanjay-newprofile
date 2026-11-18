@@ -1,0 +1,10 @@
+---
+import { brand } from "@config/brand";
+import { withBase } from "@utils/url";
+interface Props { lazy?: boolean; }
+const { lazy = false } = Astro.props;
+---
+<a class="brand-lockup" href={withBase("/")} aria-label={`${brand.name} with ${brand.mentor.name} home`}>
+  <img src={withBase(brand.logo.mark)} alt="" width="32" height="32" loading={lazy ? "lazy" : "eager"} />
+  <span><strong>{brand.logo.text}</strong><small>with {brand.mentor.name}</small></span>
+</a>

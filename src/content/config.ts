@@ -7,7 +7,8 @@ const slugSchema = z
 const ctaSchema = z.object({
   label: z.string(),
   href: z.string(),
-  analyticsEvent: z.string().optional()
+  analyticsEvent: z.string().optional(),
+  external: z.boolean().default(false)
 });
 
 const seoSchema = z.object({
@@ -34,14 +35,36 @@ const pageSchema = baseContentSchema.extend({
 
 const programSchema = baseContentSchema.extend({
   audience: z.array(z.string()).min(1),
+  bestFor: z.string().optional(),
   level: z.enum(["beginner", "intermediate", "advanced"]),
   duration: z.string(),
   format: z.enum(["self-paced", "cohort", "corporate", "hybrid"]),
   nextCohort: z.string().default("Contact for dates"),
   fee: z.string().default("Contact for pricing"),
+  capacity: z.number().int().positive().optional(),
   outcomes: z.array(z.string()).min(1),
   topics: z.array(z.string()).default([]),
   featured: z.boolean().default(false),
+  launchStatus: z.enum(["live", "coming-soon"]).default("live"),
+  estimatedLaunch: z.string().optional(),
+  prerequisites: z.array(z.string()).default([]),
+  deliverables: z.array(z.string()).default([]),
+  weeklyCommitment: z.string().optional(),
+  liveSchedule: z.string().optional(),
+  timezone: z.string().optional(),
+  deliveryFormat: z.string().optional(),
+  support: z.array(z.string()).default([]),
+  recordingAccess: z.string().optional(),
+  terms: z.array(z.string()).default([]),
+  availability: z.object({
+    status: z.enum(["open", "upcoming", "in-progress", "waitlist", "on-request", "completed"]),
+    label: z.string(),
+    detail: z.string(),
+    startsAt: z.coerce.date().optional(),
+    actionLabel: z.string(),
+    actionHref: z.string(),
+    actionExternal: z.boolean().default(false)
+  }).optional(),
   cta: ctaSchema.optional(),
   seo: seoSchema.default({})
 });
@@ -66,6 +89,8 @@ const testimonialSchema = z.object({
   organization: z.string(),
   quote: z.string(),
   program: z.string().optional(),
+  image: z.string().startsWith("/").optional(),
+  outcome: z.string().optional(),
   featured: z.boolean().default(false)
 });
 

@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import { seo } from "@config/seo";
 import { getContentSlug } from "@utils/slugs";
 import { withBase } from "@utils/url";
+import { januaryBootcamps } from "@config/januaryBootcamps";
 
 type SitemapEntry = {
   path: string;
@@ -53,9 +54,11 @@ export const GET: APIRoute = async () => {
     { path: "/about/", priority: seo.sitemap.priority.page },
     { path: "/contact/", priority: seo.sitemap.priority.page },
     { path: "/teams/", priority: seo.sitemap.priority.page },
+    { path: "/faq/", priority: seo.sitemap.priority.page },
     { path: "/privacy/", priority: seo.sitemap.priority.page },
     { path: "/programs/", priority: seo.sitemap.priority.listing },
-    { path: "/workshops/", priority: seo.sitemap.priority.listing },
+    { path: "/bootcamps/", priority: seo.sitemap.priority.listing },
+    { path: "/self-paced/", priority: seo.sitemap.priority.listing },
     ...programs.map((program) => ({
       path: `/programs/${getContentSlug(program)}/`,
       priority: seo.sitemap.priority.detail,
@@ -65,6 +68,10 @@ export const GET: APIRoute = async () => {
       path: `/workshops/${getContentSlug(workshop)}/`,
       priority: seo.sitemap.priority.detail,
       lastmod: workshop.data.updatedAt ?? workshop.data.publishedAt
+    })),
+    ...januaryBootcamps.map((bootcamp) => ({
+      path: `/bootcamps/${bootcamp.slug}/`,
+      priority: seo.sitemap.priority.detail
     }))
   ];
 

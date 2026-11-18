@@ -1,0 +1,30 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { analytics } from "@config/analytics";
+import { site } from "@config/site";
+import { getWorkshopDateInfo } from "@utils/format";
+import { getContentSlug } from "@utils/slugs";
+import { withBase } from "@utils/url";
+
+interface Props {
+  workshop: CollectionEntry<"workshops">;
+  actionLabel: string;
+}
+const { workshop, actionLabel } = Astro.props;
+const { data } = workshop;
+const dateInfo = getWorkshopDateInfo(data.date, site.language);
+---
+
+<article class="summary-row">
+  <div>
+    <p class="workshop-annotation">{data.duration} / {dateInfo.label}</p>
+    <h3 class="mt-3 font-display text-xl font-semibold text-heading sm:text-2xl">{data.title}</h3>
+  </div>
+  <div>
+    <p class="text-sm leading-6 text-copy">{data.description}</p>
+  </div>
+  <a href={withBase(`/workshops/${getContentSlug(workshop)}/`)} class="workshop-link inline-flex min-h-11 items-center text-sm font-semibold"
+    data-analytics-event={analytics.events.ctaClick} data-analytics-label={data.title}>
+    {actionLabel}<span class="sr-only">: {data.title}</span>
+  </a>
+</article>

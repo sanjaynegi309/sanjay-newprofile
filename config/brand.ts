@@ -7,6 +7,7 @@ export type BrandConfig = {
     text: string;
     mark: string;
   };
+  mentor: { name: string; role: string };
   voice: {
     adjectives: string[];
   };
@@ -22,6 +23,7 @@ export const brand: BrandConfig = {
     text: "SkillUp",
     mark: "/logo.png"
   },
+  mentor: { name: "Sanjay Negi", role: "AI mentor" },
   voice: {
     adjectives: ["professional", "practical", "clear", "engineering-first"]
   }

@@ -10,10 +10,10 @@ const { as = "h2", size = "lg", gradient = false, class: className } = Astro.pro
 const Tag = as;
 
 const sizeClasses = {
-  xl: "text-4xl font-semibold tracking-normal sm:text-5xl",
-  lg: "text-3xl font-semibold tracking-normal sm:text-4xl",
-  md: "text-2xl font-semibold tracking-normal",
-  sm: "text-xl font-semibold tracking-normal"
+  xl: "text-4xl font-semibold tracking-tight sm:text-5xl",
+  lg: "text-3xl font-semibold tracking-tight sm:text-4xl",
+  md: "text-2xl font-semibold tracking-tight",
+  sm: "text-xl font-semibold tracking-tight"
 };
 ---
 
@@ -21,7 +21,7 @@ const sizeClasses = {
   class:list={[
     "text-balance font-display",
     sizeClasses[size],
-    gradient ? "gradient-heading" : "text-white",
+    gradient ? "gradient-heading" : "text-heading",
     className
   ]}
 >
