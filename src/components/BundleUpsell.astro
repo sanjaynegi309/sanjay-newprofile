@@ -1,0 +1,19 @@
+---
+import Button from "./Button.astro";
+import { analytics } from "@config/analytics";
+import { bootcampBundle } from "@config/januaryBootcamps";
+---
+
+<article class="glass-card-hot relative overflow-hidden p-6 sm:p-8 lg:p-10">
+  <div class="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-magenta-500/10 blur-3xl" aria-hidden="true"></div>
+  <div class="relative grid gap-7 lg:grid-cols-[1fr_auto] lg:items-center">
+    <div class="max-w-4xl">
+      <div class="flex flex-wrap items-center gap-3"><p class="workshop-annotation">{bootcampBundle.eyebrow}</p><span class="badge badge-magenta">{bootcampBundle.badge}</span></div>
+      <h2 class="mt-5 font-display text-3xl font-semibold leading-tight text-white sm:text-5xl">{bootcampBundle.headline}</h2>
+      <p class="mt-4 max-w-3xl text-base leading-7 text-white/70">{bootcampBundle.description}</p>
+      <ul class="mt-6 flex flex-wrap gap-2" aria-label="Bootcamp Pass highlights">{bootcampBundle.highlights.map((item) => <li class="rounded-control border border-white/10 bg-black/20 px-4 py-2 text-sm font-semibold text-white/80">{item}</li>)}</ul>
+      <p class="mt-4 text-sm leading-6 text-white/55">{bootcampBundle.supportingCopy}</p>
+    </div>
+    <div class="flex shrink-0 flex-col items-start lg:items-end"><Button href={bootcampBundle.registrationUrl} size="lg" target="_blank" rel="noopener noreferrer" analyticsEvent={analytics.events.workshopRegistration} analyticsLabel="january_bootcamp_bundle">{bootcampBundle.ctaLabel}<span class="sr-only"> (opens in new tab)</span></Button></div>
+  </div>
+</article>

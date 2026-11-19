@@ -1,9 +1,9 @@
 ---
 import type { TeachingExperimentContent } from "../types/teaching";
 import { analytics } from "@config/analytics";
-import { withBase } from "@utils/url";
+import Button from "./Button.astro";
 
-interface Props { content: TeachingExperimentContent; }
+interface Props { content: TeachingExperimentContent }
 const { content } = Astro.props;
 ---
 
@@ -14,17 +14,17 @@ const { content } = Astro.props;
   <div class="lesson-evidence mt-5">
     <section class="lesson-panel" aria-labelledby="lesson-source-label">
       <h3 id="lesson-source-label" class="lesson-label">{content.sourceLabel}</h3>
-      <p class="mt-2 text-sm leading-6 text-heading">{content.source}</p>
+      <p class="mt-3 text-sm text-heading">{content.source}</p>
     </section>
     <section class="lesson-panel lesson-response" aria-labelledby="lesson-response-label">
       <h3 id="lesson-response-label" class="lesson-label">{content.responseLabel}</h3>
-      <p class="mt-2 font-display text-base leading-7 text-heading">“{content.response}”</p>
+      <p class="mt-3 font-display text-base leading-7 text-heading">“{content.response}”</p>
     </section>
   </div>
 
-  <fieldset class="mt-5" data-lesson-question>
-    <legend class="font-display text-lg font-semibold text-heading">{content.prompt}</legend>
-    <div class="mt-3 grid gap-2">
+  <fieldset class="mt-6" data-lesson-question>
+    <legend class="font-display text-xl font-semibold text-heading">{content.prompt}</legend>
+    <div class="mt-4 grid gap-3">
       {content.choices.map((choice) => (
         <button type="button" class="lesson-choice" data-lesson-choice={choice.id}
           data-correct={String(choice.correct)} aria-describedby="lesson-instruction"
@@ -34,28 +34,30 @@ const { content } = Astro.props;
         </button>
       ))}
     </div>
-    <p id="lesson-instruction" class="mt-3 text-xs leading-5 text-copy">Choose one answer. Feedback appears immediately.</p>
+    <p id="lesson-instruction" class="mt-3 text-xs leading-5 text-copy">Choose one answer. Feedback appears immediately, and you can change your selection.</p>
   </fieldset>
 
-  <div class="lesson-feedback mt-5" data-lesson-feedback role="status" aria-live="polite" aria-atomic="true" tabindex="-1" hidden>
+  <div class="lesson-feedback mt-6" data-lesson-feedback role="status" aria-live="polite" aria-atomic="true" tabindex="-1" hidden>
     {content.choices.map((choice) => (
       <div data-feedback-for={choice.id} hidden>
         <p class="font-display text-lg font-semibold text-heading">{choice.feedbackTitle}</p>
         <p class="mt-2 text-sm leading-6 text-copy">{choice.feedback}</p>
       </div>
     ))}
-    <p class="lesson-takeaway mt-4 text-sm leading-6 text-heading">{content.lesson}</p>
-    <div class="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2">
-      <button type="button" class="lesson-reset" data-lesson-reset>{content.resetLabel}</button>
-      <a href={withBase(content.nextStep.href)} class="workshop-link inline-flex min-h-11 items-center text-sm font-semibold">
-        {content.nextStep.label}
-      </a>
+    <div class="lesson-takeaway mt-5">
+      <p class="lesson-label">Engineering takeaway</p>
+      <p class="mt-2 text-sm font-medium leading-6 text-heading">{content.lesson}</p>
     </div>
+    <div class="mt-5 rounded-control border border-white/10 bg-black/15 p-4">
+      <p class="font-display text-base font-semibold leading-6 text-heading">{content.nextStep.prompt}</p>
+      <div class="mt-3"><Button href={content.nextStep.href} analyticsEvent={analytics.events.primaryCtaClick}>{content.nextStep.label}</Button></div>
+    </div>
+    <div class="mt-4"><button type="button" class="lesson-reset" data-lesson-reset>{content.resetLabel}</button></div>
   </div>
 
   <noscript>
-    <p class="lesson-feedback mt-5 text-sm leading-6 text-heading">
-      <strong>Answer:</strong> “Refunds usually arrive in three business days” is unsupported. The source only says refunds are processed within five business days.
+    <p class="lesson-feedback mt-6 text-sm leading-6 text-heading">
+      Enable JavaScript to select an answer and receive feedback for this challenge.
     </p>
   </noscript>
 </article>
@@ -104,17 +106,19 @@ const { content } = Astro.props;
 
 <style>
   .teaching-experiment { border-top: 2px solid var(--link); padding-top: 1.25rem; }
-  .lesson-evidence { display: grid; border: 1px solid var(--card-border); }
-  .lesson-panel { padding: 1rem; }
-  .lesson-response { border-top: 1px solid var(--card-border); background: rgb(255 255 255 / 0.32); }
+  .lesson-evidence { display: grid; overflow: hidden; border: 1px solid var(--card-border); border-radius: var(--surface-radius); background: rgb(0 0 0 / 0.16); }
+  .lesson-panel { padding: 1.15rem; }
+  .lesson-panel > p { line-height: 1.75; }
+  .lesson-response { border-top: 1px solid var(--card-border); background: rgb(6 182 212 / 0.07); }
   .lesson-label { font-family: var(--workshop-mono); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--link); }
-  .lesson-choice { display: flex; width: 100%; min-height: 2.75rem; align-items: center; gap: 0.75rem; border: 1px solid var(--card-border); border-radius: var(--surface-radius); padding: 0.65rem 0.75rem; text-align: left; color: var(--text); font-size: 0.875rem; font-weight: 600; }
+  .lesson-choice { display: flex; width: 100%; min-height: 3rem; align-items: center; gap: 0.8rem; border: 1px solid var(--card-border); border-radius: var(--surface-radius); padding: 0.8rem 0.9rem; text-align: left; color: var(--text); font-size: 0.875rem; font-weight: 600; line-height: 1.45; }
   .lesson-choice:hover { border-color: var(--link); }
-  .choice-marker { width: 0.85rem; height: 0.85rem; flex: 0 0 0.85rem; border: 1px solid currentColor; border-radius: 50%; }
-  .lesson-choice[data-state="correct"] { border-color: var(--link); background: rgb(0 82 102 / 0.09); }
-  .lesson-choice[data-state="incorrect"] { border-color: var(--ink); background: rgb(23 35 32 / 0.06); }
+  .lesson-choice:focus-visible, .lesson-reset:focus-visible { outline: 2px solid var(--link); outline-offset: 3px; }
+  .choice-marker { width: 0.9rem; height: 0.9rem; flex: 0 0 0.9rem; border: 1px solid currentColor; border-radius: 50%; }
+  .lesson-choice[data-state="correct"] { border-color: var(--link); background: rgb(6 182 212 / 0.1); }
+  .lesson-choice[data-state="incorrect"] { border-color: rgb(255 255 255 / 0.22); background: rgb(255 255 255 / 0.04); }
   .lesson-choice[aria-pressed="true"] .choice-marker { border: 0.25rem solid var(--link); }
-  .lesson-feedback { border-left: 2px solid var(--link); padding-left: 1rem; outline-offset: 0.5rem; }
+  .lesson-feedback { border: 1px solid rgb(34 211 238 / 0.25); border-left: 3px solid var(--link); border-radius: var(--surface-radius); background: rgb(6 182 212 / 0.05); padding: 1rem; outline-offset: 0.35rem; }
   .lesson-takeaway { border-top: 1px solid var(--card-border); padding-top: 1rem; }
   .lesson-reset { min-height: 2.75rem; border: 1px solid var(--link); border-radius: var(--surface-radius); padding: 0.625rem 1rem; color: var(--link); font-size: 0.875rem; font-weight: 600; }
   .lesson-reset:hover { background: rgb(0 82 102 / 0.08); }
@@ -122,7 +126,5 @@ const { content } = Astro.props;
     .lesson-evidence { grid-template-columns: 1fr 1fr; }
     .lesson-response { border-top: 0; border-left: 1px solid var(--card-border); }
   }
-  @media (prefers-reduced-motion: reduce) {
-    .lesson-choice, .lesson-reset { transition: none; }
-  }
+  @media (prefers-reduced-motion: reduce) { .lesson-choice, .lesson-reset { transition: none; } }
 </style>

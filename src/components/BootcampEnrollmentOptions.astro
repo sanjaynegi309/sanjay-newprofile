@@ -1,0 +1,42 @@
+---
+import Button from "./Button.astro";
+import { analytics } from "@config/analytics";
+import { bootcampBundle, type JanuaryBootcamp } from "@config/januaryBootcamps";
+
+interface Props { bootcamp: JanuaryBootcamp }
+const { bootcamp } = Astro.props;
+---
+
+<section id="enrollment" class="scroll-mt-24 border-y border-white/10 bg-atmosphere-rich py-14 sm:py-20" aria-labelledby="enrollment-title">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-3xl text-center">
+      <p class="workshop-annotation justify-center">Enrollment options</p>
+      <h2 id="enrollment-title" class="mt-4 font-display text-3xl font-semibold text-white sm:text-5xl">Choose Your Learning Experience</h2>
+      <p class="mt-4 text-base leading-7 text-white/65">Join this bootcamp individually or unlock all five independent January workshops.</p>
+    </div>
+    <div class="mt-9 grid gap-5 lg:grid-cols-2">
+      <article class="glass-card flex flex-col p-6 sm:p-8">
+        <p class="font-mono text-xs font-semibold uppercase tracking-[0.12em] text-accent-300">Single bootcamp</p>
+        <h3 class="mt-4 font-display text-2xl font-semibold text-white">This Bootcamp</h3>
+        <p class="mt-2 text-sm leading-6 text-white/55">{bootcamp.title} · {bootcamp.dateLabel}</p>
+        <ul class="mt-6 grid gap-3 text-sm text-white/75">
+          {["3 Live Hours", "One Focused Technical Topic", "Hands-On Learning", "Independent Enrollment"].map((item) => <li class="flex gap-3"><span class="text-accent-300" aria-hidden="true">✓</span><span>{item}</span></li>)}
+        </ul>
+        <div class="mt-auto pt-8"><Button href={bootcamp.registrationUrl!} size="lg" target="_blank" rel="noopener noreferrer" analyticsEvent={analytics.events.workshopRegistration} analyticsLabel={bootcamp.slug} class="w-full">Reserve This Bootcamp<span class="sr-only"> (opens in new tab)</span></Button></div>
+      </article>
+      <article class="glass-card relative flex flex-col overflow-hidden border-accent-400/55 bg-accent-950/15 p-6 shadow-[0_0_42px_rgba(6,182,212,0.09)] sm:p-8">
+        <div class="absolute right-0 top-0 h-32 w-32 rounded-full bg-accent-400/10 blur-3xl" aria-hidden="true"></div>
+        <div class="relative">
+          <span class="badge badge-magenta">{bootcampBundle.badge}</span>
+          <h3 class="mt-4 font-display text-2xl font-semibold text-white">January All-5 Bootcamp Pass</h3>
+          <p class="mt-2 text-sm leading-6 text-white/55">One optional enrollment covering all five independent January bootcamps.</p>
+          <ul class="mt-6 grid gap-3 text-sm text-white/75">
+            {["All 5 Live Bootcamps", "15 Total Live Hours", "Five Independent Technical Topics", "One Convenient Enrollment"].map((item) => <li class="flex gap-3"><span class="text-accent-300" aria-hidden="true">✓</span><span>{item}</span></li>)}
+          </ul>
+        </div>
+        <div class="relative mt-auto pt-8"><Button href={bootcampBundle.registrationUrl} size="lg" target="_blank" rel="noopener noreferrer" analyticsEvent={analytics.events.workshopRegistration} analyticsLabel="january_bootcamp_bundle" class="w-full">{bootcampBundle.ctaLabel}<span class="sr-only"> (opens in new tab)</span></Button></div>
+      </article>
+    </div>
+    <p class="mx-auto mt-5 max-w-3xl text-center text-sm leading-6 text-white/50">The workshops are independent. You can attend any one on its own; no earlier bootcamp is required before a later session. Prices and applicable taxes are shown only on the checkout pages.</p>
+  </div>
+</section>

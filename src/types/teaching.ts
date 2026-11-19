@@ -25,5 +25,5 @@ export interface TeachingExperimentContent {
   }[];
   lesson: string;
   resetLabel: string;
-  nextStep: { label: string; href: string };
+  nextStep: { prompt: string; label: string; href: string };
 }

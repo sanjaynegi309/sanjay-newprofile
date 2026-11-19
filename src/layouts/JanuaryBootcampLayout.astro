@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import founderPhoto from "@assets/founder/sanjay-negi.jpeg";
 import Button from "@components/Button.astro";
+import BootcampEnrollmentOptions from "@components/BootcampEnrollmentOptions.astro";
 import Container from "@components/Container.astro";
 import InteractiveAIAmbientBackground from "@components/InteractiveAIAmbientBackground.astro";
 import JanuaryBootcampCard from "@components/JanuaryBootcampCard.astro";
@@ -29,7 +30,7 @@ const otherBootcamps = januaryBootcamps.filter((item) => item.slug !== bootcamp.
             <h1 class="gradient-heading mt-6 font-display text-4xl font-semibold leading-tight tracking-tight sm:text-6xl">{bootcamp.title}</h1>
             <p class="mt-5 font-display text-2xl font-semibold leading-tight text-white">{bootcamp.headline}</p>
             <p class="mt-5 max-w-3xl text-lg leading-8 text-white/70">{bootcamp.description}</p>
-            <div class="mt-7">{bootcamp.registrationUrl ? <Button href={bootcamp.registrationUrl} size="lg" target="_blank" rel="noopener noreferrer" analyticsEvent={analytics.events.workshopRegistration}>Reserve Your Seat <span class="sr-only"> (opens in new tab)</span></Button> : <button type="button" class="btn-glow min-h-11 cursor-not-allowed px-6 font-display font-semibold opacity-55" disabled>Registration Opening Soon</button>}</div>
+            <div class="mt-7"><Button href="#enrollment" size="lg" analyticsEvent={analytics.events.ctaClick}>Choose Your Enrollment</Button></div>
           </div>
           <aside class="glass-card p-6">
             <dl class="grid gap-5 text-sm sm:grid-cols-2 lg:grid-cols-1">
@@ -50,7 +51,7 @@ const otherBootcamps = januaryBootcamps.filter((item) => item.slug !== bootcamp.
 
     <section class="section-atmospheric py-14 sm:py-16"><Container><div class="grid gap-8 lg:grid-cols-[auto_1fr] lg:items-center"><Image src={founderPhoto} alt={`${brand.mentor.name}, AI Engineering Mentor`} widths={[200,320,480]} sizes="(min-width:1024px) 240px, 200px" loading="lazy" class="aspect-square w-48 rounded-surface border border-white/10 object-cover sm:w-60" /><div><p class="workshop-annotation">Meet your mentor</p><h2 class="mt-4 font-display text-3xl font-semibold text-white">Learn with {brand.mentor.name}</h2><p class="mt-4 max-w-3xl text-base leading-7 text-white/70">{about.hero.description}</p><div class="mt-6"><Button href="/about/" variant="secondary">Meet Sanjay Negi</Button></div></div></div></Container></section>
 
-    <section class="border-y border-white/10 bg-gradient-to-br from-accent-950/15 via-atmosphere-deep to-purple-950/15 py-14 sm:py-20"><Container size="md" class="text-center"><span class="badge badge-purple">Independent Bootcamp</span><h2 class="mt-5 font-display text-3xl font-semibold text-white sm:text-5xl">Join {bootcamp.title}</h2><p class="mt-4 text-base text-white/70">{bootcamp.dateLabel} · {bootcamp.time} · {bootcamp.duration} · {bootcamp.format}</p><div class="mt-8">{bootcamp.registrationUrl ? <Button href={bootcamp.registrationUrl} size="lg" target="_blank" rel="noopener noreferrer" analyticsEvent={analytics.events.workshopRegistration}>Reserve Your Seat <span class="sr-only"> (opens in new tab)</span></Button> : <button type="button" class="btn-glow min-h-11 cursor-not-allowed px-6 font-display font-semibold opacity-55" disabled>Registration Opening Soon</button>}</div><p class="mt-4 text-sm text-white/50">Registration is separate from every other January bootcamp.</p></Container></section>
+    <BootcampEnrollmentOptions bootcamp={bootcamp} />
 
     <section class="bg-black py-14 sm:py-16 lg:py-20"><Container><div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between"><SectionHeader eyebrow="Keep exploring" title="Explore Other January Bootcamps" description="Each bootcamp is independent. Choose only the topics relevant to your work." /><Button href="/bootcamps/" variant="secondary">Back to All Bootcamps</Button></div><div class="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{otherBootcamps.map((item) => <JanuaryBootcampCard bootcamp={item} compact />)}</div></Container></section>
   </article>

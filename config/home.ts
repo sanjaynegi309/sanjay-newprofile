@@ -34,24 +34,24 @@ export const home = {
     action: { label: "Explore January Bootcamps", href: "/bootcamps/", analyticsEvent: analytics.events.ctaClick }
   },
   experiment: {
-    eyebrow: "Build. Evaluate. Explain.",
-    title: "Would you trust this AI answer?",
-    description: "Read the fictional source, inspect the answer, and find the claim the evidence does not support.",
-    label: "Illustrative exercise · fictional source · no live AI",
-    introduction: "A support assistant answers a question about a fictional workshop's cancellation policy.",
-    sourceLabel: "Source / Northstar AI Workshop policy",
-    source: "Cancellations made at least seven days before the workshop receive a full refund. Later cancellations may transfer their place to another person. Refunds are processed within five business days.",
-    responseLabel: "Fictional AI response",
-    response: "You can receive a full refund if you cancel seven days before the workshop. Late cancellations can transfer the booking to someone else, and refunds usually arrive in three business days.",
-    prompt: "Which claim is unsupported by the source?",
+    eyebrow: "AI Engineering Challenge",
+    title: "Would You Trust This AI Answer?",
+    description: "An AI assistant answers a question using an internal incident-response document. Can you spot where it misinterprets the evidence?",
+    label: "Fictional enterprise scenario",
+    introduction: "Evaluate the answer against the source document before choosing your response.",
+    sourceLabel: "Sample Incident Response Runbook",
+    source: "Severity 1 incidents must be acknowledged within 10 minutes and receive status updates every 30 minutes. Severity 2 incidents must be acknowledged within 30 minutes and receive status updates every 60 minutes.",
+    responseLabel: "AI-Generated Answer",
+    response: "All production incidents must be acknowledged within 10 minutes, with status updates every 30 minutes.",
+    prompt: "What's wrong with this AI answer?",
     choices: [
-      { id: "refund-window", label: "A full refund requires seven days' notice", correct: false, feedbackTitle: "That claim is supported.", feedback: "The first sentence says cancellations made at least seven days before the workshop receive a full refund. You can point to the evidence directly." },
-      { id: "transfer-place", label: "A late booking can be transferred", correct: false, feedbackTitle: "That claim is supported.", feedback: "The source says later cancellations may transfer their place to another person. The AI paraphrased this without changing its meaning." },
-      { id: "refund-speed", label: "Refunds usually arrive in three business days", correct: true, feedbackTitle: "You found the unsupported claim.", feedback: "The source says refunds are processed within five business days. It never promises that they usually arrive in three. The AI introduced a more specific timeline without evidence." }
+      { id: "fully-supported", label: "A. The answer is fully supported by the source.", correct: false, feedbackTitle: "Not quite.", feedback: "The answer applies Severity 1 rules to every incident, but the source specifies different requirements for Severity 2." },
+      { id: "severity-generalization", label: "B. The AI incorrectly applies Severity 1 rules to all incidents.", correct: true, feedbackTitle: "Correct!", feedback: "The AI generalized Severity 1 requirements to all incidents, ignoring the different rules for Severity 2." },
+      { id: "no-response-times", label: "C. The source does not mention incident response times.", correct: false, feedbackTitle: "Not quite.", feedback: "The answer applies Severity 1 rules to every incident, but the source specifies different requirements for Severity 2." }
     ],
-    lesson: "A mostly correct answer can still contain one invented detail. Check each important claim against the source—especially numbers, dates, prices, and promises.",
+    lesson: "Grounded AI answers need evidence verification, not just plausible wording.",
     resetLabel: "Try again",
-    nextStep: { label: "Explore the flagship mentorship", href: "/programs/" }
+    nextStep: { prompt: "Want to engineer AI systems that can be evaluated and trusted?", label: "Explore Flagship Mentorship", href: "/programs/" }
   },
   mentor: {
     eyebrow: "Personally Led by Sanjay Negi",

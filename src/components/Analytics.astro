@@ -32,7 +32,7 @@ if (${JSON.stringify(sendPageView)}) {
   });
 }
 
-const programMatch = window.location.pathname.match(/\/programs\/([^/]+)\/?$/);
+const programMatch = window.location.pathname.match(new RegExp("/programs/([^/]+)/?$"));
 if (programMatch) {
   trackEvent(analyticsEvents.programView, {
     program_slug: programMatch[1],

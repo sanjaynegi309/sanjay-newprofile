@@ -46,7 +46,7 @@ export type AnalyticsConfig = {
 
 export const analytics: AnalyticsConfig = {
   googleAnalytics: {
-    enabled: Boolean(import.meta.env.PUBLIC_GA_MEASUREMENT_ID),
+    enabled: true,
     measurementId: import.meta.env.PUBLIC_GA_MEASUREMENT_ID ?? "G-NNJRMTPHZK",
     sendPageView: true
   },
