@@ -2,11 +2,10 @@ import { defineConfig } from "astro/config";
 import tailwind from "@astrojs/tailwind";
 
 const siteUrl = process.env.SITE_URL || "https://sanjaynegi.in";
-const basePath = process.env.BASE_PATH || "/";
 
 export default defineConfig({
   site: siteUrl,
-  base: basePath,
+  base: "/",
   output: "static",
   integrations: [
     tailwind({

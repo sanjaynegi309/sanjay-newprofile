@@ -37,7 +37,6 @@ jobs:
         run: npm run build
         env:
           SITE_URL: ${{ vars.SITE_URL || 'https://sanjaynegi.in' }}
-          BASE_PATH: ${{ vars.BASE_PATH || '/' }}
           PUBLIC_GA_MEASUREMENT_ID: ${{ vars.PUBLIC_GA_MEASUREMENT_ID || 'G-NNJRMTPHZK' }}
           PUBLIC_LMS_URL: ${{ vars.PUBLIC_LMS_URL || 'https://learn.sanjaynegi.in/' }}
           PUBLIC_FORMS_ENDPOINT: ${{ vars.PUBLIC_FORMS_ENDPOINT || '' }}

@@ -32,7 +32,7 @@ export type SiteConfig = {
 export const site: SiteConfig = {
   name: brand.name,
   url: import.meta.env.SITE_URL || "https://sanjaynegi.in",
-  basePath: import.meta.env.BASE_PATH || "/",
+  basePath: "/",
   language: "en",
   locale: "en_US",
   timezone: "Asia/Calcutta",
