@@ -1,0 +1,121 @@
+---
+import Badge from "@components/Badge.astro";
+import Button from "@components/Button.astro";
+import Container from "@components/Container.astro";
+import { masterclass } from "@config/masterclass";
+
+interface Props {
+  variant: "feature" | "compact";
+}
+
+const { variant } = Astro.props;
+const isFeature = variant === "feature";
+const eventDetails = isFeature
+  ? [masterclass.date, masterclass.time, masterclass.duration, masterclass.format]
+  : [masterclass.date, masterclass.time];
+---
+
+{masterclass.active && (
+  <section
+    class:list={[
+      "masterclass-promotion",
+      isFeature
+        ? "border-y border-white/10 bg-atmosphere-rich py-14 sm:py-16 lg:py-20"
+        : "bg-black pt-14 sm:pt-16 lg:pt-20"
+    ]}
+    data-masterclass-ends-at={masterclass.endsAt}
+    aria-labelledby={`masterclass-${variant}-title`}
+  >
+    <Container>
+      <article
+        class:list={[
+          "glass-card relative overflow-hidden border-accent-400/30",
+          isFeature
+            ? "grid lg:grid-cols-[0.9fr_1.1fr] lg:items-stretch"
+            : "grid gap-6 p-5 sm:p-7 lg:grid-cols-[1fr_auto] lg:items-center lg:gap-10"
+        ]}
+      >
+        <span class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-accent-300 via-purple-400 to-transparent" aria-hidden="true"></span>
+
+        {isFeature && (
+          <div data-masterclass-image class="border-b border-white/10 bg-black/30 lg:border-b-0 lg:border-r">
+            <img
+              src={masterclass.coverImage}
+              alt={masterclass.coverAlt}
+              width="1200"
+              height="675"
+              loading="lazy"
+              class="h-full min-h-52 w-full object-cover sm:min-h-72"
+              onerror="this.parentElement.remove();const card=this.closest('article');card.classList.remove('lg:grid-cols-[0.9fr_1.1fr]');card.classList.add('lg:grid-cols-1');card.querySelector('[data-feature-action]').classList.remove('lg:col-start-2')"
+            />
+          </div>
+        )}
+
+        <div class:list={[isFeature ? "p-6 sm:p-8 lg:p-10" : "min-w-0"]}>
+          {!isFeature && <p class="workshop-annotation">Start free</p>}
+          <div class:list={["flex flex-wrap items-center gap-3", !isFeature && "mt-4"]}>
+            <Badge tone="accent">{masterclass.label}</Badge>
+            <span class="font-mono text-xs font-semibold uppercase tracking-[0.14em] text-white/70">Free</span>
+          </div>
+
+          <h2
+            id={`masterclass-${variant}-title`}
+            class:list={[
+              "font-display font-semibold leading-tight text-white",
+              isFeature ? "mt-5 text-3xl sm:text-4xl lg:text-5xl" : "mt-4 text-2xl sm:text-3xl"
+            ]}
+          >
+            {masterclass.title}
+          </h2>
+          {isFeature && <p class="mt-2 font-display text-xl font-semibold text-accent-200 sm:text-2xl">{masterclass.subtitle}</p>}
+
+          <p class:list={["flex flex-wrap items-center gap-x-2 gap-y-1 font-medium text-white/80", isFeature ? "mt-5 text-sm" : "mt-3 text-sm"]}>
+            {eventDetails.map((detail, index) => (
+              <span class="contents">
+                {index > 0 && <span class="text-accent-300" aria-hidden="true">·</span>}
+                <span>{detail}</span>
+              </span>
+            ))}
+          </p>
+
+          {isFeature ? (
+            <>
+              <p class="mt-5 max-w-3xl text-base leading-7 text-white/70">{masterclass.description}</p>
+              <ul class="mt-6 grid gap-3 text-sm leading-6 text-white/75">
+                {masterclass.points.map((point) => (
+                  <li class="flex gap-3">
+                    <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent-300 shadow-glow" aria-hidden="true"></span>
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+              <p class="mt-6 border-l-2 border-purple-400 pl-4 text-sm font-semibold leading-6 text-white/85">{masterclass.bonus}</p>
+            </>
+          ) : (
+            <p class="mt-4 text-sm leading-6 text-white/70">New here? Start with the free masterclass before choosing a bootcamp.</p>
+          )}
+        </div>
+
+        <div data-feature-action={isFeature || undefined} class:list={[isFeature ? "px-6 pb-6 sm:px-8 sm:pb-8 lg:col-start-2 lg:px-10 lg:pb-10" : "lg:shrink-0"]}>
+          <Button
+            href={masterclass.registerUrl}
+            size="lg"
+            target="_blank"
+            rel="noopener"
+            class="w-full sm:w-auto"
+          >
+            Register free
+            <span class="sr-only"> (opens in new tab)</span>
+          </Button>
+        </div>
+      </article>
+    </Container>
+  </section>
+)}
+
+<script is:inline>
+  document.querySelectorAll("[data-masterclass-ends-at]").forEach((promotion) => {
+    const endsAt = promotion.getAttribute("data-masterclass-ends-at");
+    if (endsAt && Date.now() > new Date(endsAt).getTime()) promotion.hidden = true;
+  });
+</script>

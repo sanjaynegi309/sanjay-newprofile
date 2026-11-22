@@ -4,6 +4,7 @@ import BundleUpsell from "@components/BundleUpsell.astro";
 import Container from "@components/Container.astro";
 import InteractiveAIAmbientBackground from "@components/InteractiveAIAmbientBackground.astro";
 import JanuaryBootcampCard from "@components/JanuaryBootcampCard.astro";
+import MasterclassCard from "@components/MasterclassCard.astro";
 import { januaryBootcamps } from "@config/januaryBootcamps";
 import BaseLayout from "@layouts/BaseLayout.astro";
 ---
@@ -24,7 +25,9 @@ import BaseLayout from "@layouts/BaseLayout.astro";
     </Container>
   </section>
 
-  <section id="january-bootcamps" class="scroll-mt-28 bg-black py-14 sm:py-16 lg:py-20">
+  <MasterclassCard variant="compact" />
+
+  <section id="january-bootcamps" class="scroll-mt-28 bg-black pb-14 pt-9 sm:pb-16 sm:pt-10 lg:pb-20 lg:pt-12">
     <Container>
       <div class="flex flex-col gap-4 border-b border-white/10 pb-8 sm:flex-row sm:items-end sm:justify-between"><div><p class="workshop-annotation">Choose your Saturday</p><h2 class="mt-4 font-display text-3xl font-semibold text-white sm:text-4xl">Five focused technical bootcamps.</h2></div><p class="max-w-md text-sm leading-6 text-white/60">Every event runs independently from 7–10 PM IST. Register only for the topics relevant to you.</p></div>
       <div class="mt-9 grid gap-5 lg:grid-cols-2 [&>*:last-child:nth-child(odd)]:lg:col-span-2 [&>*:last-child:nth-child(odd)]:lg:mx-auto [&>*:last-child:nth-child(odd)]:lg:max-w-2xl">{januaryBootcamps.map((bootcamp) => <JanuaryBootcampCard bootcamp={bootcamp} />)}</div>
