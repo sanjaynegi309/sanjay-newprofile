@@ -9,6 +9,7 @@ import { seo as seoConfig } from "@config/seo";
 import { site } from "@config/site";
 import { theme } from "@config/theme";
 import Analytics from "@components/Analytics.astro";
+import AnnouncementBar from "@components/AnnouncementBar.astro";
 import Footer from "@components/Footer.astro";
 import Header from "@components/Header.astro";
 import type { PageSeo } from "@utils/seo";
@@ -66,6 +67,7 @@ const robots = `${meta.robots.index ? "index" : "noindex"},${meta.robots.follow 
     <a href="#main-content" class="skip-link">
       Skip to content
     </a>
+    <AnnouncementBar />
     <Header />
     <main id="main-content">
       <slot />

@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Production AI Architecture Checklist | SkillUp with Sanjay Negi</title>
+<meta name="description" content="Score your AI system against 40 production-readiness questions across four layers: Application, Intelligence, Knowledge and Operations. Free, instant, private.">
+<meta property="og:title" content="The Production AI Architecture Checklist">
+<meta property="og:description" content="40 questions to answer before your AI system goes live. Score it in 10 minutes.">
+<meta property="og:url" content="https://sanjaynegi.in/checklist/">
+<meta property="og:image" content="https://sanjaynegi.in/og-image.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#101916">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ===== Brand tokens: adjust these to match your site exactly ===== */
+  :root{
+    --bg:#101916;          /* site theme colour */
+    --bg-2:#16221e;
+    --card:#1b2925;
+    --line:#2a3b35;
+    --text:#eef4f1;
+    --muted:#a3b5ad;
+    --accent:#5eead4;      /* primary accent */
+    --accent-ink:#06201a;
+    --yes:#4ade80;
+    --partly:#facc15;
+    --no:#f87171;
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:var(--accent)}
+  .wrap{max-width:880px;margin:0 auto;padding:0 16px}
+
+  /* Header */
+  .announcement-bar{position:relative;z-index:20;border-bottom:1px solid rgba(92,228,255,.35);background:linear-gradient(90deg,rgba(0,212,255,.14),rgba(131,56,236,.16),rgba(255,0,110,.1)),var(--bg-2);color:var(--text)}
+  .announcement-bar a{display:flex;min-height:40px;align-items:center;justify-content:center;gap:7px;padding:7px 16px;color:var(--text);font-size:12px;line-height:1.35;text-align:center;text-decoration:none}
+  .announcement-bar strong{flex-shrink:0;color:var(--accent-soft);font-family:"Space Grotesk",Inter,system-ui,sans-serif;text-decoration:underline;text-underline-offset:4px}
+  .announcement-bar a:hover strong{color:#99edff;text-decoration-thickness:2px}
+  header.site{border-bottom:1px solid var(--line);background:rgba(16,25,22,.92);backdrop-filter:blur(8px)}
+  header.site .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:14px;padding-bottom:14px;max-width:1100px}
+  .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text);font-weight:700}
+  .brand img{width:34px;height:34px;border-radius:8px}
+  .brand small{display:block;font-weight:500;color:var(--muted);font-size:12px;margin-top:-2px}
+  nav.site a{color:var(--muted);text-decoration:none;font-size:14px;margin-left:18px}
+  nav.site a:hover{color:var(--text)}
+  @media (max-width:720px){nav.site{display:none}}
+
+  /* Hero */
+  .hero{padding:56px 0 28px}
+  .eyebrow{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);border:1px solid var(--line);padding:5px 10px;border-radius:999px}
+  h1{font-size:clamp(30px,5vw,46px);line-height:1.12;margin:16px 0 12px;letter-spacing:-.02em}
+  .lead{font-size:18px;color:var(--muted);max-width:680px;margin:0}
+  .how{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:28px 0 0}
+  .how div{background:var(--bg-2);border:1px solid var(--line);border-radius:var(--radius);padding:14px}
+  .how b{display:block;font-size:14px;margin-bottom:2px}
+  .how span{font-size:13px;color:var(--muted)}
+  @media (max-width:640px){.how{grid-template-columns:1fr}}
+
+  /* Progress bar */
+  .progress{position:sticky;top:0;z-index:10;background:rgba(16,25,22,.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .progress .wrap{display:flex;align-items:center;gap:14px;padding-top:10px;padding-bottom:10px}
+  .bar{flex:1;height:8px;background:var(--line);border-radius:99px;overflow:hidden}
+  .bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .25s}
+  .pstat{font-size:13px;color:var(--muted);white-space:nowrap}
+  .pstat b{color:var(--text)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:0;cursor:pointer;font:inherit;font-weight:600;border-radius:10px;padding:10px 16px;text-decoration:none}
+  .btn-primary{background:var(--accent);color:var(--accent-ink)}
+  .btn-ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+  .btn-sm{padding:7px 12px;font-size:13px}
+
+  /* Layers */
+  section.layer{padding:36px 0 8px}
+  .layer-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .layer-head h2{margin:0;font-size:24px;letter-spacing:-.01em}
+  .layer-head .num{color:var(--accent);font-weight:700;margin-right:8px}
+  .layer-score{font-size:13px;color:var(--muted)}
+  .layer p.desc{color:var(--muted);margin:6px 0 18px}
+
+  .q{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin-bottom:10px;display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center}
+  .q.blocker{border-left:3px solid var(--no)}
+  .q .qtext{font-size:15.5px}
+  .q .qn{color:var(--muted);font-weight:600;margin-right:6px}
+  .tag{display:inline-block;font-size:11px;font-weight:600;color:var(--no);border:1px solid rgba(248,113,113,.4);border-radius:99px;padding:1px 7px;margin-left:6px;vertical-align:middle}
+  .opts{display:flex;gap:6px}
+  .opts input{position:absolute;opacity:0;pointer-events:none}
+  .opts label{cursor:pointer;font-size:13px;font-weight:600;padding:8px 12px;border-radius:9px;border:1px solid var(--line);color:var(--muted);user-select:none;min-width:64px;text-align:center;transition:all .15s}
+  .opts label:hover{color:var(--text);border-color:var(--muted)}
+  .opts input:focus-visible + label{outline:2px solid var(--accent);outline-offset:2px}
+  .opts input[value="2"]:checked + label{background:var(--yes);border-color:var(--yes);color:#052e16}
+  .opts input[value="1"]:checked + label{background:var(--partly);border-color:var(--partly);color:#3a2e00}
+  .opts input[value="0"]:checked + label{background:var(--no);border-color:var(--no);color:#3b0909}
+  @media (max-width:640px){.q{grid-template-columns:1fr}.opts label{flex:1}}
+
+  /* Results */
+  #results{margin:44px 0 0;background:var(--bg-2);border:1px solid var(--line);border-radius:20px;padding:28px}
+  #results h2{margin:0 0 4px;font-size:26px}
+  .score-row{display:flex;align-items:center;gap:24px;flex-wrap:wrap;margin:18px 0}
+  .big{font-size:56px;font-weight:800;line-height:1;letter-spacing:-.03em}
+  .big small{font-size:22px;color:var(--muted);font-weight:600}
+  .band{font-size:18px;font-weight:700}
+  .band-note{color:var(--muted);margin:2px 0 0}
+  .result-legend{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 4px;padding:0;list-style:none}
+  .result-legend li{display:inline-flex;align-items:center;gap:8px;min-height:36px;padding:6px 10px;border:1px solid var(--line);border-radius:6px;color:var(--muted);font-size:12px;font-weight:600;background:rgba(16,25,22,.7)}
+  .legend-dot{width:10px;height:10px;flex:0 0 10px;border-radius:50%;box-shadow:0 0 12px currentColor}
+  .legend-production{color:var(--accent)}
+  .legend-pilot{color:var(--purple)}
+  .legend-demo{color:#ff5ca8}
+  #results[data-band="production"] .band,#results[data-band="production"] .big{color:var(--accent-soft)}
+  #results[data-band="pilot"] .band,#results[data-band="pilot"] .big{color:var(--purple)}
+  #results[data-band="demo"] .band,#results[data-band="demo"] .big{color:#ff5ca8}
+  #results[data-band="production"] [data-legend="production"],#results[data-band="pilot"] [data-legend="pilot"],#results[data-band="demo"] [data-legend="demo"]{color:var(--text);border-color:currentColor;background:rgba(255,255,255,.05)}
+  .layers-bars{display:grid;gap:10px;margin:20px 0}
+  .lb{display:grid;grid-template-columns:120px 1fr 60px;gap:12px;align-items:center;font-size:14px}
+  .lb .track{height:10px;background:var(--line);border-radius:99px;overflow:hidden}
+  .lb .track i{display:block;height:100%;width:0;background:var(--accent);transition:width .3s}
+  .lb .val{text-align:right;color:var(--muted)}
+  .callout{border-radius:12px;padding:14px 16px;margin:12px 0;font-size:15px}
+  .callout.warn{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.35)}
+  .callout.info{background:rgba(94,234,212,.08);border:1px solid rgba(94,234,212,.3)}
+  .callout ul{margin:6px 0 0;padding-left:20px}
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+  .hidden{display:none}
+
+  /* Offers */
+  .offers{padding:64px 0 24px}
+  .offers h2{font-size:28px;margin:0 0 8px;letter-spacing:-.01em}
+  .offers > .wrap > p{color:var(--muted);margin:0 0 24px}
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;display:flex;flex-direction:column}
+  .card .k{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+  .card h3{margin:8px 0 6px;font-size:18px}
+  .card p{color:var(--muted);font-size:14px;margin:0 0 16px;flex:1}
+  @media (max-width:760px){.cards{grid-template-columns:1fr}}
+
+  .about{display:grid;grid-template-columns:96px 1fr;gap:20px;align-items:center;margin:40px 0 0;background:var(--bg-2);border:1px solid var(--line);border-radius:var(--radius);padding:20px}
+  .about img{width:96px;height:96px;border-radius:50%;object-fit:cover}
+  .about p{margin:4px 0 0;color:var(--muted);font-size:14.5px}
+  @media (max-width:560px){.about{grid-template-columns:1fr;text-align:center}.about img{margin:0 auto}}
+
+  footer.site{border-top:1px solid var(--line);margin-top:56px;padding:28px 0;color:var(--muted);font-size:14px}
+  footer.site .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;max-width:1100px}
+  footer.site a{color:var(--muted);text-decoration:none;margin-right:14px}
+  footer.site a:hover{color:var(--text)}
+  footer.site .whatsapp-channel{margin-right:0;color:var(--accent-ink)}
+  .whatsapp-channel svg{width:18px;height:18px;flex:0 0 18px;fill:currentColor}
+
+  @media print{
+    header.site,.progress,.offers,footer.site,.actions,.how{display:none!important}
+    body{background:#fff;color:#000}
+    .q,#results{background:#fff;border-color:#ccc;break-inside:avoid}
+    .opts label{color:#000;border-color:#999}
+  }
+
+  /* SkillUp visual system */
+  :root{color-scheme:dark;--bg:#101916;--bg-2:#14201c;--card:#192822;--line:#20332b;--text:#f8fafc;--muted:#cbd5e1;--accent:#00d4ff;--accent-soft:#5ce4ff;--accent-ink:#001a20;--purple:#ab7cf7;--magenta:#ff006e;--yes:#22c55e;--partly:#facc15;--no:#fb7185;--radius:8px}
+  html{min-width:320px;scroll-padding-top:76px}
+  body{min-width:320px;background:radial-gradient(circle at 88% 9%,rgba(0,212,255,.09),transparent 30rem),radial-gradient(circle at 10% 36%,rgba(131,56,236,.07),transparent 28rem),var(--bg);overflow-x:hidden}
+  body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.18;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:48px 48px;mask-image:linear-gradient(to bottom,black,transparent 72%)}
+  h1,h2,h3,.brand,.btn,.big{font-family:"Space Grotesk",Inter,system-ui,sans-serif}
+  a,button,label{-webkit-tap-highlight-color:transparent}
+  a:focus-visible,button:focus-visible,input:focus-visible+label{outline:3px solid var(--accent);outline-offset:3px}
+  .wrap{width:min(100% - 32px,880px);padding-inline:0}
+  header.site{position:relative;background:rgba(16,25,22,.94);border-color:var(--line);box-shadow:0 8px 24px rgba(0,0,0,.12)}
+  header.site .wrap{min-height:72px;padding-block:12px;width:min(100% - 32px,1100px)}
+  .brand img{border-radius:4px}
+  nav.site a{display:inline-flex;align-items:center;min-height:44px;margin-left:20px}
+  nav.site a:hover{color:var(--accent-soft);text-decoration:underline;text-underline-offset:6px}
+  .hero{padding-block:clamp(48px,8vw,88px) 40px}
+  .eyebrow{color:var(--accent-soft);border-color:var(--accent-soft);border-radius:4px;padding:6px 10px}
+  h1{max-width:760px;font-size:clamp(2.25rem,7vw,4.25rem);line-height:1.03;letter-spacing:-.045em;background:linear-gradient(100deg,var(--accent-soft),#f8fafc 46%,var(--purple));background-clip:text;-webkit-background-clip:text;color:transparent}
+  .lead{font-size:clamp(1rem,2.2vw,1.18rem);line-height:1.7}
+  .how{gap:16px;margin-top:32px}.how div,.q,.card,.about,#results{background:rgba(25,40,34,.88);border-color:var(--line);box-shadow:0 8px 24px rgba(0,0,0,.12)}.how div{padding:18px}
+  .progress{top:0;background:rgba(16,25,22,.96);border-color:var(--line);box-shadow:0 8px 24px rgba(0,0,0,.14)}.progress .wrap{min-height:58px}.bar{background:#20332b}.bar i,.lb .track i{background:linear-gradient(90deg,var(--accent),var(--purple))}
+  .btn{min-height:44px;border-radius:6px;transition:transform .18s ease,border-color .18s ease,background-color .18s ease}.btn:hover{transform:translateY(-1px)}.btn-primary{background:var(--accent);color:var(--accent-ink);box-shadow:0 0 28px rgba(0,212,255,.22)}.btn-primary:hover{background:#99edff}.btn-ghost{border-color:var(--muted)}.btn-ghost:hover{color:var(--accent-soft);border-color:var(--accent-soft)}
+  section.layer{padding-top:52px}.layer-head h2,.offers h2,#results h2{font-size:clamp(1.6rem,4vw,2.1rem);letter-spacing:-.025em}
+  .q{padding:20px;margin-bottom:12px;transition:border-color .18s ease,transform .18s ease}.q:focus-within{border-color:var(--accent);transform:translateY(-1px)}.q.blocker{border-left-color:var(--no)}.tag{color:#fda4af;border-color:rgba(251,113,133,.55)}.opts label{min-height:44px;display:flex;align-items:center;justify-content:center;border-radius:6px}
+  #results{border-radius:8px;padding:clamp(20px,5vw,36px);background:linear-gradient(145deg,rgba(25,40,34,.96),rgba(20,32,28,.96))}.big{color:var(--accent-soft)}.callout{border-radius:6px}.callout.warn{background:rgba(255,0,110,.07);border-color:rgba(255,92,168,.38)}.callout.info{background:rgba(0,212,255,.06);border-color:rgba(92,228,255,.34)}
+  .offers{margin-top:72px;padding-block:72px;background:linear-gradient(150deg,rgba(20,32,28,.86),rgba(16,25,22,.9));border-block:1px solid var(--line)}.cards{gap:16px}.card{padding:22px}.card .k{color:var(--accent-soft)}.about{border-radius:8px}
+  footer.site{margin-top:0;background:#14201c;border-color:var(--line);padding-block:32px}footer.site a{display:inline-flex;align-items:center;min-height:44px}footer.site a:hover{color:var(--accent-soft);text-decoration:underline;text-underline-offset:5px}footer.site .whatsapp-channel:hover{color:var(--accent-ink);text-decoration:none}
+  @media (max-width:640px){.wrap{width:min(100% - 24px,880px)}header.site .wrap{width:min(100% - 24px,1100px)}.brand small{font-size:11px}.hero{padding-top:40px}.how{grid-template-columns:1fr}.progress .wrap{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 10px;padding-block:9px}.progress .bar{grid-column:1/-1;grid-row:2}.progress .pstat{grid-column:1;grid-row:1;white-space:normal;font-size:12px}.progress .btn{grid-column:2;grid-row:1;min-height:38px;padding:6px 10px}.q{grid-template-columns:minmax(0,1fr);padding:16px}.opts{width:100%}.opts label{flex:1;min-width:0;padding-inline:8px}.lb{grid-template-columns:88px minmax(0,1fr) 46px;gap:8px;font-size:12px}.score-row{gap:14px}.big{font-size:48px}.actions{display:grid}.actions .btn{width:100%}.offers{padding-block:56px}footer.site .wrap{display:grid}footer.site .whatsapp-channel{width:100%;margin-top:4px}}
+  @media (max-width:480px){.announcement-bar a{align-items:baseline;flex-wrap:wrap;gap:2px 6px;padding-inline:12px}.announcement-bar strong{white-space:nowrap}}
+  @media (max-width:380px){.brand img{width:30px;height:30px}.brand{gap:8px}.brand span{font-size:14px}h1{font-size:2.1rem}.q .qtext{font-size:14.5px}}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<!-- Keep this standalone public page in sync with config/announcement.ts. -->
+<aside class="announcement-bar" aria-label="Announcement">
+  <a href="https://learn.sanjaynegi.in/l/62bbdfc9b2" target="_blank" rel="noopener noreferrer" aria-label="Free live masterclass: Why AI demos fail in production. Saturday 12 December, 7 PM IST. Register free (opens in a new tab)">
+    <span>Free live masterclass &middot; Why AI demos fail in production &middot; Sat 12 Dec, 7 PM IST</span>
+    <strong>Register free &rarr;</strong>
+  </a>
+</aside>
+
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="https://sanjaynegi.in/">
+      <img src="https://sanjaynegi.in/logo.png" alt="SkillUp logo">
+      <span>SkillUp<small>with Sanjay Negi</small></span>
+    </a>
+    <nav class="site" aria-label="Main">
+      <a href="https://sanjaynegi.in/bootcamps/">Bootcamps</a>
+      <a href="https://sanjaynegi.in/programs/">Programs</a>
+      <a href="https://sanjaynegi.in/teams/">For Teams</a>
+      <a href="https://sanjaynegi.in/about/">About</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap hero">
+    <span class="eyebrow">Free self-assessment</span>
+    <h1>The Production AI Architecture Checklist</h1>
+    <p class="lead">40 questions to answer before your AI system goes live. Most reviews focus on the model and the prompt. Production failures usually start in the other three layers.</p>
+    <div class="how">
+      <div><b>1. Pick one system</b><span>An AI app you're building, reviewing or have inherited.</span></div>
+      <div><b>2. Answer honestly</b><span>Yes, Partly or No. A "No" is a decision nobody has made yet.</span></div>
+      <div><b>3. Get your score</b><span>Instantly, by layer. Nothing is sent anywhere.</span></div>
+    </div>
+  </div>
+
+  <div class="progress" aria-live="polite">
+    <div class="wrap">
+      <div class="bar" aria-hidden="true"><i id="pbar"></i></div>
+      <span class="pstat"><b id="pcount">0</b>/40 answered · Score <b id="pscore">0</b>/80</span>
+      <a class="btn btn-primary btn-sm" href="#results">Results</a>
+    </div>
+  </div>
+
+  <div class="wrap" id="layers"></div>
+
+  <div class="wrap">
+    <div id="results" aria-live="polite">
+      <h2>Your result</h2>
+      <ul class="result-legend" aria-label="Score judgement legend">
+        <li data-legend="production"><span class="legend-dot legend-production" aria-hidden="true"></span>Ready for production</li>
+        <li data-legend="pilot"><span class="legend-dot legend-pilot" aria-hidden="true"></span>Limited pilot</li>
+        <li data-legend="demo"><span class="legend-dot legend-demo" aria-hidden="true"></span>Still a demo</li>
+      </ul>
+      <p class="band-note" id="r-empty">Answer the questions above and your score appears here.</p>
+      <div id="r-body" class="hidden">
+        <div class="score-row">
+          <div class="big"><span id="r-total">0</span><small>/80</small></div>
+          <div>
+            <div class="band" id="r-band"></div>
+            <p class="band-note" id="r-bandnote"></p>
+          </div>
+        </div>
+        <div class="callout info hidden" id="r-unanswered"></div>
+        <div class="layers-bars" id="r-layers"></div>
+        <div class="callout warn hidden" id="r-blockers"></div>
+        <div class="callout info hidden" id="r-weakest"></div>
+        <div class="actions">
+          <button class="btn btn-primary" type="button" onclick="window.print()">Print or save my answers</button>
+          <button class="btn btn-ghost" type="button" id="reset">Start again</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="offers">
+    <div class="wrap">
+      <h2>Want to close the gaps?</h2>
+      <p>I help experienced engineers build AI systems that survive production.</p>
+      <div class="cards">
+        <div class="card">
+          <span class="k">Start here · ₹399</span>
+          <h3>Live bootcamps</h3>
+          <p>3-hour hands-on sessions on Saturdays. Build one production AI capability in a single morning.</p>
+          <a class="btn btn-ghost" href="https://sanjaynegi.in/bootcamps/">See upcoming bootcamps</a>
+        </div>
+        <div class="card">
+          <span class="k">Flagship · 4 months</span>
+          <h3>AI Engineering Mentorship</h3>
+          <p>Build → Deliver → Architect. Live, limited to 15 professionals per batch, plus a 12-month Architecture Guild.</p>
+          <a class="btn btn-primary" href="https://sanjaynegi.in/programs/">Explore the program</a>
+        </div>
+        <div class="card">
+          <span class="k">For teams</span>
+          <h3>Corporate training</h3>
+          <p>Production AI engineering and architecture training shaped around your team's systems.</p>
+          <a class="btn btn-ghost" href="https://sanjaynegi.in/teams/">Talk to me</a>
+        </div>
+      </div>
+
+      <div class="about">
+        <img src="https://sanjaynegi.in/_astro/sanjay-negi.BmalAy1-_1pGmMk.webp" alt="Sanjay Negi">
+        <div>
+          <strong>Sanjay Negi</strong>
+          <p>22+ years in enterprise software as a Java developer and integration specialist, across design, deployment, monitoring and production support. 1,100+ learners trained. I teach AI that survives production.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div>© 2026 SkillUp Learning · <a href="mailto:support@sanjaynegi.in">support@sanjaynegi.in</a></div>
+    <div>
+      <a href="https://www.linkedin.com/in/sanjay-negi-ai/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://www.youtube.com/@skillupwithsanjay" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://www.instagram.com/skillup_with_sanjay/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://github.com/sanjaynegi-ai" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://sanjaynegi.in/privacy/">Privacy</a>
+    </div>
+    <a class="btn btn-primary whatsapp-channel" href="https://whatsapp.com/channel/0029VbC2wtJDzgT5HhZhVc0n" target="_blank" rel="noopener noreferrer" aria-label="Join the SkillUp WhatsApp Channel (opens in a new tab)">
+      <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M16.04 3a12.83 12.83 0 0 0-11 19.45L3 29l6.73-1.98A12.96 12.96 0 1 0 16.04 3Zm0 23.65c-2.1 0-4.16-.57-5.95-1.65l-.43-.26-3.99 1.17 1.2-3.88-.28-.45A10.5 10.5 0 1 1 16.04 26.65Zm5.76-7.88c-.31-.16-1.86-.92-2.15-1.02-.29-.1-.5-.16-.71.16-.21.31-.81 1.02-.99 1.23-.18.21-.37.24-.68.08-.32-.16-1.33-.49-2.53-1.56a9.47 9.47 0 0 1-1.75-2.18c-.18-.31-.02-.48.14-.64.14-.14.31-.37.47-.55.16-.18.21-.31.31-.52.11-.21.06-.39-.02-.55-.08-.16-.71-1.72-.97-2.35-.26-.62-.52-.54-.71-.55h-.61c-.21 0-.55.08-.84.39-.29.32-1.1 1.08-1.1 2.63s1.13 3.05 1.29 3.26c.16.21 2.22 3.39 5.38 4.75.75.32 1.34.52 1.8.67.76.24 1.44.21 1.99.13.61-.09 1.86-.76 2.12-1.5.26-.73.26-1.36.18-1.49-.08-.13-.29-.21-.6-.37Z"/></svg>
+      Join WhatsApp Channel
+    </a>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var LAYERS = [
+    {name:"Application", desc:"What users see and touch. It decides whether a wrong answer is a minor annoyance or a real business problem.", qs:[
+      "Who are the users, and what task or decision does the system help them complete?",
+      "What does \u201cgood enough\u201d mean for this use case, and who signed off on that definition?",
+      "What does the user see when the system is unsure, slow or wrong?",
+      "Can users tell AI-generated content apart from verified facts or human decisions?",
+      "Can users report a bad answer, and does that feedback reach a named owner?",
+      "Which actions can the system take on a user's behalf, and which require explicit confirmation?",
+      "Is user input validated and size-limited before it reaches the model?",
+      "Does the application enforce the same permissions as the systems it reads from?",
+      "What response time is acceptable, and does the interface handle streaming, timeouts and retries?",
+      "Is there a non-AI fallback path when the AI component is unavailable?"]},
+    {name:"Intelligence", desc:"The model, the prompts and any agent logic. Treat it as an unreliable downstream dependency, not as the system itself.", qs:[
+      "Why this model? Which alternatives were evaluated, and against what criteria?",
+      "Is the model behind an internal interface, so the provider or model can change without rewriting the application?",
+      "Are prompts versioned, reviewed and deployed like code?",
+      "Is model output validated against a schema before anything downstream uses it?",
+      "How does the system defend against prompt injection, including instructions hidden in retrieved documents or tool results?",
+      "For agents: is every tool call scoped, logged and capped in the number of steps it can take?",
+      "Which decisions must never be left to the model, and how is that enforced in code rather than in the prompt?",
+      "Is there an evaluation set of realistic questions with expected answers, run before every change?",
+      "Do you measure whether answers are grounded in sources, not just whether they sound right?",
+      "What happens when the provider updates or retires the model version you depend on?"]},
+    {name:"Knowledge", desc:"Your documents, databases and retrieval. The model can only be as good as what this layer hands it.", qs:[
+      "Which data sources are in scope, and who owns keeping each one accurate?",
+      "How fresh must the data be, and how are updates, deletions and re-indexing handled?",
+      "Is sensitive data (personal, financial, health, confidential) identified before it is indexed or sent to a model?",
+      "Does retrieval enforce document-level access control for each user?",
+      "Was the chunking strategy tested on your real documents, including tables, scanned pages and long policies?",
+      "Do you measure retrieval quality separately from answer quality?",
+      "Can every answer be traced back to the source passages it used?",
+      "What does the system do when no relevant document is found?",
+      "Are the embedding model and index versions recorded, with a plan to re-embed if the model changes?",
+      "Where is data stored and processed, and does that meet your data-protection and contractual obligations?"]},
+    {name:"Operations", desc:"Monitoring, security, cost control and deployment. The layer most often skipped, and the one that decides whether you find a problem before your users do.", qs:[
+      "Are prompts, responses, retrieved sources, latency and cost logged per request, with sensitive data masked?",
+      "Which dashboards and alerts tell you that quality, latency or cost has drifted?",
+      "Is there a spending limit per user and overall, and what happens when it is reached?",
+      "Are timeouts, retries, rate limits and circuit breakers configured for every model and tool call?",
+      "Has the system been load-tested at expected peak traffic, including the provider's rate limits?",
+      "Does your CI/CD pipeline run the evaluation set as a release gate?",
+      "Can you roll back a prompt, model or index change within minutes?",
+      "Who is on call for the AI system, and is there a runbook for its specific failure modes?",
+      "Have security and compliance reviewed it, including how long the model provider retains your data?",
+      "Is there a regular review of real conversations, failures and user feedback after launch?"]}
+  ];
+  var BLOCKERS = {8:"user permissions",15:"prompt injection",24:"document-level access control",33:"spending limits",37:"rollback"};
+  var KEY = "skillup_checklist_v1";
+  var answers = {};
+  try { answers = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch(e) { answers = {}; }
+
+  var root = document.getElementById("layers"), n = 0, html = "";
+  LAYERS.forEach(function(L, li){
+    html += '<section class="layer" id="layer-'+(li+1)+'"><div class="layer-head"><h2><span class="num">'+(li+1)+'</span>'+L.name+'</h2><span class="layer-score" id="ls-'+li+'"></span></div><p class="desc">'+L.desc+'</p>';
+    L.qs.forEach(function(q){
+      n++;
+      var b = BLOCKERS[n];
+      html += '<div class="q'+(b?' blocker':'')+'"><div class="qtext"><span class="qn">'+n+'.</span>'+q+(b?'<span class="tag">Blocker</span>':'')+'</div><div class="opts" role="radiogroup" aria-label="Question '+n+'">';
+      [["2","Yes"],["1","Partly"],["0","No"]].forEach(function(o){
+        var id = "q"+n+"-"+o[0];
+        html += '<input type="radio" name="q'+n+'" id="'+id+'" value="'+o[0]+'"'+(String(answers[n])===o[0]?' checked':'')+'><label for="'+id+'">'+o[1]+'</label>';
+      });
+      html += '</div></div>';
+    });
+    html += '</section>';
+  });
+  root.innerHTML = html;
+
+  var BANDS = [
+    {min:65, key:"production", name:"Ready for production", note:"With known and documented gaps. Keep reviewing after launch."},
+    {min:40, key:"pilot", name:"Ready for a limited pilot", note:"Real users, small scope, close monitoring while you close the gaps."},
+    {min:0,  key:"demo", name:"Still a demo", note:"Close the gaps before real users depend on it."}
+  ];
+
+  function update(){
+    var total = 0, count = 0, layerScores = [], layerCounts = [], blockers = [];
+    LAYERS.forEach(function(L, li){
+      var s = 0, c = 0;
+      for (var i = 1; i <= 10; i++){
+        var qn = li*10 + i, v = answers[qn];
+        if (v !== undefined){ s += +v; c++; if (+v === 0 && BLOCKERS[qn]) blockers.push(qn); }
+      }
+      layerScores.push(s); layerCounts.push(c); total += s; count += c;
+      document.getElementById("ls-"+li).textContent = c ? (s+"/20 · "+c+"/10 answered") : "";
+    });
+    document.getElementById("pbar").style.width = (count/40*100)+"%";
+    document.getElementById("pcount").textContent = count;
+    document.getElementById("pscore").textContent = total;
+
+    var empty = count === 0;
+    document.getElementById("r-empty").classList.toggle("hidden", !empty);
+    document.getElementById("r-body").classList.toggle("hidden", empty);
+    if (empty) return;
+
+    document.getElementById("r-total").textContent = total;
+    var band = BANDS.filter(function(b){ return total >= b.min; })[0];
+    document.getElementById("results").setAttribute("data-band", band.key);
+    document.getElementById("r-band").textContent = band.name;
+    document.getElementById("r-bandnote").textContent = band.note;
+
+    var un = document.getElementById("r-unanswered");
+    if (count < 40){ un.classList.remove("hidden"); un.textContent = (40-count)+" question"+(40-count===1?"":"s")+" still unanswered. Unanswered questions count as zero, so your score will change as you finish."; }
+    else un.classList.add("hidden");
+
+    document.getElementById("r-layers").innerHTML = LAYERS.map(function(L, li){
+      return '<div class="lb"><span>'+L.name+'</span><span class="track"><i style="width:'+(layerScores[li]/20*100)+'%"></i></span><span class="val">'+layerScores[li]+'/20</span></div>';
+    }).join("");
+
+    var bl = document.getElementById("r-blockers");
+    if (blockers.length){
+      bl.classList.remove("hidden");
+      bl.innerHTML = '<strong>Blockers to fix before go-live, whatever your score:</strong><ul>'+blockers.map(function(q){ return '<li>Question '+q+': '+BLOCKERS[q]+'</li>'; }).join("")+'</ul>';
+    } else bl.classList.add("hidden");
+
+    var wk = document.getElementById("r-weakest");
+    var answeredLayers = LAYERS.map(function(L,li){return li;}).filter(function(li){ return layerCounts[li] > 0; });
+    if (answeredLayers.length > 1){
+      var w = answeredLayers.reduce(function(a,b){ return layerScores[b]/layerCounts[b] < layerScores[a]/layerCounts[a] ? b : a; });
+      wk.classList.remove("hidden");
+      wk.innerHTML = '<strong>Your weakest layer: '+LAYERS[w].name+'.</strong> Make it the focus of your next design review.';
+    } else wk.classList.add("hidden");
+  }
+
+  root.addEventListener("change", function(e){
+    if (e.target.type !== "radio") return;
+    answers[e.target.name.slice(1)] = e.target.value;
+    try { localStorage.setItem(KEY, JSON.stringify(answers)); } catch(err) {}
+    update();
+  });
+  document.getElementById("reset").addEventListener("click", function(){
+    if (!confirm("Clear all your answers?")) return;
+    answers = {};
+    try { localStorage.removeItem(KEY); } catch(err) {}
+    Array.prototype.forEach.call(document.querySelectorAll('#layers input'), function(i){ i.checked = false; });
+    update();
+    window.scrollTo({top:0, behavior:"smooth"});
+  });
+  update();
+})();
+</script>
+</body>
+</html>

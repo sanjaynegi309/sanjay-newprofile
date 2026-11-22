@@ -1,0 +1,20 @@
+---
+import { analytics } from "@config/analytics";
+import { announcement } from "@config/announcement";
+---
+
+{announcement.enabled && (
+  <aside class="announcement-bar" aria-label="Announcement">
+    <a
+      href={announcement.href}
+      target="_blank"
+      rel="noreferrer"
+      data-analytics-event={analytics.events.outboundLink}
+      data-analytics-label="announcement_bar"
+    >
+      <span>{announcement.message}</span>
+      <strong>{announcement.actionLabel}</strong>
+      <span class="sr-only"> (opens in a new tab)</span>
+    </a>
+  </aside>
+)}
