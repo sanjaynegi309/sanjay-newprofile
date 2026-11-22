@@ -31,25 +31,11 @@ const eventDetails = isFeature
         class:list={[
           "glass-card relative overflow-hidden border-accent-400/30",
           isFeature
-            ? "grid lg:grid-cols-[0.9fr_1.1fr] lg:items-stretch"
+            ? "mx-auto max-w-5xl"
             : "grid gap-6 p-5 sm:p-7 lg:grid-cols-[1fr_auto] lg:items-center lg:gap-10"
         ]}
       >
         <span class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-accent-300 via-purple-400 to-transparent" aria-hidden="true"></span>
-
-        {isFeature && (
-          <div data-masterclass-image class="border-b border-white/10 bg-black/30 lg:border-b-0 lg:border-r">
-            <img
-              src={masterclass.coverImage}
-              alt={masterclass.coverAlt}
-              width="1200"
-              height="675"
-              loading="lazy"
-              class="h-full min-h-52 w-full object-cover sm:min-h-72"
-              onerror="this.parentElement.remove();const card=this.closest('article');card.classList.remove('lg:grid-cols-[0.9fr_1.1fr]');card.classList.add('lg:grid-cols-1');card.querySelector('[data-feature-action]').classList.remove('lg:col-start-2')"
-            />
-          </div>
-        )}
 
         <div class:list={[isFeature ? "p-6 sm:p-8 lg:p-10" : "min-w-0"]}>
           {!isFeature && <p class="workshop-annotation">Start free</p>}
@@ -96,7 +82,7 @@ const eventDetails = isFeature
           )}
         </div>
 
-        <div data-feature-action={isFeature || undefined} class:list={[isFeature ? "px-6 pb-6 sm:px-8 sm:pb-8 lg:col-start-2 lg:px-10 lg:pb-10" : "lg:shrink-0"]}>
+        <div class:list={[isFeature ? "px-6 pb-6 sm:px-8 sm:pb-8 lg:px-10 lg:pb-10" : "lg:shrink-0"]}>
           <Button
             href={masterclass.registerUrl}
             size="lg"
