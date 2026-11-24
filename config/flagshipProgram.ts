@@ -71,7 +71,7 @@ export const flagshipProgram = {
     { question: "Will I work on projects?", answer: "Yes. Practical project work and a portfolio-ready capstone form part of the learning experience." },
     { question: "Do I need coding experience?", answer: "Hands-on engineering practice is central to the program. Experienced professionals without regular coding experience should expect additional preparation and independent practice. The pre-work (P1 infrastructure and P2 ML foundations) shows you exactly what's expected. If it feels out of reach, talk to us before you enroll." },
     { question: "Is placement guaranteed?", answer: "No. The program is focused on building professional capabilities, practical engineering judgment, and relevant technical experience. Job placement or specific career outcomes are not guaranteed." },
-    { question: "What is the refund policy?", answer: "Fees are non-refundable once you're enrolled, except where required by law or where we can't provide your batch. If your batch fills while your payment is in progress, you can switch batch, move to the next cohort, or get a full refund." },
+    { question: "What is the refund policy?", answer: "Seats are limited to 15 per batch and each seat is reserved exclusively for you, so fees are non-refundable." },
     { question: "Where can I view the price?", answer: "Program fees and enrollment details are available on the registration page when you select “Reserve Your Seat.”" }
   ]
 } as const;
