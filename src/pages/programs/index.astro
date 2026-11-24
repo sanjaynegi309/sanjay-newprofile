@@ -12,6 +12,7 @@ import SectionHeader from "@components/SectionHeader.astro";
 import { about } from "@config/about";
 import { brand } from "@config/brand";
 import { flagshipProgram } from "@config/flagshipProgram";
+import { programBatches } from "@config/programBatches";
 import BaseLayout from "@layouts/BaseLayout.astro";
 
 const heroStages = [
@@ -31,7 +32,7 @@ const guildMetrics = [
   seo={{
     title: "AI Engineer to FDE to GenAI Architect | SkillUp Flagship Program",
     description:
-      "16-week live programme for experienced engineers: build, evaluate, deploy and operate production AI on AWS, then join the Guild for 12 months.",
+      "16-week live program for experienced engineers: build, evaluate, deploy and operate production AI on AWS, then join the Guild for 12 months.",
     canonicalPath: "/programs/"
   }}
 >
@@ -64,13 +65,13 @@ const guildMetrics = [
               <span class="mt-1 block text-sm leading-5 text-white/65">Post-course Architecture Guild</span>
             </div>
           </div>
+          <p class="mt-4 max-w-2xl text-sm font-semibold leading-6 text-white/80">Batches start 2–5 Jan 2027. Pre-work opens {programBatches.cohort.preworkOpens}.</p>
           <p class="mt-4 max-w-2xl text-sm font-medium leading-6 text-white/70"><span class="text-accent-300">Hands-on AI Engineering</span> with AWS, Terraform, containers, Kubernetes, observability and eval-gated delivery.</p>
           <div class="mt-7 flex flex-col gap-3 sm:flex-row">
-            <RegistrationAction href={flagshipProgram.registrationUrl} analyticsLabel="flagship_hero" />
+            <RegistrationAction href="#batches" analyticsLabel="flagship_hero" />
             <Button href="#learning-journey" variant="secondary" size="lg">Explore the Learning Journey</Button>
           </div>
           <CohortCapacity class="mt-5 max-w-2xl" />
-          <p class="mt-3 max-w-2xl text-sm leading-6 text-white/70">Enroll now. We'll contact you via email or WhatsApp to collect your preferred batch schedule and confirm availability.</p>
         </div>
 
         <div class="relative">
@@ -145,7 +146,7 @@ const guildMetrics = [
         ))}
       </ol>
       <div class="mt-10">
-        <h3 class="font-display text-2xl font-semibold text-white">What you become across the whole programme</h3>
+        <h3 class="font-display text-2xl font-semibold text-white">What you become across the whole program</h3>
         <div class="mt-5 grid gap-4 md:grid-cols-3">
           {flagshipProgram.roleOutcomes.map((item) => (
             <article class="glass-card p-5">
@@ -160,9 +161,9 @@ const guildMetrics = [
 
   <section class="border-b border-white/10 bg-black py-14 sm:py-16 lg:py-20">
     <Container>
-      <SectionHeader eyebrow="Learning format" title="How the Programme Works" description="Build one system through repeated practice, measurable feedback and client-facing delivery." />
+      <SectionHeader eyebrow="Learning format" title="How the Program Works" description="Build one system through repeated practice, measurable feedback and client-facing delivery." />
       <ul class="mt-9 grid gap-4 md:grid-cols-2">
-        {flagshipProgram.programmeFormat.map((item, index) => (
+        {flagshipProgram.programFormat.map((item, index) => (
           <li class="glass-card grid grid-cols-[auto_1fr] gap-4 p-5 sm:p-6">
             <span class="font-mono text-xs text-accent-300">0{index + 1}</span>
             <div><h3 class="font-display text-lg font-semibold text-white">{item.title}</h3><p class="mt-2 text-sm leading-6 text-white/70">{item.description}</p></div>
@@ -259,19 +260,19 @@ const guildMetrics = [
         <div class="grid gap-8 p-6 sm:p-9 lg:grid-cols-[1fr_0.82fr] lg:p-12">
           <div><h3 class="font-display text-xl font-semibold text-white">Discussion themes</h3><div class="mt-5 grid gap-3 sm:grid-cols-2">{flagshipProgram.guildThemes.map((theme, index) => <div class="flex gap-3 border-l border-accent-400/50 py-1 pl-4 text-sm leading-6 text-white/70"><span class="font-mono text-xs text-accent-300">0{index + 1}</span><span>{theme}</span></div>)}</div></div>
           <div>
-            <p class="rounded-control border border-accent-400/30 bg-accent-950/20 p-5 text-sm leading-6 text-white/75"><strong class="text-white">Scheduling note:</strong> The Guild includes about 26 fortnightly sessions over 12 months, lasting 60 minutes each. Timing will be finalised in consultation with participating batches after enrolment.</p>
-            <div class="mt-6"><RegistrationAction href={flagshipProgram.registrationUrl} analyticsLabel="flagship_guild" class="w-full sm:w-auto" /></div>
+            <p class="rounded-control border border-accent-400/30 bg-accent-950/20 p-5 text-sm leading-6 text-white/75"><strong class="text-white">Scheduling note:</strong> The Guild includes about 26 fortnightly sessions over 12 months, lasting 60 minutes each. Timing will be finalized in consultation with participating batches after enrollment.</p>
+            <div class="mt-6"><RegistrationAction href="#batches" analyticsLabel="flagship_guild" class="w-full sm:w-auto" /></div>
           </div>
         </div>
       </div>
     </Container>
   </section>
 
-  <section class="bg-black py-14 sm:py-16 lg:py-20"><Container><SectionHeader eyebrow="Choose your batch" title="Designed Around Your Professional Schedule." description="One flagship journey. One curriculum. Three flexible learning schedules. Every batch provides the same four-month curriculum and exactly three live teaching hours per week." /><CohortCapacity class="mt-8" /><div class="mt-8"><BatchSelector batches={flagshipProgram.batches} registrationUrl={flagshipProgram.registrationUrl} /></div></Container></section>
+  <section id="batches" class="scroll-mt-28 bg-black py-14 sm:py-16 lg:py-20"><Container><SectionHeader eyebrow="Choose your batch" title="Designed Around Your Professional Schedule." description="One flagship journey. One curriculum. Three flexible learning schedules. Every batch provides the same four-month curriculum and exactly three live teaching hours per week." /><CohortCapacity class="mt-8" /><div class="mt-8"><BatchSelector batches={programBatches.batches} waitlistUrl={programBatches.waitlistUrl} /></div></Container></section>
 
   <section class="section-atmospheric border-y border-white/10 py-14 sm:py-16 lg:py-20"><Container><div class="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:items-center"><figure class="mx-auto w-full max-w-sm"><Image src={founderPhoto} alt={`${brand.mentor.name}, ${brand.mentor.role}`} widths={[320, 480, 640]} sizes="(min-width: 1024px) 360px, min(100vw - 2rem, 384px)" loading="lazy" class="aspect-square w-full rounded-surface border border-white/10 object-cover" /></figure><div><p class="workshop-annotation">Meet your mentor</p><h2 class="mt-4 font-display text-3xl font-semibold tracking-tight text-white sm:text-4xl">Learn From a Practitioner. Not Just a Course Instructor.</h2><p class="mt-5 font-display text-xl font-semibold text-accent-300">{brand.mentor.name} · {brand.mentor.role}</p><p class="mt-5 max-w-2xl text-base leading-7 text-white/70">{flagshipProgram.mentorDescription}</p><ul class="mt-7 grid gap-4 sm:grid-cols-2">{about.method.steps.map((step) => <li class="border-l border-white/20 pl-4 text-sm leading-6 text-white/70"><strong class="block text-white">{step.title}</strong>{step.description}</li>)}</ul></div></div></Container></section>
 
   <section class="bg-black py-14 sm:py-16 lg:py-20"><Container size="md"><SectionHeader eyebrow="Frequently asked questions" title="What to know before you enroll." description="Clear expectations for a serious professional learning commitment." /><FAQ items={flagshipProgram.faq} class="mt-9" /></Container></section>
 
-  <section class="section-atmospheric relative overflow-hidden border-t border-white/10 py-14 sm:py-20"><InteractiveAIAmbientBackground variant="cta" /><Container size="md" class="relative z-10 overflow-visible text-center"><h2 class="gradient-heading overflow-visible pb-1 font-display text-3xl font-semibold leading-[1.16] tracking-tight sm:text-5xl sm:leading-[1.12]">Ready to Engineer the Next Generation of AI Systems?</h2><p class="mx-auto mt-5 max-w-3xl text-base leading-7 text-white/70">Join a focused professional journey from AI engineering to enterprise delivery and architecture—followed by a full year of continued technical discussions.</p><ul class="mt-7 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-white/75">{["4-Month Live Flagship", "12-Month Post-Course Guild", "Production-Focused Projects", "Technical Resources & Interview Preparation", "Three Flexible Schedules"].map((item) => <li class="flex items-center gap-2"><span class="text-accent-300">✓</span>{item}</li>)}</ul><CohortCapacity class="mt-8 text-left" /><div class="mt-7"><RegistrationAction href={flagshipProgram.registrationUrl} analyticsLabel="flagship_final" /></div><div class="mt-4"><a href="https://learn.sanjaynegi.in/l/adff39aacd" target="_blank" rel="noopener noreferrer" class="inline-flex min-h-11 items-center justify-center text-center text-sm font-semibold text-accent-300 underline decoration-accent-400/50 underline-offset-4 hover:text-accent-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-500">Not ready yet? Join the free community for bootcamps and the self-paced waitlist →<span class="sr-only"> (opens in new tab)</span></a></div><p class="mx-auto mt-3 max-w-2xl text-sm leading-6 text-white/70">Enroll now. We'll contact you via email or WhatsApp to collect your preferred batch schedule and confirm availability.</p><div class="mx-auto mt-5 max-w-2xl border-t border-white/10 pt-4 text-left"><p class="text-sm font-semibold text-white/75">Limited-Capacity Enrollment Policy</p><p class="mt-1 text-sm leading-6 text-white/60">Seats are limited to 15 professionals per batch. Enrollment fees are non-refundable, except where required by applicable law or where SkillUp cannot provide an agreed batch or suitable alternative.</p></div><p class="mt-4 text-sm text-white/55">Designed exclusively for experienced working professionals.</p></Container></section>
+  <section class="section-atmospheric relative overflow-hidden border-t border-white/10 py-14 sm:py-20"><InteractiveAIAmbientBackground variant="cta" /><Container size="md" class="relative z-10 overflow-visible text-center"><h2 class="gradient-heading overflow-visible pb-1 font-display text-3xl font-semibold leading-[1.16] tracking-tight sm:text-5xl sm:leading-[1.12]">Ready to Engineer the Next Generation of AI Systems?</h2><p class="mx-auto mt-5 max-w-3xl text-base leading-7 text-white/70">Join a focused professional journey from AI engineering to enterprise delivery and architecture—followed by a full year of continued technical discussions.</p><ul class="mt-7 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-white/75">{["4-Month Live Flagship", "12-Month Post-Course Guild", "Production-Focused Projects", "Technical Resources & Interview Preparation", "Three Flexible Schedules"].map((item) => <li class="flex items-center gap-2"><span class="text-accent-300">✓</span>{item}</li>)}</ul><CohortCapacity class="mt-8 text-left" /><div class="mt-7"><RegistrationAction href="#batches" analyticsLabel="flagship_final" /></div><div class="mt-4"><a href={programBatches.waitlistUrl} target="_blank" rel="noopener noreferrer" class="inline-flex min-h-11 items-center justify-center text-center text-sm font-semibold text-accent-300 underline decoration-accent-400/50 underline-offset-4 hover:text-accent-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-500">Not ready yet? Join the free community for bootcamps and the self-paced waitlist →<span class="sr-only"> (opens in new tab)</span></a></div><div class="mx-auto mt-5 max-w-2xl border-t border-white/10 pt-4 text-left"><p class="text-sm font-semibold text-white/75">Limited-Capacity Enrollment Policy</p><p class="mt-1 text-sm leading-6 text-white/60">Fees are non-refundable once you're enrolled, except where required by law or where we can't provide your batch. If your batch fills while your payment is in progress, you can switch batch, move to the next cohort, or get a full refund.</p></div><p class="mt-4 text-sm text-white/55">Designed exclusively for experienced working professionals.</p></Container></section>
 </BaseLayout>

@@ -5,21 +5,23 @@ import { analytics } from "@config/analytics";
 interface Props {
   href: string;
   analyticsLabel: string;
+  label?: string;
   class?: string;
 }
 
-const { href, analyticsLabel, class: className } = Astro.props;
+const { href, analyticsLabel, label = "Reserve Your Seat", class: className } = Astro.props;
+const isExternal = /^https?:\/\//.test(href);
 ---
 
 <Button
   href={href}
   size="lg"
-  target="_blank"
-  rel="noopener noreferrer"
+  target={isExternal ? "_blank" : undefined}
+  rel={isExternal ? "noopener noreferrer" : undefined}
   analyticsEvent={analytics.events.programApply}
   analyticsLabel={analyticsLabel}
   class={className}
 >
-  Reserve Your Seat
-  <span class="sr-only"> (opens in new tab)</span>
+  {label}
+  {isExternal && <span class="sr-only"> (opens in new tab)</span>}
 </Button>
